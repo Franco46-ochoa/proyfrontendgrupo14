@@ -1,1 +1,38 @@
-<p>sucursal-list works!</p>
+<div class="card p-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h4 class="m-0">Sucursales</h4>
+      <button class="btn btn-primary">
+        <i class="bi bi-plus-circle"></i> Nueva Sucursal
+      </button>
+    </div>
+  
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Dirección</th>
+          <th>Teléfono</th>
+          <th>Zona</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let s of sucursales">
+          <td>{{ s.id }}</td>
+          <td>{{ s.nombre }}</td>
+          <td>{{ s.direccion }}</td>
+          <td>{{ s.telefono }}</td>
+          <td>{{ s.zonaId }}</td>
+          <td>
+            <button class="btn btn-sm btn-outline-primary me-1">
+              <i class="bi bi-pencil"></i>
+            </button>
+            <button class="btn btn-sm btn-outline-danger">
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
