@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Producto } from '../producto.model';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-producto-list',
-  imports: [],
+  imports: [ CommonModule ],
   templateUrl: './producto-list.component.html',
   styleUrl: './producto-list.component.scss'
 })
