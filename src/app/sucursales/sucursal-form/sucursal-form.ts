@@ -1,11 +1,35 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-sucursal-form',
-  imports: [],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './sucursal-form.html',
   styleUrl: './sucursal-form.scss',
 })
-export class SucursalForm {
+export class SucursalForm implements OnInit {
+  sucursalForm!: FormGroup;
 
+  constructor(private fb: FormBuilder) { }
+
+  ngOnInit(): void {
+
+    this.sucursalForm = this.fb.group({
+      nombre: ['', [Validators.required, Validators.maxLength(100)]],
+      direccion: ['', Validators.required],
+      telefono: ['', Validators.required],
+      lat: ['', Validators.required],
+      lng: ['', Validators.required],
+      zonaId: ['']
+    });
+  }
+
+  guardar() {
+    if (this.sucursalForm.valid) {
+      console.log('Formulario válido, datos:', this.sucursalForm.value);
+    } else {
+      this.sucursalForm.markAllAsTouched();
+    }
+  }
 }
