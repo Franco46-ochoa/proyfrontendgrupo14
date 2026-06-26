@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import { SucursalForm } from './sucursales/sucursal-form/sucursal-form';
-import { SucursalList } from './sucursales/sucursal-list/sucursal-list';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [SucursalList, SucursalForm],
+  imports: [RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
