@@ -1,0 +1,187 @@
+@use '../../../../styles/variables' as *;
+
+.custom-card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    background-color: $card-bg;
+    height: 100%;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+    }
+}
+
+.font-inter {
+    font-family: 'Inter', sans-serif;
+}
+
+.text-primary-custom {
+    color: $primary;
+}
+
+.bg-primary-custom {
+    background-color: $primary;
+}
+
+.bg-secondary-custom {
+    background-color: $secondary;
+}
+
+.bg-success-light {
+    background-color: rgba($success, 0.1);
+}
+
+// Chart layout
+.chart-wrapper {
+    position: relative;
+    height: 240px;
+    margin-left: 45px; // Space for Y axis labels
+    margin-top: 10px;
+}
+
+.chart-y-axis {
+    position: absolute;
+    top: 0;
+    left: -45px;
+    width: 100%;
+    height: 200px; // align with bars area height
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.y-grid-line, .y-grid-line-zero {
+    width: 100%;
+    position: relative;
+    border-bottom: 1px dashed rgba($text-secondary, 0.15);
+    height: 0;
+    
+    .y-label {
+        position: absolute;
+        left: 0;
+        bottom: -8px;
+        font-size: 0.75rem;
+        color: $text-secondary;
+        width: 35px;
+        text-align: right;
+    }
+}
+
+.y-grid-line-zero {
+    border-bottom: 1px solid rgba($text-secondary, 0.3);
+}
+
+.chart-bars-area {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 200px;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    z-index: 2;
+}
+
+.bar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 10%;
+    height: 100%;
+    justify-content: flex-end;
+    position: relative;
+    cursor: pointer;
+
+    .bar-value {
+        position: absolute;
+        top: -30px;
+        font-size: 0.72rem;
+        font-weight: 600;
+        color: #fff;
+        opacity: 0;
+        transform: translateY(5px);
+        transition: all 0.2s ease;
+        background-color: $dark;
+        padding: 3px 8px;
+        border-radius: 4px;
+        pointer-events: none;
+        white-space: nowrap;
+        z-index: 10;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+        &::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 4px 4px 0;
+            border-style: solid;
+            border-color: $dark transparent;
+            display: block;
+            width: 0;
+        }
+    }
+
+    .bar-bar {
+        width: 100%;
+        background: linear-gradient(180deg, rgba($primary, 0.8) 0%, $primary 100%);
+        border-radius: 4px 4px 0 0;
+        transition: all 0.3s ease;
+        animation: growBar 1s cubic-bezier(0.175, 0.885, 0.32, 1.1) forwards;
+        height: 0;
+    }
+
+    .bar-label {
+        font-size: 0.75rem;
+        color: $text-secondary;
+        margin-top: 8px;
+        position: absolute;
+        bottom: -24px;
+    }
+
+    &:hover {
+        .bar-value {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .bar-bar {
+            background: linear-gradient(180deg, $secondary 0%, rgba($secondary, 0.8) 100%);
+            filter: drop-shadow(0 4px 6px rgba($secondary, 0.25));
+        }
+    }
+    
+    &.highlight {
+        .bar-bar {
+            background: linear-gradient(180deg, rgba($secondary, 0.9) 0%, $secondary 100%);
+        }
+        
+        &:hover {
+            .bar-bar {
+                background: linear-gradient(180deg, $primary 0%, rgba($primary, 0.8) 100%);
+                filter: drop-shadow(0 4px 6px rgba($primary, 0.25));
+            }
+        }
+    }
+}
+
+.legend-color-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+@keyframes growBar {
+    from {
+        height: 0;
+    }
+    to {
+        height: var(--bar-height);
+    }
+}

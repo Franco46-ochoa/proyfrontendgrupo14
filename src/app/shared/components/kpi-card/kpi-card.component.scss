@@ -1,0 +1,34 @@
+@use '../../../../styles/variables' as *;
+
+.custom-card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    background-color: $card-bg;
+    height: 100%;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+    }
+}
+
+.font-inter {
+    font-family: 'Inter', sans-serif;
+}
+
+.text-primary-custom {
+    color: $primary;
+}
+
+.icon-container {
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    background-color: rgba($primary, 0.08);
+    
+    i {
+        color: $primary;
+    }
+}
