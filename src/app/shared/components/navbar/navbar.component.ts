@@ -1,0 +1,14 @@
+import { Component, EventEmitter, Output } from '@angular/core';
+
+@Component({
+  selector: 'app-navbar',
+  imports: [],
+  templateUrl: './navbar.component.html',
+  styleUrl: './navbar.component.scss',
+  standalone: true
+})
+export class NavbarComponent {
+
+   @Output() menuClick = new EventEmitter<void>();
+
+}

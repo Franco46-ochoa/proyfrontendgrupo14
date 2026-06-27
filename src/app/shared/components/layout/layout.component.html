@@ -1,0 +1,16 @@
+<app-navbar
+  (menuClick)="toggleSidebar()">
+</app-navbar>
+
+<div class="layout-container">
+
+  @if(sidebarVisible){
+    <app-sidebar></app-sidebar>
+  }
+
+  <div class="content p-4">
+    <h2>Contenido Principal</h2>
+    <p>Aquí se verá el router-outlet más adelante.</p>
+  </div>
+
+</div>
