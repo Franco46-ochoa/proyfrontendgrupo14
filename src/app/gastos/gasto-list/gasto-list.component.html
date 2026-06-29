@@ -1,0 +1,35 @@
+<div class="card p-4">
+    <h2 class="text-primary fw-bold mb-4">Registro de Gastos</h2>
+    <div class="table-responsive">
+      <table class="table custom-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Tipo</th>
+            <th>Descripción</th>
+            <th>Monto</th>
+            <th>Fecha</th>
+            <th>Estado/Anomalía</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let gasto of gastos" [ngClass]="{'table-danger': gasto.anomalia}">
+            <td>{{ gasto.id }}</td>
+            <td>{{ gasto.tipo }}</td>
+            <td>{{ gasto.descripcion }}</td>
+            <td class="fw-bold">${{ gasto.monto }}</td>
+            <td>{{ gasto.fecha }}</td>
+            <td>
+              <!-- Flag visual de anomalía requerida en el Día 6 -->
+              <span class="badge bg-danger p-2" *ngIf="gasto.anomalia">
+                <i class="bi bi-exclamation-triangle"></i> ¡Anomalía Detectada!
+              </span>
+              <span class="badge bg-success p-2" *ngIf="!gasto.anomalia">
+                <i class="bi bi-check-circle"></i> OK
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
