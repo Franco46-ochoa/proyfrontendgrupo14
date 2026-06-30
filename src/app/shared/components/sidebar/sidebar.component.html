@@ -1,5 +1,6 @@
 <div class="sidebar">
   <ul class="nav flex-column">
+    @if (esDueno()) {
     <li class="nav-item">
       <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">
         <i class="bi bi-speedometer2 me-2"></i> Dashboard
@@ -10,6 +11,14 @@
         <i class="bi bi-building me-2"></i> Sucursales
       </a>
     </li>
+    }
+    @if (esGerente()) {
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/dashboard-gerente" routerLinkActive="active">
+        <i class="bi bi-speedometer2 me-2"></i> Dashboard
+      </a>
+    </li>
+    }
     <li class="nav-item">
       <a class="nav-link" routerLink="/productos" routerLinkActive="active">
         <i class="bi bi-box-seam me-2"></i> Productos
@@ -30,6 +39,7 @@
         <i class="bi bi-wallet2 me-2"></i> Gastos
       </a>
     </li>
+    @if (esDueno()) {
     <hr>
     <li class="nav-item">
       <a class="nav-link" routerLink="/suscripcion" routerLinkActive="active">
@@ -41,5 +51,6 @@
         <i class="bi bi-key me-2"></i> Códigos
       </a>
     </li>
+    }
   </ul>
 </div>
