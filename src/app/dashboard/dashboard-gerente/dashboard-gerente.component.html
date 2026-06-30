@@ -1,0 +1,61 @@
+<div class="dashboard-container py-4">
+    <!-- Header -->
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <div>
+            <h4 class="fw-bold font-inter text-primary-custom mb-1">Dashboard de Gerente de Zona</h4>
+            <p class="text-secondary small mb-0">Gestión de sucursales asignadas a la {{ nombreZona }} </p>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+            <span class="badge bg-white text-secondary border px-3 py-2 fs-7 rounded-3 shadow-sm font-inter">
+                <i class="bi bi-calendar3 me-2"></i> Jun 2026
+            </span>
+        </div>
+    </div>
+
+    <!-- Fila 1: Mapa Leaflet + Gráfico Radar (Comparativa) -->
+    <div class="row g-4 mb-4">
+        <!-- Columna Izquierda: Mapa de Sucursales -->
+        <div class="col-12 col-lg-6">
+            <div class="card custom-card p-4 h-100">
+                <h5 class="fw-bold font-inter text-primary-custom mb-1">Mapa de Sucursales</h5>
+                <p class="text-secondary small mb-3">Geolocalización y estado en tiempo real</p>
+                <app-sucursal-mapa [sucursales]="sucursales"></app-sucursal-mapa>
+            </div>
+        </div>
+
+        <!-- Columna Derecha: Comparativa de Sucursales (Radar) -->
+        <div class="col-12 col-lg-6">
+            <app-chart-card [title]="'Comparativa de Sucursales'" [subtitle]="'Métricas operativas cruzadas'"
+                [chartType]="radarChartType" [chartData]="radarChartData" [chartOptions]="radarChartOptions">
+            </app-chart-card>
+        </div>
+    </div>
+
+    <!-- Fila 2: Gastos por Categoría (Torta) -->
+    <div class="row g-4 mb-4">
+        <div class="col-12">
+            <app-chart-card [title]="'Gastos por Categoría'"
+                [subtitle]="'Distribución de costos consolidados en la zona'" [chartType]="pieChartType"
+                [chartData]="pieChartData" [chartOptions]="pieChartOptions">
+            </app-chart-card>
+        </div>
+    </div>
+
+    <!-- Fila 3: Reporte del Agente de Zona (NLP) -->
+    <div class="row g-4">
+        <div class="col-12">
+            <div class="card custom-card border border-warning-subtle bg-warning-light p-4">
+                <div class="d-flex align-items-center gap-2 mb-3">
+                    <i class="bi bi-robot text-warning fs-4"></i>
+                    <h5 class="fw-bold font-inter text-primary-custom mb-0">Reporte del Agente de Zona (NLP)</h5>
+                </div>
+                <div class="alert bg-white border border-light-subtle rounded-3 shadow-sm py-3 px-4">
+                    <p class="font-inter mb-2 text-dark">
+                        {{ textoReporte }}
+                    </p>
+                    <span class="text-muted small">Generado automáticamente por Gemini AI • {{ fechaReporte }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

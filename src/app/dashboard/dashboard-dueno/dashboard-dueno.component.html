@@ -15,20 +15,45 @@
   <!-- 4 KPI Cards Grid -->
   <div class="row g-4 mb-4">
     <div *ngFor="let kpi of kpis" class="col-12 col-md-6 col-lg-3">
-      <app-kpi-card
-        [title]="kpi.title"
-        [value]="kpi.value"
-        [badgeText]="kpi.badgeText"
-        [badgeColor]="kpi.badgeColor"
-        [icon]="kpi.icon"
-      ></app-kpi-card>
+      <app-kpi-card [title]="kpi.title" [value]="kpi.value" [badgeText]="kpi.badgeText" [badgeColor]="kpi.badgeColor"
+        [icon]="kpi.icon"></app-kpi-card>
     </div>
   </div>
 
-  <!-- Chart Card Grid -->
-  <div class="row g-4">
+  <!-- Dos Gráficos Dinámicos (Día 3) -->
+  <div class="row g-4 mb-4">
+    <!-- Gráfico 1: Rentabilidad por Sucursal (Barras) -->
+    <div class="col-12 col-lg-6">
+      <app-chart-card
+        [title]="'Rentabilidad por Sucursal'"
+        [subtitle]="'Ingresos netos por punto de venta'"
+        [chartType]="barChartType"
+        [chartData]="barChartData"
+        [chartOptions]="barChartOptions">
+      </app-chart-card>
+    </div>
+
+    <!-- Gráfico 2: Evolución de Ingresos (Líneas) -->
+    <div class="col-12 col-lg-6">
+      <app-chart-card
+        [title]="'Evolución de Ingresos'"
+        [subtitle]="'Historial de ganancias (últimos 6 meses)'"
+        [chartType]="lineChartType"
+        [chartData]="lineChartData"
+        [chartOptions]="lineChartOptions">
+      </app-chart-card>
+    </div>
+  </div>
+
+  <!-- 3. NUEVA SECCIÓN: Mapa de Sucursales -->
+  <div class="row g-4 mt-2">
     <div class="col-12">
-      <app-chart-card></app-chart-card>
+      <div class="card custom-card p-4">
+        <h5 class="fw-bold font-inter text-primary-custom mb-3">Distribución y Estado de Sucursales</h5>
+
+        <!-- Aquí llamamos a tu nuevo componente con datos del backend -->
+        <app-sucursal-mapa [sucursales]="sucursales"></app-sucursal-mapa>
+      </div>
     </div>
   </div>
 </div>
