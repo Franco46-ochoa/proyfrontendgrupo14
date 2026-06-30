@@ -29,6 +29,16 @@ export const routes: Routes = [
             import('./suscripcion/suscripcion.component').then(m=> m.SuscripcionComponent)
     },
     {
+        path: 'datatable',
+        canActivate: [authGuard, roleGuard],
+        data: {
+            roles: ['DUENO']
+        },
+        loadComponent: () =>
+            import('./shared/components/datatable/datatable.component').then(m=> m.DatatableComponent)
+
+    },
+    {
         path: '**',
         redirectTo: 'login'
     }
