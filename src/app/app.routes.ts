@@ -41,6 +41,14 @@ export const routes: Routes = [
   },
 
   {
+    path: 'dashboard-gerente',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./dashboard/dashboard-gerente/dashboard-gerente.component')
+        .then(m => m.DashboardGerenteComponent)
+  },
+
+  {
     path: 'sucursales',
     canActivate: [authGuard],
     loadComponent: () =>
@@ -131,6 +139,15 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./suscripcion/suscripcion.component')
         .then(m => m.SuscripcionComponent)
+  },
+
+  {
+    path: 'codigos',
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['DUENO'] },
+    loadComponent: () =>
+      import('./codigos/codigos.component')
+        .then(m => m.CodigosComponent)
   },
 
   {

@@ -45,8 +45,14 @@ export class LoginComponent {
             resp.data.rol.toUpperCase()
           );
 
-            console.log('Redirigiendo a dashboard');
-            this.router.navigate(['/dashboard']);
+            const rol = resp.data.rol?.toUpperCase();
+            if (rol === 'DUENO') {
+              this.router.navigate(['/dashboard']);
+            } else if (rol === 'GERENTE') {
+              this.router.navigate(['/dashboard-gerente']);
+            } else {
+              this.router.navigate(['/inventario']);
+            }
         },
 
         error: (error) => {
