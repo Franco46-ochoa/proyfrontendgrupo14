@@ -1,13 +1,32 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  login(token: string, role: string): void {
+  private http = inject(HttpClient);
+
+  private apiUrl = 'http://localhost:3000/api/auth';
+
+  login(data: any) {
+    return this.http.post(
+      `${this.apiUrl}/login`,
+      data
+    );
+  }
+
+  register(data: any) {
+    return this.http.post(
+      `${this.apiUrl}/register`,
+      data
+    );
+  }
+
+  saveSession(token: string, role: string): void {
     localStorage.setItem('token', token);
-    localStorage.setItem('role', role);
+    localStorage.setItem('role', role.toUpperCase());
   }
 
   logout(): void {
@@ -26,5 +45,4 @@ export class AuthService {
   isLoggedIn(): boolean {
     return !!this.getToken();
   }
-
 }

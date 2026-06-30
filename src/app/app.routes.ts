@@ -1,36 +1,52 @@
 import { Routes } from '@angular/router';
 
-import {authGuard} from './core/guards/auth.guard';
-import {roleGuard} from './core/guards/role.guard';
+import { authGuard } from './core/guards/auth.guard';
+import { roleGuard } from './core/guards/role.guard';
 
 export const routes: Routes = [
-    {
-        path: '',
-        redirectTo: 'login',
-        pathMatch: 'full'
+
+  {
+    path: '',
+    redirectTo: 'login',
+    pathMatch: 'full'
+  },
+
+  {
+    path: 'login',
+    loadComponent: () =>
+      import('./auth/login/login.component')
+        .then(m => m.LoginComponent)
+  },
+
+  {
+    path: 'register',
+    loadComponent: () =>
+      import('./auth/register/register.component')
+        .then(m => m.RegisterComponent)
+  },
+
+  {
+    path: 'home',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./home/home.component')
+        .then(m => m.HomeComponent)
+  },
+
+  {
+    path: 'suscripcion',
+    canActivate: [authGuard, roleGuard],
+    data: {
+      roles: ['DUENO']
     },
-    {
-        path: 'login',
-        loadComponent: () =>
-            import('./auth/login/login.component').then((m) => m.LoginComponent)
-    },
-    {
-        path: 'register',
-        loadComponent: () =>
-            import('./auth/register/register.component').then((m) => m.RegisterComponent)
-    },
-    {
-        path: 'suscripcion',
-        canActivate: [authGuard, roleGuard],
-        data: {
-            roles: ['DUENO']
-        },
-        loadComponent: () =>
-            import('./suscripcion/suscripcion.component').then(m=> m.SuscripcionComponent)
-    },
-    {
-        path: '**',
-        redirectTo: 'login'
-    }
+    loadComponent: () =>
+      import('./suscripcion/suscripcion.component')
+        .then(m => m.SuscripcionComponent)
+  },
+
+  {
+    path: '**',
+    redirectTo: 'home'
+  }
 
 ];

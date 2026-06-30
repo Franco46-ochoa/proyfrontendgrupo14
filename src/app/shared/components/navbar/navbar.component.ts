@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, inject } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -9,6 +10,13 @@ import { Component, EventEmitter, Output } from '@angular/core';
 })
 export class NavbarComponent {
 
-   @Output() menuClick = new EventEmitter<void>();
+  @Output() menuClick = new EventEmitter<void>();
+
+  private router = inject(Router);
+
+  logout(): void {
+    localStorage.clear();
+    this.router.navigate(['/login']);
+  }
 
 }
