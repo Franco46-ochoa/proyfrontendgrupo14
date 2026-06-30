@@ -21,7 +21,9 @@ export class SucursalForm implements OnInit {
       telefono: ['', Validators.required],
       lat: ['', Validators.required],
       lng: ['', Validators.required],
-      zonaId: ['']
+      zonaId: [''],
+      gerentesMax: [1, [Validators.required, Validators.min(1)]],
+      empleadosMax: [10, [Validators.required, Validators.min(1)]]
     });
   }
 
