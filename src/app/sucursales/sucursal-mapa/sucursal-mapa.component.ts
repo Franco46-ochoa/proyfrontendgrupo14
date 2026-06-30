@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, AfterViewInit, OnDestroy, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import * as L from 'leaflet';
 
@@ -10,6 +10,20 @@ import * as L from 'leaflet';
 })
 export class SucursalMapaComponent implements AfterViewInit, OnDestroy {
   private map!: L.Map;
+  private markersGroup!: L.FeatureGroup;
+  private _sucursales: any[] = [];
+
+  @Input()
+  set sucursales(value: any[]) {
+    this._sucursales = value || [];
+    if (this.map) {
+      this.updateMarkers();
+    }
+  }
+
+  get sucursales(): any[] {
+    return this._sucursales;
+  }
 
   ngAfterViewInit(): void {
     this.initMap();
@@ -38,20 +52,44 @@ export class SucursalMapaComponent implements AfterViewInit, OnDestroy {
       attribution: '© OpenStreetMap contributors'
     }).addTo(this.map);
 
-    // 4. Agregar marcadores dummy para sucursales
-    const sucursalCentral = L.marker([-24.1858, -65.2995]).addTo(this.map);
-    sucursalCentral.bindPopup(`
-      <strong>Sucursal Central</strong><br>
-      Dirección: Belgrano 1234<br>
-      Estado de Stock: Ok
-    `);
+    // Inicializar el grupo de marcadores y agregarlo al mapa
+    this.markersGroup = L.featureGroup().addTo(this.map);
 
-    const sucursalNorte = L.marker([-24.1750, -65.3120]).addTo(this.map);
-    sucursalNorte.bindPopup(`
-      <strong>Sucursal Norte</strong><br>
-      Dirección: Av. Italia 567<br>
-      Estado de Stock: 3 productos en alerta ⚠
-    `);
+    // Dibujar marcadores existentes
+    this.updateMarkers();
+  }
+
+  private updateMarkers(): void {
+    if (!this.map || !this.markersGroup) return;
+
+    // Limpiar marcadores anteriores
+    this.markersGroup.clearLayers();
+
+    // Dibujar nuevos marcadores
+    this.sucursales.forEach(suc => {
+      // Intentamos leer coordenadas de base de datos (lat y lng)
+      const lat = parseFloat(suc.lat);
+      const lng = parseFloat(suc.lng);
+
+      if (!isNaN(lat) && !isNaN(lng)) {
+        const marker = L.marker([lat, lng]);
+        marker.bindPopup(`
+          <strong>${suc.nombre}</strong><br>
+          Dirección: ${suc.direccion || 'Sin dirección'}<br>
+          Teléfono: ${suc.telefono || 'Sin teléfono'}<br>
+          Zona ID: ${suc.zonaId || 'N/A'}
+        `);
+        this.markersGroup.addLayer(marker);
+      }
+    });
+
+    // Ajustar mapa automáticamente para encajar todos los marcadores visibles
+    if (this.sucursales.length > 0) {
+      const bounds = this.markersGroup.getBounds();
+      if (bounds.isValid()) {
+        this.map.fitBounds(bounds, { padding: [50, 50] });
+      }
+    }
   }
 
   ngOnDestroy(): void {

@@ -51,8 +51,8 @@
       <div class="card custom-card p-4">
         <h5 class="fw-bold font-inter text-primary-custom mb-3">Distribución y Estado de Sucursales</h5>
 
-        <!-- Aquí llamamos a tu nuevo componente -->
-        <app-sucursal-mapa></app-sucursal-mapa>
+        <!-- Aquí llamamos a tu nuevo componente con datos del backend -->
+        <app-sucursal-mapa [sucursales]="sucursales"></app-sucursal-mapa>
       </div>
     </div>
   </div>
