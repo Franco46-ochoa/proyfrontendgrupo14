@@ -1,4 +1,7 @@
-@if(isAuthPage()){
+@if(isPublicLanding()){
+  <router-outlet></router-outlet>
+}
+@else if(isAuthPage()){
 
   <nav class="navbar navbar-dark bg-dark px-4">
     <span class="navbar-brand fw-bold">

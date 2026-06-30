@@ -35,8 +35,14 @@ export class LayoutComponent {
   }
 
   isAuthPage(): boolean {
-  return this.currentUrl === '/login'
-      || this.currentUrl === '/register';
-}
+    return this.currentUrl === '/login'
+        || this.currentUrl === '/register'
+        || this.currentUrl === '/home'
+        || this.currentUrl === '/';
+  }
+
+  isPublicLanding(): boolean {
+    return this.currentUrl === '/home' || this.currentUrl === '/';
+  }
 
 }
