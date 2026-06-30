@@ -45,8 +45,8 @@ export class LoginComponent {
             resp.data.rol.toUpperCase()
           );
 
-            console.log('Redirigiendo a home');
-            this.router.navigate(['/home']);
+            console.log('Redirigiendo a dashboard');
+            this.router.navigate(['/dashboard']);
         },
 
         error: (error) => {

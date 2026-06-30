@@ -33,20 +33,17 @@ export const routes: Routes = [
   },
 
   {
-    path: 'suscripcion',
-    canActivate: [authGuard, roleGuard],
-    data: { roles: ['DUENO'] },
+    path: 'dashboard',
+    canActivate: [authGuard],
     loadComponent: () =>
-      import('./suscripcion/suscripcion.component')
-        .then(m => m.SuscripcionComponent)
+      import('./dashboard/dashboard-dueno/dashboard-dueno.component')
+        .then(m => m.DashboardDuenoComponent)
   },
 
   {
     path: 'suscripcion',
     canActivate: [authGuard, roleGuard],
-    data: {
-      roles: ['DUENO']
-    },
+    data: { roles: ['DUENO'] },
     loadComponent: () =>
       import('./suscripcion/suscripcion.component')
         .then(m => m.SuscripcionComponent)
