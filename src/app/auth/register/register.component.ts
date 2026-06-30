@@ -14,41 +14,53 @@ import { CommonModule } from '@angular/common';
   styleUrl: './register.component.scss'
 })
 export class RegisterComponent {
-   private fb = inject(FormBuilder);
+  private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private router = inject(Router);
+
+  errorCodigo = '';
 
   registerForm = this.fb.group({
     nombre: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(6)]],
-    rol: ['empleado', Validators.required]
+    rol: ['empleado', Validators.required],
+    codigoInvitacion: ['']
   });
 
   onSubmit() {
+    this.errorCodigo = '';
 
     if (this.registerForm.invalid) {
       this.registerForm.markAllAsTouched();
       return;
     }
 
-    this.authService.register(
-      this.registerForm.value
-    ).subscribe({
+    const body: any = {
+      nombre: this.registerForm.value.nombre,
+      email: this.registerForm.value.email,
+      password: this.registerForm.value.password,
+      rol: this.registerForm.value.rol,
+    };
 
+    if (this.registerForm.value.rol !== 'dueno') {
+      body.codigoInvitacion = this.registerForm.value.codigoInvitacion;
+    }
+
+    this.authService.register(body).subscribe({
       next: () => {
-
         alert('Usuario registrado');
-
         this.router.navigate(['/login']);
       },
-
       error: (error) => {
-
-        console.error(error);
-        alert('Error al registrar');
+        const msg = error?.error?.message || '';
+        if (msg.includes('Código') || msg.includes('código')) {
+          this.errorCodigo = msg;
+        } else {
+          console.error(error);
+          alert('Error al registrar');
+        }
       }
     });
   }
-
 }

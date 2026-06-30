@@ -7,8 +7,15 @@ export const routes: Routes = [
 
   {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'home',
     pathMatch: 'full'
+  },
+
+  {
+    path: 'home',
+    loadComponent: () =>
+      import('./home/home.component')
+        .then(m => m.HomeComponent)
   },
 
   {
@@ -26,11 +33,12 @@ export const routes: Routes = [
   },
 
   {
-    path: 'home',
-    canActivate: [authGuard],
+    path: 'suscripcion',
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['DUENO'] },
     loadComponent: () =>
-      import('./home/home.component')
-        .then(m => m.HomeComponent)
+      import('./suscripcion/suscripcion.component')
+        .then(m => m.SuscripcionComponent)
   },
 
   {

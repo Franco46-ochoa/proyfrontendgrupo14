@@ -16,7 +16,7 @@ export class NavbarComponent {
 
   logout(): void {
     localStorage.clear();
-    this.router.navigate(['/login']);
+    this.router.navigate(['/home']);
   }
 
 }

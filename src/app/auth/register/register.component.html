@@ -60,6 +60,17 @@
 
       </div>
 
+      <div *ngIf="registerForm.get('rol')?.value !== 'dueno'" class="mb-3">
+        <label>Código de invitación</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="codigoInvitacion"
+          placeholder="Ej: EMP-A3F2K9B1"
+        />
+        <small *ngIf="errorCodigo" class="text-danger">{{ errorCodigo }}</small>
+      </div>
+
       <button
         type="submit"
         class="btn btn-success w-100">
