@@ -49,16 +49,15 @@ export class RegisterComponent {
 
     this.authService.register(body).subscribe({
       next: () => {
-        alert('Usuario registrado');
+        alert('Usuario registrado exitosamente');
         this.router.navigate(['/login']);
       },
       error: (error) => {
         const msg = error?.error?.message || '';
-        if (msg.includes('Código') || msg.includes('código')) {
+        if (msg) {
           this.errorCodigo = msg;
         } else {
-          console.error(error);
-          alert('Error al registrar');
+          this.errorCodigo = 'Error al registrar. Revisá que el backend esté corriendo.';
         }
       }
     });
