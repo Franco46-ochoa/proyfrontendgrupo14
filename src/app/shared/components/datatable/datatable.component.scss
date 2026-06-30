@@ -1,0 +1,99 @@
+@use '../../../../styles/variables' as *;
+
+.datatable-card {
+  background: $card-bg;
+  border: 1px solid rgba($dark, 0.08);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+/* HEADER */
+.datatable-header {
+  background: linear-gradient(90deg, $primary, darken($primary, 6%));
+  padding: 12px;
+  border-bottom: none;
+}
+
+.datatable-search {
+  border-radius: 10px;
+  border: none;
+  padding: 10px 14px;
+  font-size: 0.95rem;
+  color: $text-primary;
+
+  &:focus {
+    box-shadow: 0 0 0 3px rgba($secondary, 0.3);
+  }
+}
+
+/* TABLE */
+.datatable-table {
+  margin: 0;
+}
+
+.datatable-th {
+  background: $light;
+  color: $text-primary;
+  font-weight: 600;
+  text-transform: capitalize;
+  padding: 14px;
+  border-bottom: 2px solid rgba($dark, 0.08);
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba($primary, 0.08);
+    color: $primary;
+  }
+}
+
+.sort-indicator {
+  font-size: 0.75rem;
+  margin-left: 6px;
+  color: $text-secondary;
+}
+
+/* ROWS */
+.datatable-row {
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba($info, 0.06);
+    transform: scale(1.005);
+  }
+}
+
+.datatable-td {
+  padding: 12px 14px;
+  color: $text-secondary;
+}
+
+/* FOOTER */
+.datatable-footer {
+  background: $light;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px;
+  border-top: 1px solid rgba($dark, 0.08);
+}
+
+/* PAGINATION BUTTONS */
+.page-btn {
+  background: white;
+  border: 1px solid rgba($dark, 0.15);
+  color: $text-primary;
+  padding: 6px 14px;
+  border-radius: 20px;
+  transition: all 0.2s ease;
+  font-weight: 500;
+
+  &:hover {
+    background: $primary;
+    color: white;
+    border-color: $primary;
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
