@@ -1,0 +1,59 @@
+<div class="card p-4 mt-4">
+    <h3 class="text-primary fw-bold mb-4">Registrar Nuevo Gasto</h3>
+  
+    <form [formGroup]="gastoForm" (ngSubmit)="guardar()">
+      <div class="row g-3">
+        
+        <!-- Tipo de Gasto -->
+        <div class="col-md-4">
+          <label class="form-label text-secondary">Tipo de Gasto</label>
+          <select class="form-select" formControlName="tipo">
+            <option value="">Seleccione...</option>
+            <option value="Servicios">Servicios (Luz, Agua, Internet)</option>
+            <option value="Alquiler">Alquiler</option>
+            <option value="Insumos">Insumos Internos</option>
+            <option value="Mantenimiento">Mantenimiento</option>
+            <option value="Otros">Otros Gastos</option>
+          </select>
+        </div>
+  
+        <!-- Monto -->
+        <div class="col-md-4">
+          <label class="form-label text-secondary">Monto</label>
+          <div class="input-group">
+            <span class="input-group-text">$</span>
+            <input type="number" class="form-control" formControlName="monto" placeholder="0.00">
+          </div>
+        </div>
+  
+        <!-- Fecha -->
+        <div class="col-md-4">
+          <label class="form-label text-secondary">Fecha</label>
+          <input type="date" class="form-control" formControlName="fecha">
+        </div>
+  
+        <!-- Descripción -->
+        <div class="col-12">
+          <label class="form-label text-secondary">Descripción Detallada</label>
+          <input type="text" class="form-control" formControlName="descripcion" placeholder="Ej: Pago mensualidad alquiler Local Sur">
+        </div>
+  
+        <!-- IDs de Relación (Mockup de selects) -->
+        <div class="col-md-6">
+          <label class="form-label text-secondary">Sucursal (ID)</label>
+          <input type="number" class="form-control" formControlName="sucursalId" placeholder="ID de la sucursal que emite el gasto">
+        </div>
+  
+        <div class="col-md-6">
+          <label class="form-label text-secondary">Proveedor (Opcional)</label>
+          <input type="number" class="form-control" formControlName="proveedorId" placeholder="ID del proveedor">
+        </div>
+  
+      </div>
+  
+      <div class="d-flex justify-content-end mt-4">
+        <button type="button" class="btn btn-outline-primary me-3">Cancelar</button>
+        <button type="submit" class="btn bg-primary text-white" [disabled]="gastoForm.invalid">Guardar Gasto</button>
+      </div>
+    </form>
+  </div>
