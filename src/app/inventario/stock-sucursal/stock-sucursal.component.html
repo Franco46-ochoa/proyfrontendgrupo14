@@ -1,0 +1,34 @@
+<div class="card p-4">
+    <h2 class="text-primary fw-bold mb-4">Stock por Sucursal</h2>
+    <div class="table-responsive">
+      <table class="table custom-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Producto</th>
+            <th>Sucursal</th>
+            <th>Stock Actual</th>
+            <th>Stock Mínimo</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of inventario">
+            <td>{{ item.id }}</td>
+            <td>{{ item.producto }}</td>
+            <td>{{ item.sucursal }}</td>
+            <!-- Indicador visual de stock crítico -->
+            <td [ngClass]="{'text-danger fw-bold': item.stockActual < item.stockMinimo, 'text-success': item.stockActual >= item.stockMinimo}">
+              {{ item.stockActual }}
+            </td>
+            <td>{{ item.stockMinimo }}</td>
+            <td>
+              <span class="badge" [ngClass]="item.stockActual < item.stockMinimo ? 'bg-danger' : 'bg-success'">
+                {{ item.stockActual < item.stockMinimo ? 'Crítico' : 'Normal' }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>

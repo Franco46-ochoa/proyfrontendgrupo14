@@ -1,0 +1,38 @@
+<div class="card p-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-primary fw-bold">Sucursales</h2>
+        <button class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Nueva Sucursal
+        </button>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table custom-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Dirección</th>
+                    <th>Teléfono</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let sucursal of sucursales">
+                    <td>{{ sucursal.id }}</td>
+                    <td>{{ sucursal.nombre }}</td>
+                    <td>{{ sucursal.direccion }}</td>
+                    <td>{{ sucursal.telefono }}</td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary me-2">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="btn btn-sm bg-danger text-white" (click)="eliminarSucursal(sucursal.id)">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

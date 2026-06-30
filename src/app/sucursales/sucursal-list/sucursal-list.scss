@@ -1,0 +1,19 @@
+.card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+  
+  .custom-table {
+    thead th {
+      background-color: #F1F5F9;
+      color: #64748B;
+      border-bottom: none;
+    }
+    tbody tr:hover {
+      background-color: #F8FAFC;
+    }
+    tbody td {
+      vertical-align: middle;
+    }
+  }
