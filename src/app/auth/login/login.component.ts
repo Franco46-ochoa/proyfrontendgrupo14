@@ -3,6 +3,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../core/services/auth.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -18,6 +19,7 @@ export class LoginComponent {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private router = inject(Router);
+  private toastr = inject(ToastrService);
 
   loginForm = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
@@ -45,6 +47,8 @@ export class LoginComponent {
             resp.data.rol.toUpperCase()
           );
 
+          this.toastr.success('Inicio de sesion exitoso', 'Login');
+
             const rol = resp.data.rol?.toUpperCase();
             if (rol === 'DUENO') {
               this.router.navigate(['/dashboard']);
@@ -57,7 +61,7 @@ export class LoginComponent {
 
         error: (error) => {
           console.error(error);
-          alert('Credenciales incorrectas');
+          this.toastr.error('Credenciales incorrectas', 'Login');
         }
       });
   }

@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-suscripcion',
@@ -8,6 +9,8 @@ import { CommonModule } from '@angular/common';
   styleUrl: './suscripcion.component.scss'
 })
 export class SuscripcionComponent {
+  private toastr = inject(ToastrService);
+
    // Plan actual simulado
   planActual = {
     id: 'pro',
@@ -64,13 +67,13 @@ export class SuscripcionComponent {
   ];
 
   cambiarPlan(planId: string): void {
-    alert(`Redirigiendo a Checkout de MercadoPago para cambiar al plan: ${planId.toUpperCase()}`);
+    this.toastr.info(`Redirigiendo al checkout del plan ${planId.toUpperCase()}`, `Suscripciones`);
   }
 
   cancelarSuscripcion(): void {
     const confirmar = confirm('¿Estás seguro de que deseas cancelar tu suscripción? Perderás acceso a los reportes IA.');
     if (confirmar) {
-      alert('Suscripción cancelada.');
+      this.toastr.success('Suscripción cancelada', 'Suscripciones');
     }
   }
 
