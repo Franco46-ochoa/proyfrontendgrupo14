@@ -5,7 +5,8 @@ export interface Gasto {
     descripcion: string;
     fecha: string;
     anomalia: boolean;
-    //claves Foraneas
-    //proveedorId: number;
-    //sucursalId: number;
+    proveedorId?: number;
+    sucursalId: number;
+    proveedor?: { id: number; nombre: string; cuit: string };
+    sucursal?: { id: number; nombre: string };
 }

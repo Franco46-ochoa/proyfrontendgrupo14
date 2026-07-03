@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -8,8 +8,8 @@ export class ApiService {
 
   private http = inject(HttpClient);
 
-  get<T>(url: string) {
-    return this.http.get<T>(url);
+  get<T>(url: string, options?: { params?: HttpParams }) {
+    return this.http.get<T>(url, options);
   }
 
   post<T>(url: string, body: any) {

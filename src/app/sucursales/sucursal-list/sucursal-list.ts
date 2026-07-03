@@ -1,26 +1,63 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject, ViewChild } from '@angular/core';
 import { Sucursal } from '../sucursal.model';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { SucursalService } from '../../core/services/sucursal.service';
+import { ZonaService } from '../../core/services/zona.service';
+import { Zona } from '../../shared/models/zona.model';
+import { ZonaModalComponent } from '../zona-modal/zona-modal.component';
 
 @Component({
   selector: 'app-sucursal-list',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink, FormsModule, ZonaModalComponent],
   templateUrl: './sucursal-list.html',
   styleUrl: './sucursal-list.scss',
 })
 export class SucursalList implements OnInit {
-  sucursales: Sucursal[] = [
-    { id: 1, nombre: 'Sucursal Centro', direccion: 'Belgrano 123', latitud: -24.1858, longitud: -65.2995, telefono: '388-4001122', zonaId: 1 },
-    { id: 2, nombre: 'Sucursal Norte', direccion: 'Av. Bolivia 456', latitud: -24.1700, longitud: -65.3100, telefono: '388-4003344', zonaId: 2 },
-    { id: 3, nombre: 'Sucursal Sur', direccion: 'Ruta 9 km 4', latitud: -24.2100, longitud: -65.2900, telefono: '388-4005566', zonaId: 1 }
-  ];
-  constructor() { }
+  private sucursalService = inject(SucursalService);
+  private zonaService = inject(ZonaService);
 
-  ngOnInit(): void { }
+  @ViewChild(ZonaModalComponent) zonaModal!: ZonaModalComponent;
 
-  eliminarSucursal(id: number | undefined) {
-    if(confirm('¿Estás seguro de eliminar esta sucursal?')) {
-      console.log('Eliminar sucursal con ID:', id);
+  sucursales: Sucursal[] = [];
+  zonas: Zona[] = [];
+  filtroZonaId: number | null = null;
+
+  ngOnInit(): void {
+    this.cargarZonas();
+    this.cargarSucursales();
+  }
+
+  cargarZonas(): void {
+    this.zonaService.getAll().subscribe({
+      next: (data) => this.zonas = data,
+      error: (err) => console.error('Error al cargar zonas', err)
+    });
+  }
+
+  get sucursalesFiltradas(): Sucursal[] {
+    if (!this.filtroZonaId) return this.sucursales;
+    return this.sucursales.filter(s => s.zonaId === this.filtroZonaId);
+  }
+
+  cargarSucursales(): void {
+    this.sucursalService.getAll().subscribe({
+      next: (data) => this.sucursales = data,
+      error: (err) => console.error('Error al cargar sucursales', err)
+    });
+  }
+
+  abrirGestionZonas(): void {
+    this.zonaModal.abrir();
+  }
+
+  eliminarSucursal(id: number | undefined): void {
+    if (id !== undefined && confirm('¿Estás seguro de eliminar esta sucursal?')) {
+      this.sucursalService.delete(id).subscribe({
+        next: () => this.cargarSucursales(),
+        error: (err) => console.error('Error al eliminar sucursal', err)
+      });
     }
   }
 }

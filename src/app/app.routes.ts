@@ -123,6 +123,13 @@ export const routes: Routes = [
       import('./transacciones/transaccion-form/transaccion-form.component')
         .then(m => m.TransaccionFormComponent)
   },
+  {
+    path: 'transacciones/editar/:id',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./transacciones/transaccion-form/transaccion-form.component')
+        .then(m => m.TransaccionFormComponent)
+  },
 
   {
     path: 'gastos',
@@ -133,6 +140,13 @@ export const routes: Routes = [
   },
   {
     path: 'gastos/nuevo',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./gastos/gasto-form/gasto-form.component')
+        .then(m => m.GastoFormComponent)
+  },
+  {
+    path: 'gastos/editar/:id',
     canActivate: [authGuard],
     loadComponent: () =>
       import('./gastos/gasto-form/gasto-form.component')

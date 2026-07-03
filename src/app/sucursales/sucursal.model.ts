@@ -2,8 +2,9 @@ export interface Sucursal {
     id?: number;
     nombre: string;
     direccion: string;
-    latitud: number;
-    longitud: number;
+    lat: number;
+    lng: number;
     telefono: string;
     zonaId?: number;
+    zona?: { id: number; nombre: string };
   }

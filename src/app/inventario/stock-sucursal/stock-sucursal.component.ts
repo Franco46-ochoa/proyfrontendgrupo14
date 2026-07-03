@@ -1,7 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Inventario } from '../inventario';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { InventarioService } from '../../core/services/inventario.service';
+import { SucursalService } from '../../core/services/sucursal.service';
+import { ProductoService } from '../../core/services/producto.service';
+import { Sucursal } from '../../sucursales/sucursal.model';
+import { Producto } from '../producto.model';
 
 @Component({
   selector: 'app-stock-sucursal',
@@ -9,13 +14,54 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './stock-sucursal.component.html',
   styleUrl: './stock-sucursal.component.scss'
 })
-export class StockSucursalComponent implements OnInit{
-  inventario: Inventario[] = [
-    { id: 1, producto: 'Leche Descremada', sucursal: 'Norte', stockActual: 5, stockMinimo: 10, precioVenta: 1000 },
-    { id: 2, producto: 'Harina 0000', sucursal: 'Sur', stockActual: 25, stockMinimo: 15, precioVenta: 600 },
-    { id: 3, producto: 'Pan Lactal', sucursal: 'Centro', stockActual: 2, stockMinimo: 5, precioVenta: 1500 }
-  ];
+export class StockSucursalComponent implements OnInit {
+  private inventarioService = inject(InventarioService);
+  private sucursalService = inject(SucursalService);
+  private productoService = inject(ProductoService);
 
-  constructor() { }
-  ngOnInit(): void { }
+  inventario: Inventario[] = [];
+  sucursales: Sucursal[] = [];
+  productos: Producto[] = [];
+  soloCritico = false;
+  editandoId: number | null = null;
+  editData = { stockActual: 0, stockMinimo: 0, precioVenta: 0 };
+  nuevoForm = false;
+  nuevo = { productoId: 0, sucursalId: 0, stockActual: 0, stockMinimo: 0, stockMaximo: 0, precioVenta: 0 };
+
+  ngOnInit(): void {
+    this.cargar();
+    this.sucursalService.getAll().subscribe(data => this.sucursales = data);
+    this.productoService.getAll().subscribe(data => this.productos = data);
+  }
+
+  cargar(): void {
+    this.inventarioService.getAll(this.soloCritico).subscribe(data => this.inventario = data);
+  }
+
+  toggleCritico(): void {
+    this.soloCritico = !this.soloCritico;
+    this.cargar();
+  }
+
+  abrirForm(): void {
+    this.nuevoForm = true;
+    this.nuevo = { productoId: 0, sucursalId: 0, stockActual: 0, stockMinimo: 0, stockMaximo: 0, precioVenta: 0 };
+  }
+
+  crear(): void {
+    const p: any = { productoId: this.nuevo.productoId, sucursalId: this.nuevo.sucursalId, stockActual: this.nuevo.stockActual, stockMinimo: this.nuevo.stockMinimo, precioVenta: this.nuevo.precioVenta };
+    if (this.nuevo.stockMaximo) p.stockMaximo = this.nuevo.stockMaximo;
+    this.inventarioService.create(p).subscribe({ next: () => { this.nuevoForm = false; this.cargar(); } });
+  }
+
+  editar(item: Inventario): void {
+    this.editandoId = item.id;
+    this.editData = { stockActual: item.stockActual, stockMinimo: item.stockMinimo, precioVenta: item.precioVenta };
+  }
+
+  cancelarEdicion(): void { this.editandoId = null; }
+
+  guardar(item: Inventario): void {
+    this.inventarioService.update(item.id, this.editData).subscribe({ next: () => { this.editandoId = null; this.cargar(); } });
+  }
 }
