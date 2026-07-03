@@ -93,6 +93,13 @@ export const routes: Routes = [
       import('./inventario/producto-form/producto-form.component')
         .then(m => m.ProductoFormComponent)
   },
+  {
+    path: 'productos/editar/:id',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./inventario/producto-form/producto-form.component')
+        .then(m => m.ProductoFormComponent)
+  },
 
   {
     path: 'inventario',
