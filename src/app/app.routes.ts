@@ -154,6 +154,39 @@ export const routes: Routes = [
   },
 
   {
+    path: 'proveedores',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./proveedores/proveedor-list/proveedor-list.component')
+        .then(m => m.ProveedorListComponent)
+  },
+  {
+    path: 'proveedores/nuevo',
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['DUENO', 'GERENTE'] },
+    loadComponent: () =>
+      import('./proveedores/proveedor-form/proveedor-form.component')
+        .then(m => m.ProveedorFormComponent)
+  },
+  {
+    path: 'proveedores/editar/:id',
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['DUENO', 'GERENTE'] },
+    loadComponent: () =>
+      import('./proveedores/proveedor-form/proveedor-form.component')
+        .then(m => m.ProveedorFormComponent)
+  },
+
+  {
+    path: 'auditoria',
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['DUENO'] },
+    loadComponent: () =>
+      import('./auditoria/auditoria-list/auditoria-list.component')
+        .then(m => m.AuditoriaListComponent)
+  },
+
+  {
     path: 'suscripcion',
     canActivate: [authGuard, roleGuard],
     data: { roles: ['DUENO'] },

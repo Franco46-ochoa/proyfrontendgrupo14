@@ -1,0 +1,37 @@
+<div class="card p-4 mt-4">
+    <h3 class="text-primary fw-bold mb-4">{{ esEdicion ? 'Editar Proveedor' : 'Registrar Nuevo Proveedor' }}</h3>
+
+    <form [formGroup]="proveedorForm" (ngSubmit)="guardar()">
+      <div class="row g-3">
+
+        <div class="col-md-6">
+          <label class="form-label text-secondary">Nombre *</label>
+          <input type="text" class="form-control" formControlName="nombre" placeholder="Razón social o nombre">
+          @if (proveedorForm.get('nombre')?.invalid && proveedorForm.get('nombre')?.touched) {
+          <div class="text-danger small mt-1">El nombre es obligatorio</div>
+          }
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label text-secondary">CUIT *</label>
+          <input type="text" class="form-control" formControlName="cuit" placeholder="XX-XXXXXXXX-X">
+          @if (proveedorForm.get('cuit')?.invalid && proveedorForm.get('cuit')?.touched) {
+          <div class="text-danger small mt-1">El CUIT es obligatorio</div>
+          }
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label text-secondary">Contacto</label>
+          <input type="text" class="form-control" formControlName="contacto" placeholder="Nombre del contacto">
+        </div>
+
+      </div>
+
+      <div class="d-flex justify-content-end mt-4">
+        <button type="button" class="btn btn-outline-primary me-3" routerLink="/proveedores">Cancelar</button>
+        <button type="submit" class="btn bg-primary text-white" [disabled]="proveedorForm.invalid">
+          {{ esEdicion ? 'Guardar Cambios' : 'Guardar Proveedor' }}
+        </button>
+      </div>
+    </form>
+  </div>
