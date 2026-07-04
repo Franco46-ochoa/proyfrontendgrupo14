@@ -1,14 +1,36 @@
-<div class="dashboard-container py-4">
+<div id="dashboard-dueno-pdf" class="dashboard-container py-4">
   <!-- Header -->
   <div class="d-flex align-items-center justify-content-between mb-4">
     <div>
       <h4 class="fw-bold font-inter text-primary-custom mb-1">Dashboard de Dueño</h4>
-      <p class="text-secondary small mb-0">Vista de control comercial y métricas clave (Día 1)</p>
+      <p class="text-secondary small mb-0">Vista de control comercial y métricas clave</p>
     </div>
-    <div class="d-flex align-items-center gap-2">
-      <span class="badge bg-white text-secondary border px-3 py-2 fs-7 rounded-3 shadow-sm font-inter">
-        <i class="bi bi-calendar3 me-2"></i> Jun 2026
-      </span>
+    <div class="d-flex align-items-center gap-3">
+      <!-- Botones de Exportación -->
+      <div class="d-flex gap-2">
+        <button class="btn btn-outline-danger d-flex align-items-center gap-2 px-3 rounded-3 shadow-sm" (click)="exportarPdf()" style="height: 52px;">
+          <i class="bi bi-file-earmark-pdf fs-5"></i>
+          <span class="small fw-bold">PDF</span>
+        </button>
+        <button class="btn btn-outline-success d-flex align-items-center gap-2 px-3 rounded-3 shadow-sm" (click)="exportarExcel()" style="height: 52px;">
+          <i class="bi bi-file-earmark-excel fs-5"></i>
+          <span class="small fw-bold">Excel</span>
+        </button>
+      </div>
+
+      <!-- Widget Dólar  -->
+      <app-dolar-card></app-dolar-card>
+ 
+      <!-- Widget Fecha -->
+      <div class="d-flex align-items-center gap-3 px-3 py-2 bg-white border rounded-3 shadow-sm font-inter" style="height: 52px;">
+        <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px; background-color: rgba(13, 148, 136, 0.1); color: #0d9488;">
+          <i class="bi bi-calendar3 fs-5"></i>
+        </div>
+        <div class="d-flex flex-column">
+          <span class="text-secondary" style="font-size: 0.65rem; font-weight: 700; letter-spacing: 0.05em; line-height: 1.2;">FECHA ACTUAL</span>
+          <span class="text-dark fw-bold" style="font-size: 0.8rem; line-height: 1.2;">{{ fechaActual }}</span>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -20,32 +42,24 @@
     </div>
   </div>
 
-  <!-- Dos Gráficos Dinámicos (Día 3) -->
+  <!-- Dos Gráficos Dinámicos  -->
   <div class="row g-4 mb-4">
     <!-- Gráfico 1: Rentabilidad por Sucursal (Barras) -->
     <div class="col-12 col-lg-6">
-      <app-chart-card
-        [title]="'Rentabilidad por Sucursal'"
-        [subtitle]="'Ingresos netos por punto de venta'"
-        [chartType]="barChartType"
-        [chartData]="barChartData"
-        [chartOptions]="barChartOptions">
+      <app-chart-card [title]="'Rentabilidad por Sucursal'" [subtitle]="'Ingresos netos por punto de venta'"
+        [chartType]="barChartType" [chartData]="barChartData" [chartOptions]="barChartOptions">
       </app-chart-card>
     </div>
 
     <!-- Gráfico 2: Evolución de Ingresos (Líneas) -->
     <div class="col-12 col-lg-6">
-      <app-chart-card
-        [title]="'Evolución de Ingresos'"
-        [subtitle]="'Historial de ganancias (últimos 6 meses)'"
-        [chartType]="lineChartType"
-        [chartData]="lineChartData"
-        [chartOptions]="lineChartOptions">
+      <app-chart-card [title]="'Evolución de Ingresos'" [subtitle]="'Historial de ganancias (últimos 6 meses)'"
+        [chartType]="lineChartType" [chartData]="lineChartData" [chartOptions]="lineChartOptions">
       </app-chart-card>
     </div>
   </div>
 
-  <!-- 3. NUEVA SECCIÓN: Mapa de Sucursales -->
+  <!-- Mapa de Sucursales -->
   <div class="row g-4 mt-2">
     <div class="col-12">
       <div class="card custom-card p-4">

@@ -5,6 +5,11 @@ import { ChartCardComponent } from '../../shared/components/chart-card/chart-car
 import { SucursalMapaComponent } from '../../sucursales/sucursal-mapa/sucursal-mapa.component';
 import { DashboardService } from '../../core/services/dashboard.service'; // <-- Importar servicio
 import { ChartConfiguration, ChartData } from 'chart.js';
+import { forkJoin } from 'rxjs';
+import { DolarCardComponent } from '../../shared/components/dolar-card/dolar-card.component';
+import { ExportPdfService } from '../../core/services/export-pdf.service';
+import { ExportExcelService } from '../../core/services/export-excel.service';
+
 
 @Component({
   selector: 'app-dashboard-dueno',
@@ -12,13 +17,17 @@ import { ChartConfiguration, ChartData } from 'chart.js';
     CommonModule,
     KpiCardComponent,
     ChartCardComponent,
-    SucursalMapaComponent
+    SucursalMapaComponent,
+    DolarCardComponent
   ],
   templateUrl: './dashboard-dueno.component.html',
   styleUrl: './dashboard-dueno.component.scss'
 })
 export class DashboardDuenoComponent implements OnInit {
   private dashboardService = inject(DashboardService); // <-- Inyectar servicio
+  private exportPdfService = inject(ExportPdfService);
+  private exportExcelService = inject(ExportExcelService);
+  fechaActual: string = '';
 
   kpis: any[] = [];
   sucursales: any[] = []; // <-- Arreglo para almacenar sucursales reales del backend
@@ -42,10 +51,32 @@ export class DashboardDuenoComponent implements OnInit {
   };
 
   ngOnInit(): void {
-    // Cargar sucursales reales del backend
-    this.dashboardService.getSucursales('dueno').subscribe(data => {
-      this.sucursales = data;
+    const hoy = new Date();
+    const diaSemana = hoy.toLocaleDateString('es-ES', { weekday: 'long' }).toUpperCase();
+    const diaNumero = hoy.getDate();
+    const mes = hoy.toLocaleDateString('es-ES', { month: 'short' }).toUpperCase().replace('.', '');
+    const anio = hoy.getFullYear();
+    this.fechaActual = `${diaSemana} ${diaNumero} de ${mes} ${anio}`;
+
+    // Cargar sucursales reales del backend y el inventario crítico combinados
+    forkJoin({
+      sucursales: this.dashboardService.getSucursales('dueno'),
+      criticos: this.dashboardService.getInventarioCritico('dueno')
+    }).subscribe({
+      next: ({ sucursales, criticos }) => {
+        this.sucursales = sucursales.map(suc => {
+          const itemsCriticos = criticos.filter((c: any) => c.sucursalId === suc.id);
+          return {
+            ...suc,
+            stockCriticoCount: itemsCriticos.length
+          };
+        });
+      },
+      error: err => {
+        console.error('Error al cargar datos del mapa:', err);
+      }
     });
+
 
     // Consumir el servicio mock
     this.dashboardService.getDashboardDueno().subscribe(data => {
@@ -76,5 +107,19 @@ export class DashboardDuenoComponent implements OnInit {
         }]
       };
     });
+  }
+
+  exportarPdf() {
+    this.exportPdfService.exportarElementoAPdf('dashboard-dueno-pdf', 'reporte-dueno.pdf');
+  }
+
+  exportarExcel() {
+    const datosExcel = this.sucursales.map(s => ({
+      Sucursal: s.nombre,
+      Direccion: s.direccion || 'Sin dirección',
+      Telefono: s.telefono || 'Sin teléfono',
+      'Stock Crítico': s.stockCriticoCount || 0
+    }));
+    this.exportExcelService.exportarDatosAExcel(datosExcel, 'Sucursales', 'reporte-sucursales.xlsx');
   }
 }

@@ -4,6 +4,7 @@ import { ChartCardComponent } from '../../shared/components/chart-card/chart-car
 import { SucursalMapaComponent } from '../../sucursales/sucursal-mapa/sucursal-mapa.component';
 import { DashboardService } from '../../core/services/dashboard.service'; // <-- Importar
 import { ChartConfiguration, ChartData } from 'chart.js';
+import { ExportPdfService } from '../../core/services/export-pdf.service';
 
 @Component({
   selector: 'app-dashboard-gerente',
@@ -17,6 +18,7 @@ import { ChartConfiguration, ChartData } from 'chart.js';
 })
 export class DashboardGerenteComponent implements OnInit {
   private dashboardService = inject(DashboardService); // <-- Inyectar
+  private exportPdfService = inject(ExportPdfService);
 
   nombreZona: string = '';
   textoReporte: string = '';
@@ -56,29 +58,7 @@ export class DashboardGerenteComponent implements OnInit {
       // Radar
       this.radarChartData = {
         labels: data.radarChart.labels,
-        datasets: [
-          {
-            data: data.radarChart.sucursalA,
-            label: 'Sucursal A',
-            borderColor: '#1A3A5C',
-            backgroundColor: 'rgba(26, 58, 92, 0.2)',
-            pointBackgroundColor: '#1A3A5C'
-          },
-          {
-            data: data.radarChart.sucursalB,
-            label: 'Sucursal B',
-            borderColor: '#F59E0B',
-            backgroundColor: 'rgba(245, 158, 11, 0.2)',
-            pointBackgroundColor: '#F59E0B'
-          },
-          {
-            data: data.radarChart.sucursalC,
-            label: 'Sucursal C',
-            borderColor: '#0D9488',
-            backgroundColor: 'rgba(13, 148, 136, 0.2)',
-            pointBackgroundColor: '#0D9488'
-          }
-        ]
+        datasets: data.radarChart.datasets
       };
 
       // Dona
@@ -91,5 +71,9 @@ export class DashboardGerenteComponent implements OnInit {
         }]
       };
     });
+  }
+
+  exportarPdf() {
+    this.exportPdfService.exportarElementoAPdf('dashboard-gerente-pdf', 'reporte-gerente.pdf');
   }
 }
