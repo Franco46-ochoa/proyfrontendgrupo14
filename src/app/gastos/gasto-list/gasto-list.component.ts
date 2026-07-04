@@ -19,10 +19,12 @@ export class GastoListComponent implements OnInit {
 
   gastos: Gasto[] = [];
   sucursales: Sucursal[] = [];
+  rol = '';
   filtroTipo = '';
   filtroSucursal = '';
 
   ngOnInit(): void {
+    this.rol = (localStorage.getItem('role') || '').toLowerCase();
     this.gastoService.getAll().subscribe(data => this.gastos = data);
     this.sucursalService.getAll().subscribe(data => this.sucursales = data);
   }
@@ -33,6 +35,11 @@ export class GastoListComponent implements OnInit {
       (!this.filtroSucursal || g.sucursalId === Number(this.filtroSucursal))
     );
   }
+
+  get esDueno() { return this.rol === 'dueno'; }
+  get esGerente() { return this.rol === 'gerente'; }
+  get puedeEditar() { return this.esGerente; }
+  get puedeEliminar() { return this.esGerente; }
 
   eliminarGasto(id: number): void {
     if (confirm('¿Estás seguro de eliminar este gasto?')) {

@@ -23,8 +23,10 @@ export class SucursalList implements OnInit {
   sucursales: Sucursal[] = [];
   zonas: Zona[] = [];
   filtroZonaId: number | null = null;
+  rol = '';
 
   ngOnInit(): void {
+    this.rol = (localStorage.getItem('role') || '').toLowerCase();
     this.cargarZonas();
     this.cargarSucursales();
   }
@@ -51,6 +53,8 @@ export class SucursalList implements OnInit {
   abrirGestionZonas(): void {
     this.zonaModal.abrir();
   }
+
+  get esDueno() { return this.rol === 'dueno'; }
 
   eliminarSucursal(id: number | undefined): void {
     if (id !== undefined && confirm('¿Estás seguro de eliminar esta sucursal?')) {

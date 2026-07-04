@@ -5,7 +5,7 @@
             <button class="btn btn-outline-primary me-2" (click)="abrirGestionZonas()">
                 <i class="bi bi-geo-alt"></i> Gestionar Zonas
             </button>
-            <button class="btn btn-primary" routerLink="/sucursales/nueva">
+            <button *ngIf="!esDueno" class="btn btn-primary" routerLink="/sucursales/nueva">
                 <i class="bi bi-plus-circle"></i> Nueva Sucursal
             </button>
         </div>
@@ -34,7 +34,7 @@
                     <th>Dirección</th>
                     <th>Teléfono</th>
                     <th>Zona</th>
-                    <th>Acciones</th>
+                    <th *ngIf="!esDueno" >Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -45,10 +45,10 @@
                     <td>{{ sucursal.telefono }}</td>
                     <td>{{ sucursal.zona?.nombre || '-' }}</td>
                     <td>
-                        <button class="btn btn-sm btn-outline-primary me-2" [routerLink]="['/sucursales/editar', sucursal.id]">
+                        <button *ngIf="!esDueno" class="btn btn-sm btn-outline-primary me-2" [routerLink]="['/sucursales/editar', sucursal.id]">
                             <i class="bi bi-pencil"></i>
                         </button>
-                        <button class="btn btn-sm bg-danger text-white" (click)="eliminarSucursal(sucursal.id)">
+                        <button *ngIf="!esDueno" class="btn btn-sm bg-danger text-white" (click)="eliminarSucursal(sucursal.id)">
                             <i class="bi bi-trash"></i>
                         </button>
                     </td>

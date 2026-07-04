@@ -58,7 +58,7 @@ export const routes: Routes = [
   {
     path: 'sucursales/nueva',
     canActivate: [authGuard, roleGuard],
-    data: { roles: ['DUENO'] },
+    data: { roles: ['GERENTE'] },
     loadComponent: () =>
       import('./sucursales/sucursal-form/sucursal-form')
         .then(m => m.SucursalForm)
@@ -66,7 +66,7 @@ export const routes: Routes = [
   {
     path: 'sucursales/editar/:id',
     canActivate: [authGuard, roleGuard],
-    data: { roles: ['DUENO'] },
+    data: { roles: ['GERENTE'] },
     loadComponent: () =>
       import('./sucursales/sucursal-form/sucursal-form')
         .then(m => m.SucursalForm)
@@ -88,14 +88,16 @@ export const routes: Routes = [
   },
   {
     path: 'productos/nuevo',
-    canActivate: [authGuard],
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['GERENTE'] },
     loadComponent: () =>
       import('./inventario/producto-form/producto-form.component')
         .then(m => m.ProductoFormComponent)
   },
   {
     path: 'productos/editar/:id',
-    canActivate: [authGuard],
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['GERENTE'] },
     loadComponent: () =>
       import('./inventario/producto-form/producto-form.component')
         .then(m => m.ProductoFormComponent)
@@ -118,14 +120,16 @@ export const routes: Routes = [
   },
   {
     path: 'transacciones/nueva',
-    canActivate: [authGuard],
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['GERENTE'] },
     loadComponent: () =>
       import('./transacciones/transaccion-form/transaccion-form.component')
         .then(m => m.TransaccionFormComponent)
   },
   {
     path: 'transacciones/editar/:id',
-    canActivate: [authGuard],
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['GERENTE'] },
     loadComponent: () =>
       import('./transacciones/transaccion-form/transaccion-form.component')
         .then(m => m.TransaccionFormComponent)
@@ -140,14 +144,16 @@ export const routes: Routes = [
   },
   {
     path: 'gastos/nuevo',
-    canActivate: [authGuard],
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['GERENTE'] },
     loadComponent: () =>
       import('./gastos/gasto-form/gasto-form.component')
         .then(m => m.GastoFormComponent)
   },
   {
     path: 'gastos/editar/:id',
-    canActivate: [authGuard],
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['GERENTE'] },
     loadComponent: () =>
       import('./gastos/gasto-form/gasto-form.component')
         .then(m => m.GastoFormComponent)

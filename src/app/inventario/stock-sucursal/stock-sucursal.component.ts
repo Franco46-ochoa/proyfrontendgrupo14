@@ -27,8 +27,12 @@ export class StockSucursalComponent implements OnInit {
   editData = { stockActual: 0, stockMinimo: 0, precioVenta: 0 };
   nuevoForm = false;
   nuevo = { productoId: 0, sucursalId: 0, stockActual: 0, stockMinimo: 0, stockMaximo: 0, precioVenta: 0 };
+  rol = '';
+
+  get esDueno() { return this.rol === 'dueno'; }
 
   ngOnInit(): void {
+    this.rol = (localStorage.getItem('role') || '').toLowerCase();
     this.cargar();
     this.sucursalService.getAll().subscribe(data => this.sucursales = data);
     this.productoService.getAll().subscribe(data => this.productos = data);

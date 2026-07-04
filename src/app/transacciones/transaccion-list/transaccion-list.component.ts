@@ -20,6 +20,7 @@ export class TransaccionListComponent implements OnInit {
 
   transacciones: Transaccion[] = [];
   sucursales: Sucursal[] = [];
+  rol = '';
 
   filtroTipo = '';
   filtroFechaDesde = '';
@@ -27,6 +28,7 @@ export class TransaccionListComponent implements OnInit {
   filtroSucursalId: number | null = null;
 
   ngOnInit(): void {
+    this.rol = (localStorage.getItem('role') || '').toLowerCase();
     this.sucursalService.getAll().subscribe({
       next: (data) => this.sucursales = data,
       error: (err) => console.error('Error al cargar sucursales', err)
@@ -54,6 +56,11 @@ export class TransaccionListComponent implements OnInit {
     this.filtroSucursalId = null;
     this.cargarTransacciones();
   }
+
+  get esDueno() { return this.rol === 'dueno'; }
+  get esGerente() { return this.rol === 'gerente'; }
+  get puedeEditar() { return this.esGerente; }
+  get puedeEliminar() { return this.esGerente; }
 
   eliminarTransaccion(id: number): void {
     if(confirm('¿Estás seguro de anular esta transacción?')) {

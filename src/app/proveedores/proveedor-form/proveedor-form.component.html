@@ -14,7 +14,7 @@
 
         <div class="col-md-6">
           <label class="form-label text-secondary">CUIT *</label>
-          <input type="text" class="form-control" formControlName="cuit" placeholder="XX-XXXXXXXX-X">
+          <input type="text" class="form-control" formControlName="cuit" placeholder="20-12345678-2">
           @if (proveedorForm.get('cuit')?.invalid && proveedorForm.get('cuit')?.touched) {
           <div class="text-danger small mt-1">El CUIT es obligatorio</div>
           }
@@ -22,7 +22,7 @@
 
         <div class="col-md-6">
           <label class="form-label text-secondary">Contacto</label>
-          <input type="text" class="form-control" formControlName="contacto" placeholder="Nombre del contacto">
+          <input type="text" class="form-control" formControlName="contacto" placeholder="contacto@gmail.com">
         </div>
 
       </div>

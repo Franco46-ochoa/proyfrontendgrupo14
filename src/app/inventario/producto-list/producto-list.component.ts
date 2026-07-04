@@ -17,10 +17,17 @@ export class ProductoListComponent implements OnInit {
   productos: Producto[] = [];
   cargando = false;
   error = '';
+  rol = '';
 
   ngOnInit(): void {
+    this.rol = (localStorage.getItem('role') || '').toLowerCase();
     this.cargarProductos();
   }
+
+  get esDueno() { return this.rol === 'dueno'; }
+  get esGerente() { return this.rol === 'gerente'; }
+  get puedeEditar() { return this.esGerente; }
+  get puedeEliminar() { return this.esGerente; }
 
   cargarProductos(): void {
     this.cargando = true;
