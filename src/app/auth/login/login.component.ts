@@ -47,16 +47,40 @@ export class LoginComponent {
             resp.data.rol.toUpperCase()
           );
 
+          //
+        const rol = resp.data.rol?.toUpperCase();
+        const subRol = resp.data.subRol?.toUpperCase(); 
+        const isFirstLogin = resp.data.firstLogin; // <- backend futuro
+
           this.toastr.success('Inicio de sesion exitoso', 'Login');
 
-            const rol = resp.data.rol?.toUpperCase();
-            if (rol === 'DUENO') {
-              this.router.navigate(['/dashboard']);
-            } else if (rol === 'GERENTE') {
-              this.router.navigate(['/dashboard-gerente']);
-            } else {
+          //para primer login y redireccionar a suscripcion si es dueño
+          //corregir esto cuando el backend tenga la propiedad 
+          if (rol == 'DUENO' && isFirstLogin){
+            this.router.navigate(['/suscripcion']);
+            return;
+          }
+
+          //corregir esto cuando el backend tenga la propiedad administrador, comercial y operativo
+          if (rol == 'DUENO' || rol == 'ADMINISTRADOR'){
+            this.router.navigate(['/dashboard']);
+            return;
+          }
+
+          if(rol == 'GERENTE'){
+            this.router.navigate(['/dashboard-gerente']);
+            return;
+          }
+
+          if(rol == 'EMPLEADO'){
+            if (subRol == 'COMERCIAL' || subRol == 'OPERATIVO'){
               this.router.navigate(['/inventario']);
+              return;
             }
+
+            this.router.navigate(['/empleado']);
+            return;
+          }
         },
 
         error: (error) => {
@@ -65,5 +89,12 @@ export class LoginComponent {
         }
       });
   }
+
+  loginGoogle() {
+  this.toastr.info(
+    'Google OAuth en desarrollo',
+    'Próximamente'
+  );
+}
 
 }

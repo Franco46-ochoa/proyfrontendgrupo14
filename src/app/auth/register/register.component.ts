@@ -22,13 +22,16 @@ export class RegisterComponent {
 
   errorCodigo = '';
 
+  //corregir bien el campo de apellido y departamento, que no se envian al backend, y el backend no los recibe.
   registerForm = this.fb.group({
-    nombre: ['', Validators.required],
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(6)]],
-    rol: ['empleado', Validators.required],
-    codigoInvitacion: ['']
-  });
+  nombre: ['', Validators.required],
+  apellido: ['', Validators.required],
+  email: ['', [Validators.required, Validators.email]],
+  password: ['', [Validators.required, Validators.minLength(6)]],
+  rol: ['empleado', Validators.required],
+  codigoInvitacion: [''],
+  departamento: ['']
+});
 
   onSubmit() {
     this.errorCodigo = '';
@@ -69,4 +72,12 @@ export class RegisterComponent {
       }
     });
   }
+
+  loginGoogle() {
+    this.toastr.info(
+      'Google OAuth en desarrollo',
+      'Próximamente'
+    );
+  }
+
 }
