@@ -1,0 +1,88 @@
+<div class="card p-4">
+    <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
+      <h2 class="text-primary fw-bold">Transacciones</h2>
+      <div>
+        <button *ngIf="esGerente" class="btn bg-primary text-white me-2" routerLink="/transacciones/nueva" [queryParams]="{tipo: 'compra'}">
+          <i class="bi bi-plus-lg"></i> Nueva Compra
+        </button>
+        <button *ngIf="esEmpleado" class="btn bg-primary text-white me-2" routerLink="/transacciones/nueva" [queryParams]="{tipo: 'venta'}">
+          <i class="bi bi-plus-lg"></i> Nueva Venta
+        </button>
+      </div>
+    </div>
+  
+    <div class="row g-3 mb-4 border-bottom pb-3">
+      <div class="col-md-3">
+        <select class="form-select" [(ngModel)]="filtroTipo">
+          <option value="">Tipo: Todas</option>
+          <option value="venta">Venta</option>
+          <option value="compra">Compra</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <input type="date" class="form-control" [(ngModel)]="filtroFechaDesde" placeholder="Fecha desde">
+      </div>
+      <div class="col-md-3">
+        <input type="date" class="form-control" [(ngModel)]="filtroFechaHasta" placeholder="Fecha hasta">
+      </div>
+      <div class="col-md-2">
+        <select class="form-select" [(ngModel)]="filtroSucursalId">
+          <option [ngValue]="null">Sucursal: Todas</option>
+          <option *ngFor="let s of sucursales" [ngValue]="s.id">{{ s.nombre }}</option>
+        </select>
+      </div>
+      <div class="col-md-1 d-flex gap-1">
+        <button class="btn btn-primary" (click)="cargarTransacciones()">
+          <i class="bi bi-search"></i>
+        </button>
+        <button class="btn btn-outline-secondary" (click)="limpiarFiltros()">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+    </div>
+  
+    <div class="table-responsive">
+      <table class="table custom-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Fecha</th>
+            <th>Tipo</th>
+            <th>Producto</th>
+            <th>Sucursal</th>
+            <th>Cant</th>
+            <th>Total</th>
+            <th *ngIf="puedeVerRegistradoPor">Registrado por</th>
+            <th *ngIf="!esDueno && !esEmpleado">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let t of transacciones">
+            <td>{{ t.id }}</td>
+            <td>{{ t.fecha | date:'dd/MM/yyyy HH:mm' }}</td>
+            <td>
+              <span class="badge" [ngClass]="t.tipo === 'venta' ? 'bg-success' : 'bg-primary'">
+                {{ t.tipo === 'venta' ? 'Venta' : 'Compra' }}
+              </span>
+            </td>
+            <td>{{ t.producto?.nombre || '-' }}</td>
+            <td>{{ t.sucursal?.nombre || '-' }}</td>
+            <td>{{ t.cantidad }}</td>
+            <td class="fw-bold">${{ t.total }}</td>
+            <td *ngIf="puedeVerRegistradoPor">{{ t.usuario?.nombre || '—' }}</td>
+            <td>
+              <button *ngIf="!esDueno && !esEmpleado" class="btn btn-sm btn-outline-primary me-2" [routerLink]="['/transacciones/editar', t.id]">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button *ngIf="puedeEliminar" class="btn btn-sm bg-danger text-white" (click)="eliminarTransaccion(t.id)">
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="transacciones.length === 0">
+            <td [attr.colspan]="puedeVerRegistradoPor ? 9 : 8" class="text-center text-secondary py-4">No hay transacciones registradas</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>

@@ -1,0 +1,110 @@
+<div class="card p-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="text-primary fw-bold"> Inventario por Sucursal </h2>
+    <div>
+      <button class="btn btn-outline-warning me-2" (click)="toggleCritico()">
+        <i class="bi bi-exclamation-triangle"></i>
+        {{ soloCritico ? 'Mostrar todo' : 'Solo crítico' }}
+      </button>
+      <button *ngIf="!esDueno && !esEmpleado" class="btn btn-primary" (click)="abrirForm()">
+        <i class="bi bi-plus-lg"></i> Agregar al Inventario
+      </button>
+    </div>
+  </div>
+
+  <div class="card bg-light p-3 mb-3" *ngIf="nuevoForm">
+    <h5 class="mb-3">Nuevo registro de inventario</h5>
+    <div class="row g-2">
+      <div class="col-md-3">
+        <label class="form-label small">Sucursal</label>
+        <select class="form-select form-select-sm" [(ngModel)]="nuevo.sucursalId">
+          <option value="0">Seleccione...</option>
+          <option *ngFor="let s of sucursales" [value]="s.id">{{ s.nombre }}</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label small">Producto</label>
+        <select class="form-select form-select-sm" [(ngModel)]="nuevo.productoId">
+          <option value="0">Seleccione...</option>
+          <option *ngFor="let p of productos" [value]="p.id">{{ p.nombre }}</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <label class="form-label small">Stock inicial</label>
+        <input type="number" class="form-control form-control-sm" [(ngModel)]="nuevo.stockActual" min="0">
+      </div>
+      <div class="col-md-2">
+        <label class="form-label small">Stock mínimo</label>
+        <input type="number" class="form-control form-control-sm" [(ngModel)]="nuevo.stockMinimo" min="0">
+      </div>
+      <div class="col-md-2">
+        <label class="form-label small">Precio venta</label>
+        <input type="number" class="form-control form-control-sm" [(ngModel)]="nuevo.precioVenta" min="0.01" step="0.01">
+      </div>
+    </div>
+    <div class="mt-2">
+      <button class="btn btn-sm btn-success me-2" (click)="crear()"><i class="bi bi-check-lg"></i> Guardar</button>
+      <button class="btn btn-sm btn-secondary" (click)="nuevoForm = false">Cancelar</button>
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table custom-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Producto</th>
+          <th>Sucursal</th>
+          <th>Stock Actual</th>
+          <th>Stock Mínimo</th>
+          <th>Precio Venta</th>
+          <th>Estado</th>
+          <th *ngIf="!esDueno && !esEmpleado" >Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of inventario" [ngClass]="{'table-danger': item.stockActual < item.stockMinimo}">
+          <td>{{ item.id }}</td>
+          <td>{{ item.producto?.nombre || '—' }}</td>
+          <td>{{ item.sucursal?.nombre || '—' }}</td>
+          <td *ngIf="editandoId === item.id; else stockTd">
+            <input type="number" class="form-control form-control-sm" [(ngModel)]="editData.stockActual" style="width:80px">
+          </td>
+          <ng-template #stockTd>
+            <td [ngClass]="{'text-danger fw-bold': item.stockActual < item.stockMinimo, 'text-success': item.stockActual >= item.stockMinimo}">
+              {{ item.stockActual }}
+            </td>
+          </ng-template>
+          <td *ngIf="editandoId === item.id; else minTd">
+            <input type="number" class="form-control form-control-sm" [(ngModel)]="editData.stockMinimo" style="width:80px">
+          </td>
+          <ng-template #minTd>
+            <td>{{ item.stockMinimo }}</td>
+          </ng-template>
+          <td *ngIf="editandoId === item.id; else precioTd">
+            <input type="number" class="form-control form-control-sm" [(ngModel)]="editData.precioVenta" style="width:100px">
+          </td>
+          <ng-template #precioTd>
+            <td>${{ item.precioVenta }}</td>
+          </ng-template>
+          <td>
+            <span class="badge" [ngClass]="item.stockActual < item.stockMinimo ? 'bg-danger' : 'bg-success'">
+              {{ item.stockActual < item.stockMinimo ? 'Crítico' : 'Normal' }}
+            </span>
+          </td>
+          <td *ngIf="editandoId === item.id; else accionTd">
+            <button class="btn btn-sm btn-success me-1" (click)="guardar(item)"><i class="bi bi-check-lg"></i></button>
+            <button class="btn btn-sm btn-secondary" (click)="cancelarEdicion()"><i class="bi bi-x-lg"></i></button>
+          </td>
+          <ng-template #accionTd>
+            <td>
+              <button *ngIf="!esDueno && !esEmpleado" class="btn btn-sm btn-outline-primary" (click)="editar(item)">
+                <i class="bi bi-pencil"></i>
+              </button>
+            </td>
+          </ng-template>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,57 @@
+<div class="datatable-card card shadow-sm">
+
+  <div class="card-header datatable-header">
+
+    <input
+      type="text"
+      class="form-control datatable-search"
+      placeholder="Buscar..."
+      (input)="onSearch($event)">
+
+  </div>
+
+  <div class="table-responsive">
+
+    <table class="table table-hover table-striped mb-0 datatable-table">
+
+      <thead>
+        <tr>
+          @for(column of columns; track column){
+            <th
+              class="datatable-th"
+              role="button"
+              (click)="onSort(column)">
+              {{ column }}
+              <span class="sort-indicator">⇅</span>
+            </th>
+          }
+        </tr>
+      </thead>
+
+      <tbody>
+        @for(row of data; track $index){
+          <tr class="datatable-row">
+            @for(column of columns; track column){
+              <td class="datatable-td">
+                {{ row[column] }}
+              </td>
+            }
+          </tr>
+        }
+      </tbody>
+
+    </table>
+  </div>
+
+  <div class="card-footer datatable-footer">
+
+    @for (page of [].constructor(totalPages); let i = $index; track i) {
+      <button
+        class="btn btn-sm datatable-page-btn"
+        (click)="changePage(i + 1)">
+        {{ i + 1 }}
+      </button>
+    }
+  </div>
+
+</div>

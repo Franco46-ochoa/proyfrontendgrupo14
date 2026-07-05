@@ -1,0 +1,72 @@
+<div class="modal fade show d-block" *ngIf="visible" style="background:rgba(0,0,0,0.5)">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header border-bottom">
+        <h5 class="fw-bold text-primary mb-0">
+          <i class="bi bi-building me-2"></i> Detalle de Sucursal
+        </h5>
+        <button type="button" class="btn-close" (click)="cerrar()"></button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="cargando" class="text-center py-5">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Cargando...</span>
+          </div>
+          <p class="mt-2 text-secondary">Cargando información...</p>
+        </div>
+
+        <div *ngIf="errorMsg" class="alert alert-danger">{{ errorMsg }}</div>
+
+        <div *ngIf="sucursal && !cargando">
+          <div class="row g-4">
+            <div class="col-md-6">
+              <div class="info-item">
+                <label class="text-secondary small mb-1">Nombre</label>
+                <p class="fw-bold mb-0">{{ sucursal.nombre || '—' }}</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="info-item">
+                <label class="text-secondary small mb-1">Zona</label>
+                <p class="fw-bold mb-0">{{ sucursal.zona?.nombre || '—' }}</p>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="info-item">
+                <label class="text-secondary small mb-1">Dirección</label>
+                <p class="fw-bold mb-0">{{ sucursal.direccion || '—' }}</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="info-item">
+                <label class="text-secondary small mb-1">Teléfono</label>
+                <p class="fw-bold mb-0">{{ sucursal.telefono || '—' }}</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="info-item">
+                <label class="text-secondary small mb-1">Latitud</label>
+                <p class="fw-bold mb-0">{{ sucursal.lat ?? '—' }}</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="info-item">
+                <label class="text-secondary small mb-1">Longitud</label>
+                <p class="fw-bold mb-0">{{ sucursal.lng ?? '—' }}</p>
+              </div>
+            </div>
+            <div class="col-md-6" *ngIf="sucursal.createdAt">
+              <div class="info-item">
+                <label class="text-secondary small mb-1">Fecha de creación</label>
+                <p class="fw-bold mb-0">{{ sucursal.createdAt | date:'dd/MM/yyyy HH:mm' }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer border-top">
+        <button type="button" class="btn btn-secondary" (click)="cerrar()">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,68 @@
+<div class="card p-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-primary fw-bold">Sucursales</h2>
+        <div>
+            <button class="btn btn-outline-primary me-2" (click)="abrirGestionZonas()">
+                <i class="bi bi-geo-alt"></i> Gestionar Zonas
+            </button>
+            <button *ngIf="!esDueno" class="btn btn-primary" routerLink="/sucursales/nueva">
+                <i class="bi bi-plus-circle"></i> Nueva Sucursal
+            </button>
+        </div>
+    </div>
+
+    <div class="row g-3 mb-4 border-bottom pb-3">
+        <div class="col-md-3">
+            <select class="form-select" [(ngModel)]="filtroZonaId">
+                <option [ngValue]="null">Zona: Todas</option>
+                <option *ngFor="let z of zonas" [ngValue]="z.id">{{ z.nombre }}</option>
+            </select>
+        </div>
+        <div class="col-md-1">
+            <button class="btn btn-outline-secondary" (click)="filtroZonaId = null">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table custom-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Dirección</th>
+                    <th>Teléfono</th>
+                    <th>Zona</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let sucursal of sucursalesFiltradas">
+                    <td>{{ sucursal.id }}</td>
+                    <td>{{ sucursal.nombre }}</td>
+                    <td>{{ sucursal.direccion }}</td>
+                    <td>{{ sucursal.telefono }}</td>
+                    <td>{{ sucursal.zona?.nombre || '-' }}</td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-info me-2" (click)="verDetalle(sucursal.id!)" title="Ver detalle">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                        <button *ngIf="!esDueno" class="btn btn-sm btn-outline-primary me-2" [routerLink]="['/sucursales/editar', sucursal.id]">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <button *ngIf="!esDueno" class="btn btn-sm bg-danger text-white" (click)="eliminarSucursal(sucursal.id)">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+                <tr *ngIf="sucursalesFiltradas.length === 0">
+                    <td colspan="7" class="text-center text-secondary py-4">No hay sucursales registradas</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<app-zona-modal (onSaved)="cargarZonas()"></app-zona-modal>
+<app-sucursal-detalle-modal></app-sucursal-detalle-modal>

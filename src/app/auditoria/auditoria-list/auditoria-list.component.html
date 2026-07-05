@@ -1,0 +1,40 @@
+<div class="card p-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="text-primary fw-bold">
+      <i class="bi bi-clipboard-check me-2"></i> Auditoría del Sistema
+    </h2>
+  </div>
+
+  <div *ngIf="errorMsg" class="alert alert-danger">{{ errorMsg }}</div>
+
+  <div class="row g-2 mb-3">
+    <div class="col-md-3">
+      <select class="form-select" [(ngModel)]="filtroAccion" (change)="paginaActual=1">
+        <option value="">Todas las acciones</option>
+        <option value="CREATE">CREATE</option>
+        <option value="UPDATE">UPDATE</option>
+        <option value="DELETE">DELETE</option>
+        <option value="LOGIN">LOGIN</option>
+        <option value="EXPORT">EXPORT</option>
+      </select>
+    </div>
+    <div class="col-md-3">
+      <input type="text" class="form-control" placeholder="Filtrar por entidad..."
+        [(ngModel)]="filtroEntidad" (input)="paginaActual=1">
+    </div>
+    <div class="col-md-3">
+      <input type="text" class="form-control" placeholder="Filtrar por usuario..."
+        [(ngModel)]="filtroUsuario" (input)="paginaActual=1">
+    </div>
+    <div class="col-md-3 text-end">
+      <span class="text-muted small">{{ accionFiltered.length }} registro(s)</span>
+    </div>
+  </div>
+
+  <app-datatable
+    [columns]="columnas"
+    [data]="displayData"
+    [totalPages]="totalPaginas"
+    (pageChange)="cambiarPagina($event)">
+  </app-datatable>
+</div>

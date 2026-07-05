@@ -1,0 +1,20 @@
+<div class="modal fade show d-block" *ngIf="visible" style="background:rgba(0,0,0,0.5)">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5>Gestionar Zonas</h5>
+        <button type="button" class="btn-close" (click)="cerrar()"></button>
+      </div>
+      <div class="modal-body">
+        <input type="text" class="form-control mb-2" [(ngModel)]="nombreInput" placeholder="Nombre de zona">
+        <button class="btn btn-primary mb-3" (click)="guardar()">Guardar Zona</button>
+        <ul class="list-group">
+          <li *ngFor="let z of zonas" class="list-group-item d-flex justify-content-between align-items-center">
+            {{ z.nombre }}
+            <button class="btn btn-sm btn-danger" (click)="eliminar(z.id)">X</button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

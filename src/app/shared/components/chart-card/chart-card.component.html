@@ -1,0 +1,16 @@
+<div class="card custom-card p-4 h-100">
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <div>
+      <h5 class="card-title font-inter fw-bold mb-1 text-primary-custom">{{ title }}</h5>
+      <p class="text-secondary small mb-0">{{ subtitle }}</p>
+    </div>
+  </div>
+
+  <div style="height: 300px; position: relative;" class="chart-wrapper font-inter">
+    <canvas baseChart
+            [data]="chartData"
+            [options]="chartOptions"
+            [type]="chartType">
+    </canvas>
+  </div>
+</div>

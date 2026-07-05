@@ -1,0 +1,61 @@
+@if(isPublicLanding()){
+  <router-outlet></router-outlet>
+}
+@else if(isAuthPage()){
+
+  <nav class="navbar navbar-dark bg-dark px-4">
+    <span class="navbar-brand fw-bold">
+      SmartMargin AI
+    </span>
+
+    <div>
+
+      @if(currentUrl === '/login'){
+
+        <a
+          routerLink="/register"
+          class="btn btn-outline-light">
+
+          Registrarse
+
+        </a>
+
+      }
+
+      @if(currentUrl === '/register'){
+
+        <a
+          routerLink="/login"
+          class="btn btn-outline-light">
+
+          Iniciar Sesión
+
+        </a>
+
+      }
+
+    </div>
+
+  </nav>
+
+  <router-outlet></router-outlet>
+
+}
+@else {
+  <app-navbar
+    (menuClick)="toggleSidebar()">
+  </app-navbar>
+
+  <div class="layout-container">
+
+    @if(sidebarVisible){
+      <app-sidebar></app-sidebar>
+    }
+
+    <div class="content p-4">
+      <router-outlet></router-outlet>
+    </div>
+
+  </div>
+
+}

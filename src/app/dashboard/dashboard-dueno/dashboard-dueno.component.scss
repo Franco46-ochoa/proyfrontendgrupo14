@@ -1,0 +1,17 @@
+@use '../../../styles/variables' as *;
+
+.text-primary-custom {
+  color: $primary;
+}
+
+.font-inter {
+  font-family: 'Inter', sans-serif;
+}
+
+.dashboard-container {
+  max-width: 100%;
+}
+
+.fs-7 {
+  font-size: 0.85rem;
+}

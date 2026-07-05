@@ -1,0 +1,60 @@
+<div class="card p-4 mt-4">
+    <h3 class="text-primary fw-bold mb-4">{{ esEdicion ? 'Editar Gasto' : 'Registrar Nuevo Gasto' }}</h3>
+
+    <form [formGroup]="gastoForm" (ngSubmit)="guardar()">
+      <div class="row g-3">
+
+        <div class="col-md-4">
+          <label class="form-label text-secondary">Tipo de Gasto</label>
+          <select class="form-select" formControlName="tipo">
+            <option value="">Seleccione...</option>
+            <option value="Servicios">Servicios (Luz, Agua, Internet)</option>
+            <option value="Alquiler">Alquiler</option>
+            <option value="Insumos">Insumos Internos</option>
+            <option value="Mantenimiento">Mantenimiento</option>
+            <option value="Otros">Otros Gastos</option>
+          </select>
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label text-secondary">Monto</label>
+          <div class="input-group">
+            <span class="input-group-text">$</span>
+            <input type="number" class="form-control" formControlName="monto" placeholder="0.00">
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label text-secondary">Fecha</label>
+          <input type="date" class="form-control" formControlName="fecha">
+        </div>
+
+        <div class="col-12">
+          <label class="form-label text-secondary">Descripción Detallada</label>
+          <input type="text" class="form-control" formControlName="descripcion" placeholder="Ej: Pago mensualidad alquiler Local Sur">
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label text-secondary">Sucursal</label>
+          <select class="form-select" formControlName="sucursalId">
+            <option value="">Seleccione una sucursal...</option>
+            <option *ngFor="let s of sucursales" [value]="s.id">{{ s.nombre }}</option>
+          </select>
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label text-secondary">Proveedor (opcional)</label>
+          <select class="form-select" formControlName="proveedorId">
+            <option value="">Sin proveedor</option>
+            <option *ngFor="let p of proveedores" [value]="p.id">{{ p.nombre }} ({{ p.cuit }})</option>
+          </select>
+        </div>
+
+      </div>
+
+      <div class="d-flex justify-content-end mt-4">
+        <button type="button" class="btn btn-outline-primary me-3" routerLink="/gastos">Cancelar</button>
+        <button type="submit" class="btn bg-primary text-white" [disabled]="gastoForm.invalid">Guardar Gasto</button>
+      </div>
+    </form>
+  </div>

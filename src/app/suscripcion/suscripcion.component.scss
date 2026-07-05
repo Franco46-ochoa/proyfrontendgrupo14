@@ -1,0 +1,51 @@
+@use '../../styles/variables' as *;
+
+.pricing-card {
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 16px;
+    background-color: $card-bg;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+
+    &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
+    }
+}
+
+// Estilo especial para la tarjeta que es el plan activo actualmente
+.active-plan-card {
+    border: 2px solid $primary !important;
+    box-shadow: 0 10px 15px -3px rgba(26, 58, 92, 0.1) !important;
+}
+
+.text-dark-custom {
+    color: $text-primary;
+}
+
+.bg-success-light {
+    background-color: rgba(16, 185, 129, 0.06);
+}
+
+.fs-7 {
+    font-size: 0.875rem;
+}
+
+.fs-8 {
+    font-size: 0.75rem;
+}
+
+.btn-primary-custom {
+    background-color: $primary;
+    color: white;
+    border: none;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.875rem;
+    padding: 10px;
+    border-radius: 8px;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+        background-color: lighten($primary, 8%);
+    }
+}

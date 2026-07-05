@@ -1,0 +1,19 @@
+@use '../../../../styles/variables' as *;
+
+.layout-container{
+    display: flex;
+    background-color: $light;
+    min-height: calc(100vh - 60px);
+    margin-top: 60px;
+}
+
+.content{
+    flex:1;
+    padding:2rem;
+}
+
+@media (max-width: 768px){
+    .layout-container{
+        flex-direction: column;
+    }
+}
