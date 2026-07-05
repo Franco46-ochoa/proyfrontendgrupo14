@@ -26,6 +26,12 @@
         <div class="col-md-3">
           <label class="form-label text-secondary">Cantidad</label>
           <input type="number" class="form-control" formControlName="cantidad" min="1">
+          <small *ngIf="stockDisponible > 0 && transaccionForm.get('tipo')?.value === 'venta'" class="text-muted">
+            Stock disponible: <strong>{{ stockDisponible }}</strong>
+          </small>
+          <small *ngIf="stockDisponible === 0 && transaccionForm.get('productoId')?.value && transaccionForm.get('sucursalId')?.value && transaccionForm.get('tipo')?.value === 'venta'" class="text-danger">
+            Sin stock registrado en esta sucursal
+          </small>
         </div>
         <div class="col-md-3">
           <label class="form-label text-secondary">Precio Unitario</label>
@@ -48,6 +54,10 @@
         <button type="submit" class="btn bg-primary text-white" [disabled]="transaccionForm.invalid">
           {{ esEdicion ? 'Actualizar' : 'Registrar' }} Transacción
         </button>
+      </div>
+      <div *ngIf="errorMsg" class="alert alert-danger d-flex align-items-center mt-3" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2 fs-5"></i>
+        <div>{{ errorMsg }}</div>
       </div>
     </form>
   </div>

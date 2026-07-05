@@ -23,6 +23,10 @@ export class GastoListComponent implements OnInit {
   filtroTipo = '';
   filtroSucursal = '';
 
+
+  get esEmpleado() { return this.rol === 'empleado'; }
+
+
   ngOnInit(): void {
     this.rol = (localStorage.getItem('role') || '').toLowerCase();
     this.gastoService.getAll().subscribe(data => this.gastos = data);

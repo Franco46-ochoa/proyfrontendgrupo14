@@ -6,7 +6,7 @@
         <i class="bi bi-exclamation-triangle"></i>
         {{ soloCritico ? 'Mostrar todo' : 'Solo crítico' }}
       </button>
-      <button *ngIf="!esDueno" class="btn btn-primary" (click)="abrirForm()">
+      <button *ngIf="!esDueno && !esEmpleado" class="btn btn-primary" (click)="abrirForm()">
         <i class="bi bi-plus-lg"></i> Agregar al Inventario
       </button>
     </div>
@@ -59,7 +59,7 @@
           <th>Stock Mínimo</th>
           <th>Precio Venta</th>
           <th>Estado</th>
-          <th *ngIf="!esDueno" >Acciones</th>
+          <th *ngIf="!esDueno && !esEmpleado" >Acciones</th>
         </tr>
       </thead>
       <tbody>
@@ -98,7 +98,7 @@
           </td>
           <ng-template #accionTd>
             <td>
-              <button *ngIf="!esDueno" class="btn btn-sm btn-outline-primary" (click)="editar(item)">
+              <button *ngIf="!esDueno && !esEmpleado" class="btn btn-sm btn-outline-primary" (click)="editar(item)">
                 <i class="bi bi-pencil"></i>
               </button>
             </td>

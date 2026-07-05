@@ -37,7 +37,7 @@
             <th>Sucursal</th>
             <th>Proveedor</th>
             <th>Estado</th>
-            <th *ngIf="!esDueno">Acciones</th>
+            <th *ngIf="!esDueno && !esEmpleado">Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -58,7 +58,7 @@
               </span>
             </td>
             <td>
-              <a *ngIf="!esDueno" [routerLink]="['/gastos/editar', gasto.id]" class="btn btn-sm btn-outline-primary me-2">
+              <a *ngIf="!esDueno && !esEmpleado" [routerLink]="['/gastos/editar', gasto.id]" class="btn btn-sm btn-outline-primary me-2">
                 <i class="bi bi-pencil"></i>
               </a>
               <button *ngIf="puedeEliminar" class="btn btn-sm bg-danger text-white" (click)="eliminarGasto(gasto.id)">

@@ -121,7 +121,7 @@ export const routes: Routes = [
   {
     path: 'transacciones/nueva',
     canActivate: [authGuard, roleGuard],
-    data: { roles: ['GERENTE'] },
+    data: { roles: ['GERENTE', 'EMPLEADO'] },
     loadComponent: () =>
       import('./transacciones/transaccion-form/transaccion-form.component')
         .then(m => m.TransaccionFormComponent)

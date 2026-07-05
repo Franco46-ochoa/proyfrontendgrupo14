@@ -30,6 +30,7 @@ export class StockSucursalComponent implements OnInit {
   rol = '';
 
   get esDueno() { return this.rol === 'dueno'; }
+  get esEmpleado() { return this.rol === 'empleado'; }
 
   ngOnInit(): void {
     this.rol = (localStorage.getItem('role') || '').toLowerCase();

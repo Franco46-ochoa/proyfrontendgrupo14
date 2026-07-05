@@ -25,6 +25,7 @@ export class ProductoListComponent implements OnInit {
   }
 
   get esDueno() { return this.rol === 'dueno'; }
+  get esEmpleado() { return this.rol === 'empleado'; }
   get esGerente() { return this.rol === 'gerente'; }
   get puedeEditar() { return this.esGerente; }
   get puedeEliminar() { return this.esGerente; }
