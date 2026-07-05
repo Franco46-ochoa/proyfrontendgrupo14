@@ -12,7 +12,7 @@ interface ApiResponse<T> {
 @Injectable({ providedIn: 'root' })
 export class AuditoriaService {
   private api = inject(ApiService);
-  private baseUrl = 'http://localhost:3000/api/auditoria';
+  private baseUrl = '/api/auditoria';
 
   getAll() {
     return this.api.get<ApiResponse<Auditoria[]>>(this.baseUrl).pipe(

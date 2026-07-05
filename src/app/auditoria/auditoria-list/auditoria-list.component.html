@@ -1,96 +1,40 @@
 <div class="card p-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-      <h2 class="text-primary fw-bold">
-        <i class="bi bi-clipboard-check me-2"></i> Auditoría del Sistema
-      </h2>
-    </div>
-
-    <div class="row g-2 mb-3">
-      <div class="col-md-3">
-        <select class="form-select" [(ngModel)]="filtroAccion" (change)="paginaActual=1">
-          <option value="">Todas las acciones</option>
-          <option value="CREATE">CREATE</option>
-          <option value="UPDATE">UPDATE</option>
-          <option value="DELETE">DELETE</option>
-          <option value="LOGIN">LOGIN</option>
-          <option value="EXPORT">EXPORT</option>
-        </select>
-      </div>
-      <div class="col-md-3">
-        <input type="text" class="form-control" placeholder="Filtrar por entidad..."
-          [(ngModel)]="filtroEntidad" (input)="paginaActual=1">
-      </div>
-      <div class="col-md-3">
-        <input type="text" class="form-control" placeholder="Filtrar por usuario..."
-          [(ngModel)]="filtroUsuario" (input)="paginaActual=1">
-      </div>
-      <div class="col-md-3 text-end">
-        <span class="text-muted small">{{ accionFiltered.length }} registro(s)</span>
-      </div>
-    </div>
-
-    @if (accionFiltered.length === 0) {
-    <div class="text-center py-5 text-muted">
-      <i class="bi bi-journal-text fs-1 d-block mb-2"></i>
-      <p class="mb-0">No se encontraron registros de auditoría.</p>
-    </div>
-    } @else {
-    <div class="table-responsive">
-      <table class="table custom-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Acción</th>
-            <th>Entidad</th>
-            <th>ID Entidad</th>
-            <th>Usuario</th>
-            <th>Fecha</th>
-            <th>Datos Anteriores</th>
-            <th>Datos Nuevos</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (r of paginaActualItems; track r.id) {
-          <tr>
-            <td>{{ r.id }}</td>
-            <td>
-              <span class="badge {{ claseBadge(r.accion) }} p-2">{{ r.accion }}</span>
-            </td>
-            <td>{{ r.entidad }}</td>
-            <td>{{ r.entidadId ?? '—' }}</td>
-            <td>
-              <i class="bi bi-person-circle me-1"></i>{{ r.usuario }}
-            </td>
-            <td class="small">{{ formatoFecha(r.fecha) }}</td>
-            <td>
-              @if (r.datosAnteriores) {
-              <pre class="mb-0 small text-muted" style="max-width:200px;overflow:auto;white-space:pre-wrap;">{{ formatoJson(r.datosAnteriores) }}</pre>
-              } @else {
-              <span class="text-muted">—</span>
-              }
-            </td>
-            <td>
-              @if (r.datosNuevos) {
-              <pre class="mb-0 small text-muted" style="max-width:200px;overflow:auto;white-space:pre-wrap;">{{ formatoJson(r.datosNuevos) }}</pre>
-              } @else {
-              <span class="text-muted">—</span>
-              }
-            </td>
-          </tr>
-          }
-        </tbody>
-      </table>
-    </div>
-
-    <div class="d-flex justify-content-center gap-2 mt-3">
-      @for (p of [].constructor(totalPaginas); let i = $index; track i) {
-      <button class="btn btn-sm"
-        [class.btn-primary]="paginaActual === i+1"
-        [class.btn-outline-primary]="paginaActual !== i+1"
-        (click)="cambiarPagina(i+1)">
-        {{ i + 1 }}
-      </button>
-      }
-    </div>
-    }
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="text-primary fw-bold">
+      <i class="bi bi-clipboard-check me-2"></i> Auditoría del Sistema
+    </h2>
   </div>
+
+  <div *ngIf="errorMsg" class="alert alert-danger">{{ errorMsg }}</div>
+
+  <div class="row g-2 mb-3">
+    <div class="col-md-3">
+      <select class="form-select" [(ngModel)]="filtroAccion" (change)="paginaActual=1">
+        <option value="">Todas las acciones</option>
+        <option value="CREATE">CREATE</option>
+        <option value="UPDATE">UPDATE</option>
+        <option value="DELETE">DELETE</option>
+        <option value="LOGIN">LOGIN</option>
+        <option value="EXPORT">EXPORT</option>
+      </select>
+    </div>
+    <div class="col-md-3">
+      <input type="text" class="form-control" placeholder="Filtrar por entidad..."
+        [(ngModel)]="filtroEntidad" (input)="paginaActual=1">
+    </div>
+    <div class="col-md-3">
+      <input type="text" class="form-control" placeholder="Filtrar por usuario..."
+        [(ngModel)]="filtroUsuario" (input)="paginaActual=1">
+    </div>
+    <div class="col-md-3 text-end">
+      <span class="text-muted small">{{ accionFiltered.length }} registro(s)</span>
+    </div>
+  </div>
+
+  <app-datatable
+    [columns]="columnas"
+    [data]="displayData"
+    [totalPages]="totalPaginas"
+    (pageChange)="cambiarPagina($event)">
+  </app-datatable>
+</div>
