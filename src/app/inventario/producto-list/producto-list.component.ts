@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Producto } from '../producto.model';
 import { CommonModule } from '@angular/common';
+import { ExportExcelService } from '../../core/services/export-excel.service';
 
 @Component({
   selector: 'app-producto-list',
@@ -9,6 +10,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './producto-list.component.scss'
 })
 export class ProductoListComponent implements OnInit {
+  private exportExcelService = inject(ExportExcelService);
 
   productos: Producto[] = [
     { id: 1, nombre: 'Leche Descremada', codigo: 'PROD-001', categoria: 'Lácteos', precioCompra: 850.50, unidadMedida: 'Litro' },
@@ -19,6 +21,15 @@ export class ProductoListComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void { }
+
+  esDuenoOAdmin(): boolean {
+    const rol = (localStorage.getItem('role') || '').toLowerCase();
+    return rol === 'dueno' || rol === 'administrador';
+  }
+
+  exportarExcel(): void {
+    this.exportExcelService.exportarProductos(this.productos);
+  }
 
   eliminarProducto(id: number | undefined) {
     if (confirm('¿Estás seguro de eliminar este producto?')) {
