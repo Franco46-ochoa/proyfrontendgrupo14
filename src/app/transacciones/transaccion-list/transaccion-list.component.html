@@ -52,6 +52,7 @@
             <th>Sucursal</th>
             <th>Cant</th>
             <th>Total</th>
+            <th *ngIf="puedeVerRegistradoPor">Registrado por</th>
             <th *ngIf="!esDueno && !esEmpleado">Acciones</th>
           </tr>
         </thead>
@@ -68,6 +69,7 @@
             <td>{{ t.sucursal?.nombre || '-' }}</td>
             <td>{{ t.cantidad }}</td>
             <td class="fw-bold">${{ t.total }}</td>
+            <td *ngIf="puedeVerRegistradoPor">{{ t.usuario?.nombre || '—' }}</td>
             <td>
               <button *ngIf="!esDueno && !esEmpleado" class="btn btn-sm btn-outline-primary me-2" [routerLink]="['/transacciones/editar', t.id]">
                 <i class="bi bi-pencil"></i>
@@ -78,7 +80,7 @@
             </td>
           </tr>
           <tr *ngIf="transacciones.length === 0">
-            <td colspan="8" class="text-center text-secondary py-4">No hay transacciones registradas</td>
+            <td [attr.colspan]="puedeVerRegistradoPor ? 9 : 8" class="text-center text-secondary py-4">No hay transacciones registradas</td>
           </tr>
         </tbody>
       </table>

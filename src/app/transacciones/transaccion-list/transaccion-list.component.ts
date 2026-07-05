@@ -58,8 +58,10 @@ export class TransaccionListComponent implements OnInit {
   }
 
   get esDueno() { return this.rol === 'dueno'; }
+  get esAdmin() { return this.rol === 'admin'; }
   get esGerente() { return this.rol === 'gerente'; }
   get esEmpleado() { return this.rol === 'empleado'; }
+  get puedeVerRegistradoPor() { return this.esDueno || this.esAdmin; }
   get puedeEditar() { return this.esGerente; }
   get puedeEliminar() { return this.esGerente; }
 
