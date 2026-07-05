@@ -202,6 +202,21 @@ export const routes: Routes = [
   },
 
   {
+    path: 'reportes',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./reportes/reporte-agente-list/reporte-agente-list.component')
+        .then(m => m.ReporteAgenteListComponent)
+  },
+  {
+    path: 'reportes/:id',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./reportes/reporte-agente-detalle/reporte-agente-detalle.component')
+        .then(m => m.ReporteAgenteDetalleComponent)
+  },
+
+  {
     path: 'codigos',
     canActivate: [authGuard, roleGuard],
     data: { roles: ['DUENO'] },
