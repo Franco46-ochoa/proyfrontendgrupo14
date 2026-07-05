@@ -34,7 +34,7 @@
                     <th>Dirección</th>
                     <th>Teléfono</th>
                     <th>Zona</th>
-                    <th *ngIf="!esDueno" >Acciones</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -45,6 +45,9 @@
                     <td>{{ sucursal.telefono }}</td>
                     <td>{{ sucursal.zona?.nombre || '-' }}</td>
                     <td>
+                        <button class="btn btn-sm btn-outline-info me-2" (click)="verDetalle(sucursal.id!)" title="Ver detalle">
+                            <i class="bi bi-eye"></i>
+                        </button>
                         <button *ngIf="!esDueno" class="btn btn-sm btn-outline-primary me-2" [routerLink]="['/sucursales/editar', sucursal.id]">
                             <i class="bi bi-pencil"></i>
                         </button>
@@ -54,7 +57,7 @@
                     </td>
                 </tr>
                 <tr *ngIf="sucursalesFiltradas.length === 0">
-                    <td colspan="6" class="text-center text-secondary py-4">No hay sucursales registradas</td>
+                    <td colspan="7" class="text-center text-secondary py-4">No hay sucursales registradas</td>
                 </tr>
             </tbody>
         </table>
@@ -62,3 +65,4 @@
 </div>
 
 <app-zona-modal (onSaved)="cargarZonas()"></app-zona-modal>
+<app-sucursal-detalle-modal></app-sucursal-detalle-modal>

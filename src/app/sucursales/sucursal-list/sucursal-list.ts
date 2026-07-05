@@ -7,10 +7,11 @@ import { SucursalService } from '../../core/services/sucursal.service';
 import { ZonaService } from '../../core/services/zona.service';
 import { Zona } from '../../shared/models/zona.model';
 import { ZonaModalComponent } from '../zona-modal/zona-modal.component';
+import { SucursalDetalleModalComponent } from '../sucursal-detalle-modal/sucursal-detalle-modal.component';
 
 @Component({
   selector: 'app-sucursal-list',
-  imports: [CommonModule, RouterLink, FormsModule, ZonaModalComponent],
+  imports: [CommonModule, RouterLink, FormsModule, ZonaModalComponent, SucursalDetalleModalComponent],
   templateUrl: './sucursal-list.html',
   styleUrl: './sucursal-list.scss',
 })
@@ -19,6 +20,7 @@ export class SucursalList implements OnInit {
   private zonaService = inject(ZonaService);
 
   @ViewChild(ZonaModalComponent) zonaModal!: ZonaModalComponent;
+  @ViewChild(SucursalDetalleModalComponent) detalleModal!: SucursalDetalleModalComponent;
 
   sucursales: Sucursal[] = [];
   zonas: Zona[] = [];
@@ -52,6 +54,10 @@ export class SucursalList implements OnInit {
 
   abrirGestionZonas(): void {
     this.zonaModal.abrir();
+  }
+
+  verDetalle(id: number): void {
+    this.detalleModal.abrir(id);
   }
 
   get esDueno() { return this.rol === 'dueno'; }
