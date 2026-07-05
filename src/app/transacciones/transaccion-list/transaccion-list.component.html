@@ -1,87 +1,81 @@
-<div id="transacciones-pdf" class="card p-4">
-    <!-- Botonera principal -->
-    <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
-      <h2 class="text-primary fw-bold">Transacciones</h2>
-      <div>
-        <button class="btn bg-primary text-white me-2">
-          <i class="bi bi-plus-lg"></i> Nueva Venta
-        </button>
-        <button class="btn bg-primary text-white me-3">
-          <i class="bi bi-plus-lg"></i> Nueva Compra
-        </button>
-        <button class="btn btn-outline-info me-2" (click)="exportarExcel()">
-          <i class="bi bi-file-earmark-excel text-success"></i> Excel
-        </button>
-        <button class="btn btn-outline-info" (click)="exportarPdf()">
-          <i class="bi bi-file-earmark-pdf text-danger"></i> PDF
-        </button>
-      </div>
-    </div>
-  
-    <!-- Barra de Filtros (Mockup) -->
-    <div class="row g-3 mb-4 border-bottom pb-3">
-      <div class="col-md-3">
-        <input type="text" class="form-control" placeholder="Buscar...">
-      </div>
-      <div class="col-md-3">
-        <select class="form-select">
-          <option value="">Tipo: Todas</option>
-          <option value="Venta">Venta</option>
-          <option value="Compra">Compra</option>
-        </select>
-      </div>
-      <div class="col-md-3">
-        <input type="date" class="form-control" placeholder="Fecha desde-hasta">
-      </div>
-      <div class="col-md-3">
-        <select class="form-select">
-          <option value="">Sucursal: Todas</option>
-        </select>
-      </div>
-    </div>
-  
-    <!-- Tabla de Transacciones -->
-    <div class="table-responsive">
-      <table class="table custom-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Fecha</th>
-            <th>Tipo</th>
-        <!--    <th>Producto</th> -->
-            <th>Cant</th>
-            <th>Total</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let t of transacciones">
-            <td>{{ t.id }}</td>
-            <td>{{ t.fecha }}</td>
-            <td>
-              <span class="badge" [ngClass]="t.tipo === 'Venta' ? 'bg-success' : 'bg-primary'">
-                {{ t.tipo }}
-              </span>
-            </td>
-        <!--    <td>{{ t.producto }}</td> -->
-            <td>{{ t.cantidad }}</td>
-            <td class="fw-bold">${{ t.total }}</td>
-            <td>
-              <button class="btn btn-sm btn-outline-primary me-2">
-                <i class="bi bi-pencil"></i>
-              </button>
-              <button class="btn btn-sm bg-danger text-white" (click)="eliminarTransaccion(t.id)">
-                <i class="bi bi-trash"></i>
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    
-    <!-- Paginador Mockup -->
-    <div class="d-flex justify-content-between align-items-center mt-3 text-secondary">
-      <small>&lt;&lt; &lt; 1 2 3 ... 10 &gt; &gt;&gt;</small>
-      <small>Mostrando 1-10/234</small>
+<div class="card p-4">
+  <!-- Botonera principal -->
+  <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
+    <h2 class="text-primary fw-bold">Transacciones</h2>
+    <div>
+      <button class="btn bg-primary text-white me-2">
+        <i class="bi bi-plus-lg"></i> Nueva Venta
+      </button>
+      <button class="btn bg-primary text-white me-3">
+        <i class="bi bi-plus-lg"></i> Nueva Compra
+      </button>
     </div>
   </div>
+
+  <!-- Barra de Filtros (Mockup) -->
+  <div class="row g-3 mb-4 border-bottom pb-3">
+    <div class="col-md-3">
+      <input type="text" class="form-control" placeholder="Buscar...">
+    </div>
+    <div class="col-md-3">
+      <select class="form-select">
+        <option value="">Tipo: Todas</option>
+        <option value="Venta">Venta</option>
+        <option value="Compra">Compra</option>
+      </select>
+    </div>
+    <div class="col-md-3">
+      <input type="date" class="form-control" placeholder="Fecha desde-hasta">
+    </div>
+    <div class="col-md-3">
+      <select class="form-select">
+        <option value="">Sucursal: Todas</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Tabla de Transacciones -->
+  <div class="table-responsive">
+    <table class="table custom-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Fecha</th>
+          <th>Tipo</th>
+          <!--    <th>Producto</th> -->
+          <th>Cant</th>
+          <th>Total</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let t of transacciones">
+          <td>{{ t.id }}</td>
+          <td>{{ t.fecha }}</td>
+          <td>
+            <span class="badge" [ngClass]="t.tipo === 'Venta' ? 'bg-success' : 'bg-primary'">
+              {{ t.tipo }}
+            </span>
+          </td>
+          <!--    <td>{{ t.producto }}</td> -->
+          <td>{{ t.cantidad }}</td>
+          <td class="fw-bold">${{ t.total }}</td>
+          <td>
+            <button class="btn btn-sm btn-outline-primary me-2">
+              <i class="bi bi-pencil"></i>
+            </button>
+            <button class="btn btn-sm bg-danger text-white" (click)="eliminarTransaccion(t.id)">
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Paginador Mockup -->
+  <div class="d-flex justify-content-between align-items-center mt-3 text-secondary">
+    <small>&lt;&lt; &lt; 1 2 3 ... 10 &gt; &gt;&gt;</small>
+    <small>Mostrando 1-10/234</small>
+  </div>
+</div>

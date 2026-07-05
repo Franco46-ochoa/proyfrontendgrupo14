@@ -7,8 +7,6 @@ import { DashboardService } from '../../core/services/dashboard.service'; // <--
 import { ChartConfiguration, ChartData } from 'chart.js';
 import { forkJoin } from 'rxjs';
 import { DolarCardComponent } from '../../shared/components/dolar-card/dolar-card.component';
-import { ExportPdfService } from '../../core/services/export-pdf.service';
-import { ExportExcelService } from '../../core/services/export-excel.service';
 
 
 @Component({
@@ -25,8 +23,6 @@ import { ExportExcelService } from '../../core/services/export-excel.service';
 })
 export class DashboardDuenoComponent implements OnInit {
   private dashboardService = inject(DashboardService); // <-- Inyectar servicio
-  private exportPdfService = inject(ExportPdfService);
-  private exportExcelService = inject(ExportExcelService);
   fechaActual: string = '';
 
   kpis: any[] = [];
@@ -109,17 +105,4 @@ export class DashboardDuenoComponent implements OnInit {
     });
   }
 
-  exportarPdf() {
-    this.exportPdfService.exportarElementoAPdf('dashboard-dueno-pdf', 'reporte-dueno.pdf');
-  }
-
-  exportarExcel() {
-    const datosExcel = this.sucursales.map(s => ({
-      Sucursal: s.nombre,
-      Direccion: s.direccion || 'Sin dirección',
-      Telefono: s.telefono || 'Sin teléfono',
-      'Stock Crítico': s.stockCriticoCount || 0
-    }));
-    this.exportExcelService.exportarDatosAExcel(datosExcel, 'Sucursales', 'reporte-sucursales.xlsx');
-  }
 }

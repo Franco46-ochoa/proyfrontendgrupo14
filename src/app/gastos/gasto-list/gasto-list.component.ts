@@ -1,8 +1,6 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Gasto } from '../gasto';
 import { CommonModule } from '@angular/common';
-import { ExportPdfService } from '../../core/services/export-pdf.service';
-import { ExportExcelService } from '../../core/services/export-excel.service';
 
 @Component({
   selector: 'app-gasto-list',
@@ -11,8 +9,6 @@ import { ExportExcelService } from '../../core/services/export-excel.service';
   styleUrl: './gasto-list.component.scss'
 })
 export class GastoListComponent implements OnInit {
-  private exportPdfService = inject(ExportPdfService);
-  private exportExcelService = inject(ExportExcelService);
 
   gastos: Gasto[] = [
     { id: 1, tipo: 'Servicios', monto: 25000, descripcion: 'Luz Edesur', fecha: '2026-06-29', anomalia: false },
@@ -21,11 +17,4 @@ export class GastoListComponent implements OnInit {
   constructor() { }
   ngOnInit(): void { }
 
-  exportarPdf() {
-    this.exportPdfService.exportarElementoAPdf('gastos-pdf', 'listado-gastos.pdf');
-  }
-
-  exportarExcel() {
-    this.exportExcelService.exportarDatosAExcel(this.gastos, 'Gastos', 'listado-gastos.xlsx');
-  }
 }

@@ -4,7 +4,6 @@ import { ChartCardComponent } from '../../shared/components/chart-card/chart-car
 import { SucursalMapaComponent } from '../../sucursales/sucursal-mapa/sucursal-mapa.component';
 import { DashboardService } from '../../core/services/dashboard.service'; // <-- Importar
 import { ChartConfiguration, ChartData } from 'chart.js';
-import { ExportPdfService } from '../../core/services/export-pdf.service';
 
 @Component({
   selector: 'app-dashboard-gerente',
@@ -18,7 +17,6 @@ import { ExportPdfService } from '../../core/services/export-pdf.service';
 })
 export class DashboardGerenteComponent implements OnInit {
   private dashboardService = inject(DashboardService); // <-- Inyectar
-  private exportPdfService = inject(ExportPdfService);
 
   nombreZona: string = '';
   textoReporte: string = '';
@@ -73,7 +71,4 @@ export class DashboardGerenteComponent implements OnInit {
     });
   }
 
-  exportarPdf() {
-    this.exportPdfService.exportarElementoAPdf('dashboard-gerente-pdf', 'reporte-gerente.pdf');
-  }
 }
