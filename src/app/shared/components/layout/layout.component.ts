@@ -13,7 +13,7 @@ import { filter } from 'rxjs';
 })
 export class LayoutComponent {
   sidebarVisible = true;
-
+  
   currentUrl = '';
 
   constructor(private router: Router) {
@@ -44,5 +44,18 @@ export class LayoutComponent {
   isPublicLanding(): boolean {
     return this.currentUrl === '/home' || this.currentUrl === '/';
   }
+
+  //funcion para determinar si se debe mostrar la pantalla bloqueada de suscripción
+  //isSubscriptionPage(): boolean {
+   // const estaEnRutaSuscripcion = this.currentUrl.includes('/suscripcion');
+    
+    //. 
+    // Asegúrate de tener un método en tu servicio que te devuelva este boolean
+    //const tieneSuscripcionActiva = this.authService.tieneSuscripcionActiva(); 
+
+    // Solo mostramos la pantalla bloqueada SI está en /suscripcion Y NO tiene plan activo
+   // return estaEnRutaSuscripcion && !tieneSuscripcionActiva;
+ // }
+
 
 }

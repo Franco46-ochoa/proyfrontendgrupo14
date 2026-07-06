@@ -1,96 +1,392 @@
-<div class="suscripcion-container py-4">
-    <!-- Header -->
-    <div class="mb-4">
-        <h4 class="fw-bold font-inter text-primary-custom mb-1">Mi Suscripción</h4>
-        <p class="text-secondary small mb-0">Administra los planes de facturación y límites de tu cuenta</p>
+<!-- SUSCRIPCION ACTIVA -->
+<div *ngIf="estado === 'activa'" class="container py-4">
+
+  <div class="card shadow-lg suscripcion-activa">
+<div class="card-body text-center p-5">
+
+  <i class="bi bi-check-circle-fill display-1 success-icon"></i>
+
+  <h2 class="fw-bold mt-3">
+    Suscripción Activa
+  </h2>
+
+  <p class="text-muted">
+    Tu licencia comercial se encuentra habilitada.
+  </p>
+
+  <span class="badge bg-success fs-6 px-4 py-2">
+    ACTIVA
+  </span>
+
+  <div class="alert alert-info mt-3">
+
+    <div class="mb-2">
+    <i class="bi bi-info-circle me-2"></i>
+    <strong>Próximo pago:</strong>
+    {{ planActual.proximoPago }}
+  </div>
+
+  <div>
+    <i class="bi bi-calendar-event me-2"></i>
+    Tu suscripción permanecerá activa hasta el
+    <strong>{{ planActual.fechaVencimiento }}</strong>
+  </div>
+</div>
+
+</div>
+
+  </div>
+
+  <div class="card shadow mt-4">
+
+<div class="card-header">
+  <h4 class="mb-0">Información del Comprador</h4>
+</div>
+
+<div class="card-body">
+
+  <div class="row">
+
+    <div class="col-md-6 mb-3">
+      <strong>Nombre:</strong><br>
+      {{ datos.nombre }} {{ datos.apellido }}
     </div>
 
-    <!-- Plan Actual del Usuario -->
-    <div class="row mb-5">
-        <div class="col-12">
-            <div class="card custom-card border-success-subtle bg-success-light p-4">
-                <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
-                    <div>
-                        <div class="d-flex align-items-center gap-2 mb-2">
-                            <span class="badge bg-success px-3 py-1.5 rounded-pill fs-7">
-                                Plan Actual: {{ planActual.nombre }}
-                            </span>
-                            <span
-                                class="badge bg-white text-success border border-success-subtle px-3 py-1.5 rounded-pill fs-7">
-                                <i class="bi bi-check-circle-fill me-1"></i> {{ planActual.estado }}
-                            </span>
-                        </div>
-                        <h3 class="fw-bold font-inter text-primary-custom mb-1">${{ planActual.precio | number }} <span
-                                class="fs-6 text-secondary fw-normal">/ mes</span></h3>
-                        <p class="text-secondary small mb-0">
-                            Límite de sucursales: <strong>{{ planActual.sucursales }}</strong> • Próximo pago:
-                            <strong>{{ planActual.proximoPago }}</strong>
-                        </p>
-                    </div>
-                    <div class="d-flex gap-2">
-                        <button class="btn btn-outline-primary font-inter fs-7 px-4" (click)="cambiarPlan('pro')">
-                            Cambiar Plan
-                        </button>
-                        <button class="btn btn-outline-danger font-inter fs-7 px-4" (click)="cancelarSuscripcion()">
-                            Cancelar Suscripción
-                        </button>
-                    </div>
-                </div>
-            </div>
+    <div class="col-md-6 mb-3">
+      <strong>Email:</strong><br>
+      {{ datos.email }}
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <strong>DNI:</strong><br>
+      {{ datos.dni }}
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <strong>Teléfono:</strong><br>
+      {{ datos.telefono }}
+    </div>
+
+    <div class="col-12 mb-3">
+      <strong>Dirección:</strong><br>
+      {{ datos.direccion }}
+    </div>
+
+  </div>
+
+  <hr>
+
+  <div class="row">
+
+    <div class="col-md-6">
+      <h5>Plan Contratado</h5>
+      <p>{{ planSeleccionado.nombre }}</p>
+    </div>
+
+    <div class="col-md-6">
+      <h5>Importe</h5>
+      <p>${{ planSeleccionado.precio }} / mes</p>
+    </div>
+
+  </div>
+
+</div>
+
+  </div>
+
+</div>
+
+<!-- FORMULARIO -->
+<div *ngIf="estado === 'formulario'" class="container py-4">
+
+  <div class="card shadow">
+
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h4 class="mb-0">
+        Plan {{ planSeleccionado.nombre }}
+      </h4>
+
+      <span class="badge bg-primary">
+        ${{ planSeleccionado.precio }}/mes
+      </span>
+
+    </div>
+
+    <div class="card-body">
+
+      <form #form="ngForm">
+        <div class="alert alert-info">
+          Estás contratando el plan
+          <strong>{{ planSeleccionado.nombre }}</strong>
         </div>
-    </div>
 
-    <!-- Separador y Selección de Planes -->
-    <div class="border-top pt-4 mb-4">
-        <h5 class="fw-bold font-inter text-primary-custom mb-1">Planes Disponibles</h5>
-        <p class="text-secondary small mb-0">Elige el plan que mejor se adapte al tamaño de tu negocio comercial</p>
-    </div>
+        <h5 class="mb-3">Datos del Comprador</h5>
 
-    <div class="row g-4">
-        <div *ngFor="let plan of planes" class="col-12 col-md-4">
-            <!-- Tarjeta de Plan -->
-            <div class="card pricing-card p-4 h-100 d-flex flex-column justify-content-between"
-                [class.active-plan-card]="plan.id === planActual.id">
+        <div class="row">
 
-                <div>
-                    <!-- Nombre del Plan -->
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="fw-bold font-inter text-primary-custom mb-0">{{ plan.nombre }}</h5>
-                        <span *ngIf="plan.id === planActual.id" class="badge bg-primary px-2.5 py-1 rounded-pill fs-8">
-                            Actual
-                        </span>
-                    </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Nombre</label>
+            <input
+              class="form-control"
+              [(ngModel)]="datos.nombre"
+              name="nombre"
+              required
+              minlength="3"
+              #nombre="ngModel">
 
-                    <!-- Precio -->
-                    <h2 class="fw-bold font-inter text-primary-custom mb-2">
-                        ${{ plan.precio | number }} <span class="fs-7 text-secondary fw-normal">/ mes</span>
-                    </h2>
-                    <p class="text-secondary small mb-4">
-                        Permite hasta <strong>{{ plan.sucursales }}</strong>.
-                    </p>
-
-                    <!-- Listado de Características -->
-                    <ul class="list-unstyled mb-4">
-                        <li *ngFor="let feat of plan.caracteristicas"
-                            class="d-flex align-items-start gap-2 mb-2 fs-7 text-dark-custom">
-                            <i class="bi bi-check-circle-fill text-success fs-7 mt-0.5"></i>
-                            <span>{{ feat }}</span>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Botón de Acción -->
-                <div class="mt-4">
-                    <button *ngIf="plan.id === planActual.id" class="btn btn-secondary w-100 disabled" disabled>
-                        Plan Actual
-                    </button>
-                    <button *ngIf="plan.id !== planActual.id" class="btn btn-primary-custom w-100"
-                        (click)="cambiarPlan(plan.id)">
-                        Elegir Plan
-                    </button>
-                </div>
-
+            <div *ngIf="nombre.invalid && nombre.touched" class="text-danger">
+              Nombre obligatorio (mínimo 3 caracteres)
             </div>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Apellido</label>
+            <input
+              class="form-control"
+              [(ngModel)]="datos.apellido"
+              name="apellido"
+              required
+              minlength="3"
+              #apellido="ngModel">
+
+            <div *ngIf="apellido.invalid && apellido.touched" class="text-danger">
+              Apellido obligatorio
+            </div>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Email</label>
+            <input
+              type="email"
+              class="form-control"
+              [(ngModel)]="datos.email"
+              name="email"
+              required
+              email
+              #email="ngModel">
+
+            <div *ngIf="email.invalid && email.touched" class="text-danger">
+              Email inválido
+            </div>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label">DNI</label>
+            <input
+              class="form-control"
+              [(ngModel)]="datos.dni"
+              name="dni"
+              required
+              pattern="^[0-9]{7,8}$"
+              #dni="ngModel">
+
+            <div *ngIf="dni.invalid && dni.touched" class="text-danger">
+              DNI inválido
+            </div>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Teléfono</label>
+            <input
+              class="form-control"
+              [(ngModel)]="datos.telefono"
+              name="telefono"
+              required
+              minlength="8"
+              #telefono="ngModel">
+
+            <div *ngIf="telefono.invalid && telefono.touched" class="text-danger">
+              Teléfono inválido
+            </div>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Dirección</label>
+            <input
+              class="form-control"
+              [(ngModel)]="datos.direccion"
+              name="direccion"
+              required
+              minlength="5"
+              #direccion="ngModel">
+
+            <div *ngIf="direccion.invalid && direccion.touched" class="text-danger">
+              Dirección obligatoria
+            </div>
+          </div>
+
         </div>
+
+        <hr>
+
+        <h5 class="mb-3">Datos de la Tarjeta</h5>
+
+        <div class="card bg-dark text-white mb-4">
+
+          <div class="card-body">
+
+            <div class="d-flex justify-content-between">
+              <h5>Mercado Pago</h5>
+              <i class="bi bi-credit-card fs-3"></i>
+            </div>
+
+            <h3 class="mt-4">
+              {{ tarjeta.numero || '**** **** **** ****' }}
+            </h3>
+
+            <div class="d-flex justify-content-between mt-4">
+              <span>{{ tarjeta.titular || 'NOMBRE TITULAR' }}</span>
+              <span>{{ tarjeta.vencimiento || 'MM/AA' }}</span>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="row">
+
+          <div class="col-12 mb-3">
+            <label class="form-label">Número de Tarjeta</label>
+            <input
+              class="form-control"
+              placeholder="5031 7557 3453 0604"
+              [(ngModel)]="tarjeta.numero"
+              name="numeroTarjeta"
+              required
+              pattern="^[0-9]{16}$"
+              #numeroTarjeta="ngModel">
+
+            <div *ngIf="numeroTarjeta.invalid && numeroTarjeta.touched" class="text-danger">
+              Número inválido (16 dígitos)
+            </div>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Titular</label>
+            <input
+              class="form-control"
+              [(ngModel)]="tarjeta.titular"
+              name="titular"
+              required
+              minlength="3"
+              #titular="ngModel">
+
+            <div *ngIf="titular.invalid && titular.touched" class="text-danger">
+              Titular obligatorio
+            </div>
+          </div>
+
+          <div class="col-md-3 mb-3">
+            <label class="form-label">Vencimiento</label>
+            <input
+              class="form-control"
+              placeholder="MM/AA"
+              [(ngModel)]="tarjeta.vencimiento"
+              name="vencimiento"
+              required
+              pattern="^(0[1-9]|1[0-2])\/([0-9]{2})$"
+              #vencimiento="ngModel">
+
+            <div *ngIf="vencimiento.invalid && vencimiento.touched" class="text-danger">
+              Formato MM/AA inválido
+            </div>
+          </div>
+
+          <div class="col-md-3 mb-3">
+            <label class="form-label">CVV</label>
+            <input
+              type="password"
+              class="form-control"
+              placeholder="123"
+              [(ngModel)]="tarjeta.cvv"
+              name="cvv"
+              required
+              pattern="^[0-9]{3,4}$"
+              #cvv="ngModel">
+
+            <div *ngIf="cvv.invalid && cvv.touched" class="text-danger">
+              CVV inválido
+            </div>
+          </div>
+
+        </div>
+
+        <div class="d-grid gap-2 mt-4">
+          <button
+            class="btn btn-success btn-lg"
+            [disabled]="form.invalid"
+            (click)="simularPago()">
+
+            <i class="bi bi-wallet2 me-2"></i>
+            Pagar con Mercado Pago
+          </button>
+
+          <button
+            class="btn btn-outline-secondary"
+            type="button"
+            (click)="estado='planes'">
+            Volver
+          </button>
+
+        </div>
+
+      </form>
+
     </div>
+  </div>
+</div>
+
+<!-- PLANES -->
+<div *ngIf="estado === 'planes'" class="container py-4">
+
+  <div class="text-center mb-5">
+<h2 class="fw-bold">
+  Elegí tu Plan
+</h2>
+
+<p class="text-muted">
+  Activa tu licencia para comenzar a utilizar SmartMargin AI
+</p>
+  </div>
+  <div class="row">
+<div
+  class="col-lg-4 mb-4"
+  *ngFor="let plan of planes">
+
+  <div class="card shadow h-100 plan-card" 
+  [class.pro]="plan.id === 'pro'">
+
+    <div class="card-body text-center">
+
+      <h3>{{ plan.nombre }}</h3>
+
+      <h1 class="fw-bold text-primary">
+
+        ${{ plan.precio }}
+
+      </h1>
+
+      <small class="text-muted">
+        por mes
+      </small>
+
+      <hr>
+
+      <ul class="list-group list-group-flush mb-4">
+
+        <li
+          class="list-group-item"
+          *ngFor="let item of plan.caracteristicas">
+          {{ item }}
+        </li>
+      </ul>
+      <button
+        class="btn btn-primary w-100"
+        (click)="seleccionarPlan(plan)">
+        Elegir Plan
+      </button>
+    </div>
+  </div>
+</div>
+  </div>
+
 </div>

@@ -1,51 +1,147 @@
 @use '../../styles/variables' as *;
-
-.pricing-card {
-    border: 1px solid rgba(0, 0, 0, 0.08);
-    border-radius: 16px;
-    background-color: $card-bg;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-
-    &:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
-    }
+.container {
+  max-width: 1100px;
 }
 
-// Estilo especial para la tarjeta que es el plan activo actualmente
-.active-plan-card {
-    border: 2px solid $primary !important;
-    box-shadow: 0 10px 15px -3px rgba(26, 58, 92, 0.1) !important;
+h2,
+h3,
+h4,
+h5 {
+  font-weight: 600;
 }
 
-.text-dark-custom {
-    color: $text-primary;
+.text-muted {
+  color: $text-secondary !important;
 }
 
-.bg-success-light {
-    background-color: rgba(16, 185, 129, 0.06);
+// CARDS
+.card {
+  border: none;
+  border-radius: 16px;
+  background: $card-bg;
 }
 
-.fs-7 {
-    font-size: 0.875rem;
+.shadow,
+.shadow-lg {
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08) !important;
 }
 
-.fs-8 {
-    font-size: 0.75rem;
+// PLANES
+.plan-card {
+  transition: 0.25s ease;
 }
 
-.btn-primary-custom {
-    background-color: $primary;
-    color: white;
-    border: none;
-    font-family: 'Inter', sans-serif;
-    font-size: 0.875rem;
-    padding: 10px;
-    border-radius: 8px;
-    transition: background-color 0.2s ease;
+.plan-card:hover {
+  transform: translateY(-4px);
+}
 
-    &:hover {
-        background-color: lighten($primary, 8%);
-    }
+.plan-card.pro {
+  border: 2px solid $secondary;
+}
+
+.plan-badge {
+  background: $secondary;
+  color: white;
+  border-radius: 20px;
+  padding: 5px 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: inline-block;
+  margin-bottom: 1rem;
+}
+
+.list-group-item {
+  border: none;
+  padding: 0.75rem;
+  color: $text-primary;
+}
+
+// HEADERS
+.card-header {
+  background: $primary;
+  color: white;
+  border: none;
+}
+
+.card-header h4,
+.card-header h5 {
+  color: white;
+}
+
+// FORMULARIOS
+.form-control {
+  border-radius: 10px;
+  border: 1px solid #dbe2ea;
+}
+
+.form-control:focus {
+  border-color: $primary;
+  box-shadow: none;
+}
+
+.form-label {
+  font-weight: 500;
+  color: $text-primary;
+}
+
+// TARJETA MP
+.bg-dark {
+  background: linear-gradient(
+    135deg,
+    $primary,
+    $dark
+  ) !important;
+
+  border-radius: 16px;
+}
+
+.bg-dark h3 {
+  letter-spacing: 2px;
+  font-family: monospace;
+}
+.bg-dark h3, .bg-dark h5{
+    color: $light !important;
+}
+
+
+// SUSCRIPCION ACTIVA
+.suscripcion-activa {
+  border-left: 5px solid $success;
+}
+
+.success-icon {
+  color: $success;
+}
+
+.badge.bg-success {
+  background: $success !important;
+}
+
+
+// ALERTAS
+.alert-info {
+  background: rgba($info, 0.08);
+  border: 1px solid rgba($info, 0.15);
+  color: $dark;
+  border-radius: 12px;
+}
+
+// BOTONES
+.btn-primary {
+  background: $primary;
+  border-color: $primary;
+}
+
+.btn-primary:hover {
+  opacity: 0.95;
+}
+
+.btn-success {
+  background: $success;
+  border-color: $success;
+}
+
+.btn {
+  border-radius: 10px;
+  font-weight: 500;
 }
