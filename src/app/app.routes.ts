@@ -61,7 +61,7 @@ export const routes: Routes = [
   {
     path: 'sucursales/nueva',
     canActivate: [authGuard, roleGuard],
-    data: { roles: ['DUENO', 'ADMINISTRADOR'] },
+    data: { roles: ['ADMINISTRADOR'] },
     loadComponent: () =>
       import('./sucursales/sucursal-form/sucursal-form')
         .then(m => m.SucursalForm)
@@ -69,7 +69,7 @@ export const routes: Routes = [
   {
     path: 'sucursales/editar/:id',
     canActivate: [authGuard, roleGuard],
-    data: { roles: ['DUENO', 'ADMINISTRADOR'] },
+    data: { roles: ['ADMINISTRADOR'] },
     loadComponent: () =>
       import('./sucursales/sucursal-form/sucursal-form')
         .then(m => m.SucursalForm)
@@ -94,7 +94,7 @@ export const routes: Routes = [
   {
     path: 'productos/nuevo',
     canActivate: [authGuard, roleGuard],
-    data: { roles: ['DUENO', 'ADMINISTRADOR', 'GERENTE', 'EMP_COMERCIAL', 'EMP_OPERATIVO'] },
+    data: { roles: ['ADMINISTRADOR'] },
     loadComponent: () =>
       import('./inventario/producto-form/producto-form.component')
         .then(m => m.ProductoFormComponent)
@@ -120,7 +120,7 @@ export const routes: Routes = [
   {
     path: 'transacciones/nueva',
     canActivate: [authGuard, roleGuard],
-    data: { roles: ['DUENO', 'ADMINISTRADOR', 'GERENTE', 'EMP_COMERCIAL'] },
+    data: { roles: ['GERENTE', 'EMP_COMERCIAL'] },
     loadComponent: () =>
       import('./transacciones/transaccion-form/transaccion-form.component')
         .then(m => m.TransaccionFormComponent)
@@ -137,7 +137,7 @@ export const routes: Routes = [
   {
     path: 'gastos/nuevo',
     canActivate: [authGuard, roleGuard],
-    data: { roles: ['DUENO', 'ADMINISTRADOR', 'GERENTE', 'EMP_OPERATIVO'] },
+    data: { roles: ['ADMINISTRADOR', 'GERENTE', 'EMP_OPERATIVO'] },
     loadComponent: () =>
       import('./gastos/gasto-form/gasto-form.component')
         .then(m => m.GastoFormComponent)
