@@ -34,7 +34,8 @@ export const routes: Routes = [
 
   {
     path: 'dashboard',
-    canActivate: [authGuard],
+    canActivate: [authGuard, roleGuard],
+    data: {roles: ['DUENO', 'ADMINISTRADOR']},
     loadComponent: () =>
       import('./dashboard/dashboard-dueno/dashboard-dueno.component')
         .then(m => m.DashboardDuenoComponent)
@@ -42,7 +43,8 @@ export const routes: Routes = [
 
   {
     path: 'dashboard-gerente',
-    canActivate: [authGuard],
+    canActivate: [authGuard, roleGuard],
+    data: {roles: ['GERENTE']},
     loadComponent: () =>
       import('./dashboard/dashboard-gerente/dashboard-gerente.component')
         .then(m => m.DashboardGerenteComponent)
@@ -50,7 +52,8 @@ export const routes: Routes = [
 
   {
     path: 'sucursales',
-    canActivate: [authGuard],
+    canActivate: [authGuard, roleGuard],
+    data: {roles: ['DUENO', 'ADMINISTRADOR']},
     loadComponent: () =>
       import('./sucursales/sucursal-list/sucursal-list')
         .then(m => m.SucursalList)
@@ -58,7 +61,7 @@ export const routes: Routes = [
   {
     path: 'sucursales/nueva',
     canActivate: [authGuard, roleGuard],
-    data: { roles: ['DUENO'] },
+    data: { roles: ['DUENO', 'ADMINISTRADOR'] },
     loadComponent: () =>
       import('./sucursales/sucursal-form/sucursal-form')
         .then(m => m.SucursalForm)
@@ -66,14 +69,15 @@ export const routes: Routes = [
   {
     path: 'sucursales/editar/:id',
     canActivate: [authGuard, roleGuard],
-    data: { roles: ['DUENO'] },
+    data: { roles: ['DUENO', 'ADMINISTRADOR'] },
     loadComponent: () =>
       import('./sucursales/sucursal-form/sucursal-form')
         .then(m => m.SucursalForm)
   },
   {
     path: 'sucursales/mapa',
-    canActivate: [authGuard],
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['DUENO', 'ADMINISTRADOR'] },
     loadComponent: () =>
       import('./sucursales/sucursal-mapa/sucursal-mapa.component')
         .then(m => m.SucursalMapaComponent)
@@ -81,14 +85,16 @@ export const routes: Routes = [
 
   {
     path: 'productos',
-    canActivate: [authGuard],
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['DUENO', 'ADMINISTRADOR', 'GERENTE', 'EMP_COMERCIAL', 'EMP_OPERATIVO'] },
     loadComponent: () =>
       import('./inventario/producto-list/producto-list.component')
         .then(m => m.ProductoListComponent)
   },
   {
     path: 'productos/nuevo',
-    canActivate: [authGuard],
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['DUENO', 'ADMINISTRADOR', 'GERENTE', 'EMP_COMERCIAL', 'EMP_OPERATIVO'] },
     loadComponent: () =>
       import('./inventario/producto-form/producto-form.component')
         .then(m => m.ProductoFormComponent)
@@ -96,7 +102,8 @@ export const routes: Routes = [
 
   {
     path: 'inventario',
-    canActivate: [authGuard],
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['DUENO', 'ADMINISTRADOR', 'GERENTE', 'EMP_COMERCIAL', 'EMP_OPERATIVO'] },
     loadComponent: () =>
       import('./inventario/stock-sucursal/stock-sucursal.component')
         .then(m => m.StockSucursalComponent)
@@ -104,14 +111,16 @@ export const routes: Routes = [
 
   {
     path: 'transacciones',
-    canActivate: [authGuard],
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['DUENO', 'ADMINISTRADOR', 'GERENTE', 'EMP_COMERCIAL'] },
     loadComponent: () =>
       import('./transacciones/transaccion-list/transaccion-list.component')
         .then(m => m.TransaccionListComponent)
   },
   {
     path: 'transacciones/nueva',
-    canActivate: [authGuard],
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['DUENO', 'ADMINISTRADOR', 'GERENTE', 'EMP_COMERCIAL'] },
     loadComponent: () =>
       import('./transacciones/transaccion-form/transaccion-form.component')
         .then(m => m.TransaccionFormComponent)
@@ -119,14 +128,16 @@ export const routes: Routes = [
 
   {
     path: 'gastos',
-    canActivate: [authGuard],
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['DUENO', 'ADMINISTRADOR', 'GERENTE', 'EMP_OPERATIVO'] },
     loadComponent: () =>
       import('./gastos/gasto-list/gasto-list.component')
         .then(m => m.GastoListComponent)
   },
   {
     path: 'gastos/nuevo',
-    canActivate: [authGuard],
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['DUENO', 'ADMINISTRADOR', 'GERENTE', 'EMP_OPERATIVO'] },
     loadComponent: () =>
       import('./gastos/gasto-form/gasto-form.component')
         .then(m => m.GastoFormComponent)
@@ -144,7 +155,7 @@ export const routes: Routes = [
   {
     path: 'codigos',
     canActivate: [authGuard, roleGuard],
-    data: { roles: ['DUENO'] },
+    data: { roles: ['DUENO', 'ADMINISTRADOR'] },
     loadComponent: () =>
       import('./codigos/codigos.component')
         .then(m => m.CodigosComponent)
