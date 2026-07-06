@@ -41,4 +41,5 @@ export class TransaccionListComponent implements OnInit {
       console.log('Anular transacción ID:', id);
     }
   }
+
 }

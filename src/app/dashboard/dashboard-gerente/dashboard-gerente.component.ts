@@ -56,29 +56,7 @@ export class DashboardGerenteComponent implements OnInit {
       // Radar
       this.radarChartData = {
         labels: data.radarChart.labels,
-        datasets: [
-          {
-            data: data.radarChart.sucursalA,
-            label: 'Sucursal A',
-            borderColor: '#1A3A5C',
-            backgroundColor: 'rgba(26, 58, 92, 0.2)',
-            pointBackgroundColor: '#1A3A5C'
-          },
-          {
-            data: data.radarChart.sucursalB,
-            label: 'Sucursal B',
-            borderColor: '#F59E0B',
-            backgroundColor: 'rgba(245, 158, 11, 0.2)',
-            pointBackgroundColor: '#F59E0B'
-          },
-          {
-            data: data.radarChart.sucursalC,
-            label: 'Sucursal C',
-            borderColor: '#0D9488',
-            backgroundColor: 'rgba(13, 148, 136, 0.2)',
-            pointBackgroundColor: '#0D9488'
-          }
-        ]
+        datasets: data.radarChart.datasets
       };
 
       // Dona
@@ -92,4 +70,5 @@ export class DashboardGerenteComponent implements OnInit {
       };
     });
   }
+
 }

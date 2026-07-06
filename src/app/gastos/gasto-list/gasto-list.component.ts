@@ -10,7 +10,10 @@ import { ExportExcelService } from '../../core/services/export-excel.service';
   styleUrl: './gasto-list.component.scss'
 })
 export class GastoListComponent implements OnInit {
+<<<<<<< HEAD
   private exportExcelService = inject(ExportExcelService);
+=======
+>>>>>>> feature/dashboards
 
   gastos: Gasto[] = [
     { id: 1, tipo: 'Servicios', monto: 25000, descripcion: 'Luz Edesur', fecha: '2026-06-29', anomalia: false },
@@ -19,6 +22,7 @@ export class GastoListComponent implements OnInit {
   constructor() { }
   ngOnInit(): void { }
 
+<<<<<<< HEAD
   esDuenoOAdmin(): boolean {
     const rol = (localStorage.getItem('role') || '').toLowerCase();
     return rol === 'dueno' || rol === 'administrador';
@@ -32,4 +36,6 @@ export class GastoListComponent implements OnInit {
     // Cuando el backend esté listo: window.open('/api/export/gastos/pdf', '_blank');
     alert('Conexión maquetada: Llamando a GET /api/export/gastos/pdf en el backend.');
   }
+=======
+>>>>>>> feature/dashboards
 }

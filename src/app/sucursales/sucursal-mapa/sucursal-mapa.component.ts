@@ -72,12 +72,17 @@ export class SucursalMapaComponent implements AfterViewInit, OnDestroy {
       const lng = parseFloat(suc.lng);
 
       if (!isNaN(lat) && !isNaN(lng)) {
+        const criticoCount = suc.stockCriticoCount || 0;
+        const alertaCritica = criticoCount > 0
+          ? `<br><span class="badge bg-danger text-white mt-1"><i class="bi bi-exclamation-triangle"></i> Stock Crítico: ${criticoCount} prod.</span>`
+          : `<br><span class="badge bg-success text-white mt-1"><i class="bi bi-check-circle"></i> Stock OK</span>`;
+
         const marker = L.marker([lat, lng]);
         marker.bindPopup(`
           <strong>${suc.nombre}</strong><br>
           Dirección: ${suc.direccion || 'Sin dirección'}<br>
           Teléfono: ${suc.telefono || 'Sin teléfono'}<br>
-          Zona ID: ${suc.zonaId || 'N/A'}
+          Zona: ${suc.zona?.nombre || 'Sin Zona'}${alertaCritica}
         `);
         this.markersGroup.addLayer(marker);
       }
