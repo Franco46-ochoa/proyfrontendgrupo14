@@ -61,7 +61,7 @@ export const routes: Routes = [
   {
     path: 'sucursales/nueva',
     canActivate: [authGuard, roleGuard],
-    data: { roles: ['ADMINISTRADOR'] },
+    data: { roles: ['ADMINISTRADOR','GERENTE'] },
     loadComponent: () =>
       import('./sucursales/sucursal-form/sucursal-form')
         .then(m => m.SucursalForm)
@@ -69,7 +69,7 @@ export const routes: Routes = [
   {
     path: 'sucursales/editar/:id',
     canActivate: [authGuard, roleGuard],
-    data: { roles: ['ADMINISTRADOR'] },
+    data: { roles: ['ADMINISTRADOR','GERENTE'] },
     loadComponent: () =>
       import('./sucursales/sucursal-form/sucursal-form')
         .then(m => m.SucursalForm)
@@ -94,7 +94,15 @@ export const routes: Routes = [
   {
     path: 'productos/nuevo',
     canActivate: [authGuard, roleGuard],
-    data: { roles: ['ADMINISTRADOR'] },
+    data: { roles: ['GERENTE'] },
+    loadComponent: () =>
+      import('./inventario/producto-form/producto-form.component')
+        .then(m => m.ProductoFormComponent)
+  },
+  {
+    path: 'productos/editar/:id',
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['GERENTE'] },
     loadComponent: () =>
       import('./inventario/producto-form/producto-form.component')
         .then(m => m.ProductoFormComponent)
@@ -120,7 +128,15 @@ export const routes: Routes = [
   {
     path: 'transacciones/nueva',
     canActivate: [authGuard, roleGuard],
-    data: { roles: ['GERENTE', 'EMP_COMERCIAL'] },
+    data: { roles: ['GERENTE', 'EMPLEADO'] },
+    loadComponent: () =>
+      import('./transacciones/transaccion-form/transaccion-form.component')
+        .then(m => m.TransaccionFormComponent)
+  },
+  {
+    path: 'transacciones/editar/:id',
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['GERENTE'] },
     loadComponent: () =>
       import('./transacciones/transaccion-form/transaccion-form.component')
         .then(m => m.TransaccionFormComponent)
@@ -137,10 +153,51 @@ export const routes: Routes = [
   {
     path: 'gastos/nuevo',
     canActivate: [authGuard, roleGuard],
-    data: { roles: ['ADMINISTRADOR', 'GERENTE', 'EMP_OPERATIVO'] },
+    data: { roles: ['GERENTE'] },
     loadComponent: () =>
       import('./gastos/gasto-form/gasto-form.component')
         .then(m => m.GastoFormComponent)
+  },
+  {
+    path: 'gastos/editar/:id',
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['GERENTE'] },
+    loadComponent: () =>
+      import('./gastos/gasto-form/gasto-form.component')
+        .then(m => m.GastoFormComponent)
+  },
+
+  {
+    path: 'proveedores',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./proveedores/proveedor-list/proveedor-list.component')
+        .then(m => m.ProveedorListComponent)
+  },
+  {
+    path: 'proveedores/nuevo',
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['DUENO', 'GERENTE'] },
+    loadComponent: () =>
+      import('./proveedores/proveedor-form/proveedor-form.component')
+        .then(m => m.ProveedorFormComponent)
+  },
+  {
+    path: 'proveedores/editar/:id',
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['DUENO', 'GERENTE'] },
+    loadComponent: () =>
+      import('./proveedores/proveedor-form/proveedor-form.component')
+        .then(m => m.ProveedorFormComponent)
+  },
+
+  {
+    path: 'auditoria',
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['DUENO'] },
+    loadComponent: () =>
+      import('./auditoria/auditoria-list/auditoria-list.component')
+        .then(m => m.AuditoriaListComponent)
   },
 
   {
@@ -150,6 +207,21 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./suscripcion/suscripcion.component')
         .then(m => m.SuscripcionComponent)
+  },
+
+  {
+    path: 'reportes',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./reportes/reporte-agente-list/reporte-agente-list.component')
+        .then(m => m.ReporteAgenteListComponent)
+  },
+  {
+    path: 'reportes/:id',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./reportes/reporte-agente-detalle/reporte-agente-detalle.component')
+        .then(m => m.ReporteAgenteDetalleComponent)
   },
 
   {

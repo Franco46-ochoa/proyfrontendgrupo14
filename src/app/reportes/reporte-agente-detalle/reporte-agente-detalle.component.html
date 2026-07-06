@@ -1,0 +1,167 @@
+<div *ngIf="errorMsg" class="alert alert-danger m-4">{{ errorMsg }}</div>
+
+<div *ngIf="reporte" class="card p-4 m-4">
+  <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
+    <div class="d-flex align-items-center">
+      <button class="btn btn-outline-secondary me-3" (click)="volver()">
+        <i class="bi bi-arrow-left"></i>
+      </button>
+      <div>
+        <h2 class="text-primary fw-bold mb-0">Detalle del Reporte</h2>
+        <small class="text-secondary">Reporte #{{ reporte.id }}</small>
+      </div>
+    </div>
+    <span class="badge fs-6" [ngClass]="getBadgeClass(reporte.tipo)">{{ reporte.tipoLabel }}</span>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-lg-8">
+      <div class="card mb-4">
+        <div class="card-body">
+          <h5 class="card-title d-flex align-items-center">
+            <span class="icon-circle me-2" [style.background-color]="getIconColor(reporte.tipo)">
+              <i class="bi" [ngClass]="reporte.icono"></i>
+            </span>
+            {{ reporte.agente }}
+          </h5>
+          <p class="text-secondary mb-1">
+            <i class="bi bi-building me-1"></i> {{ reporte.sucursal }} — {{ reporte.sector }}
+          </p>
+          <p class="text-secondary">
+            <i class="bi bi-calendar me-1"></i> {{ reporte.fecha | date:'dd/MM/yyyy HH:mm' }}
+          </p>
+          <hr>
+          <h6 class="fw-bold">Resumen del análisis</h6>
+          <p>{{ reporte.resumen }}</p>
+        </div>
+      </div>
+
+      <div class="card mb-4">
+        <div class="card-body">
+          <h6 class="fw-bold mb-3">Datos relevantes</h6>
+          <div class="table-responsive">
+            <table class="table table-bordered">
+              <tbody>
+                <tr *ngIf="reporte.datosRelevantes.stockActual !== undefined">
+                  <td class="text-secondary fw-medium">Stock actual</td>
+                  <td class="fw-bold">{{ reporte.datosRelevantes.stockActual }} unidades</td>
+                </tr>
+                <tr *ngIf="reporte.datosRelevantes.stockMinimo !== undefined">
+                  <td class="text-secondary fw-medium">Stock mínimo</td>
+                  <td class="fw-bold">{{ reporte.datosRelevantes.stockMinimo }} unidades</td>
+                </tr>
+                <tr *ngIf="reporte.datosRelevantes.productosBajoStock !== undefined">
+                  <td class="text-secondary fw-medium">Productos bajo stock</td>
+                  <td class="fw-bold text-danger">{{ reporte.datosRelevantes.productosBajoStock }}</td>
+                </tr>
+                <tr *ngIf="reporte.datosRelevantes.totalVentas !== undefined">
+                  <td class="text-secondary fw-medium">Total ventas</td>
+                  <td class="fw-bold">{{ reporte.datosRelevantes.totalVentas }}</td>
+                </tr>
+                <tr *ngIf="reporte.datosRelevantes.totalCompras !== undefined">
+                  <td class="text-secondary fw-medium">Total compras</td>
+                  <td class="fw-bold">{{ reporte.datosRelevantes.totalCompras }}</td>
+                </tr>
+                <tr *ngIf="reporte.datosRelevantes.ingresoNeto !== undefined">
+                  <td class="text-secondary fw-medium">Ingreso neto</td>
+                  <td class="fw-bold text-success">${{ reporte.datosRelevantes.ingresoNeto | number }}</td>
+                </tr>
+                <tr *ngIf="reporte.datosRelevantes.montoTotalGastos !== undefined">
+                  <td class="text-secondary fw-medium">Total gastos</td>
+                  <td class="fw-bold text-danger">${{ reporte.datosRelevantes.montoTotalGastos | number }}</td>
+                </tr>
+                <tr *ngIf="reporte.datosRelevantes.anomaliasDetectadas !== undefined">
+                  <td class="text-secondary fw-medium">Anomalías detectadas</td>
+                  <td class="fw-bold" [ngClass]="reporte.datosRelevantes.anomaliasDetectadas > 0 ? 'text-danger' : 'text-success'">
+                    {{ reporte.datosRelevantes.anomaliasDetectadas }}
+                  </td>
+                </tr>
+                <tr *ngIf="reporte.datosRelevantes.variacionPorcentual !== undefined">
+                  <td class="text-secondary fw-medium">Variación porcentual</td>
+                  <td class="fw-bold" [ngClass]="reporte.datosRelevantes.variacionPorcentual >= 0 ? 'text-success' : 'text-danger'">
+                    {{ reporte.datosRelevantes.variacionPorcentual >= 0 ? '+' : '' }}{{ reporte.datosRelevantes.variacionPorcentual }}%
+                  </td>
+                </tr>
+                <tr *ngIf="reporte.datosRelevantes.productoTop">
+                  <td class="text-secondary fw-medium">Producto top</td>
+                  <td class="fw-bold">{{ reporte.datosRelevantes.productoTop }}</td>
+                </tr>
+                <tr *ngIf="reporte.datosRelevantes.categoriaTop">
+                  <td class="text-secondary fw-medium">Categoría top</td>
+                  <td class="fw-bold">{{ reporte.datosRelevantes.categoriaTop }}</td>
+                </tr>
+                <tr *ngIf="reporte.datosRelevantes.tendencia">
+                  <td class="text-secondary fw-medium">Tendencia</td>
+                  <td>
+                    <span class="badge" [ngClass]="{
+                      'bg-success': reporte.datosRelevantes.tendencia === 'creciente',
+                      'bg-warning text-dark': reporte.datosRelevantes.tendencia === 'estable',
+                      'bg-danger': reporte.datosRelevantes.tendencia === 'decreciente' || reporte.datosRelevantes.tendencia === 'crítico'
+                    }">
+                      {{ reporte.datosRelevantes.tendencia | titlecase }}
+                    </span>
+                  </td>
+                </tr>
+                <tr *ngIf="reporte.datosRelevantes.eficiencia">
+                  <td class="text-secondary fw-medium">Eficiencia</td>
+                  <td class="fw-bold">{{ reporte.datosRelevantes.eficiencia }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="card mb-4">
+        <div class="card-body">
+          <h6 class="fw-bold mb-3">
+            <i class="bi bi-robot me-1"></i> Recomendación de la IA
+          </h6>
+          <div class="recomendacion-box p-3">
+            <p class="mb-0">{{ reporte.recomendacion }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <h6 class="fw-bold mb-3">
+            <i class="bi bi-info-circle me-1"></i> Información del agente
+          </h6>
+          <table class="table table-sm">
+            <tbody>
+              <tr>
+                <td class="text-secondary">Agente</td>
+                <td class="fw-bold">{{ reporte.agente }}</td>
+              </tr>
+              <tr>
+                <td class="text-secondary">Tipo</td>
+                <td><span class="badge" [ngClass]="getBadgeClass(reporte.tipo)">{{ reporte.tipoLabel }}</span></td>
+              </tr>
+              <tr>
+                <td class="text-secondary">Sucursal</td>
+                <td class="fw-bold">{{ reporte.sucursal }}</td>
+              </tr>
+              <tr>
+                <td class="text-secondary">Sector</td>
+                <td class="fw-bold">{{ reporte.sector }}</td>
+              </tr>
+              <tr>
+                <td class="text-secondary">Fecha</td>
+                <td class="fw-bold">{{ reporte.fecha | date:'dd/MM/yyyy HH:mm' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-4">
+    <button class="btn btn-outline-secondary" (click)="volver()">
+      <i class="bi bi-arrow-left me-1"></i> Volver a reportes
+    </button>
+  </div>
+</div>

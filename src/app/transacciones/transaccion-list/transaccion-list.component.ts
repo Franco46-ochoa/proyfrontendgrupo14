@@ -2,26 +2,80 @@ import { Component, OnInit, inject } from '@angular/core';
 import { Transaccion } from '../transaccion';
 import { CommonModule } from '@angular/common';
 import { ExportExcelService } from '../../core/services/export-excel.service';
+import { RouterLink } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { TransaccionService } from '../../core/services/transaccion.service';
+import { SucursalService } from '../../core/services/sucursal.service';
+import { Sucursal } from '../../sucursales/sucursal.model';
 
 @Component({
   selector: 'app-transaccion-list',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink, FormsModule],
   templateUrl: './transaccion-list.component.html',
   styleUrl: './transaccion-list.component.scss'
 })
 export class TransaccionListComponent implements OnInit {
   private exportExcelService = inject(ExportExcelService);
 
-  transacciones: Transaccion[] = [
-    { id: 45, fecha: '10/06/26', tipo: 'Venta', cantidad: 5, precioUnitario: 1750, total: 1750 },
-    { id: 44, fecha: '10/06/26', tipo: 'Compra', cantidad: 20, precioUnitario: 1000, total: 1000 },
-    { id: 43, fecha: '09/06/26', tipo: 'Venta', cantidad: 10, precioUnitario: 1500, total: 1500 }
-  ];
+  private transaccionService = inject(TransaccionService);
+  private sucursalService = inject(SucursalService);
 
-  constructor() { }
+  transacciones: Transaccion[] = [];
+  sucursales: Sucursal[] = [];
+  rol = '';
 
-  ngOnInit(): void { }
+  filtroTipo = '';
+  filtroFechaDesde = '';
+  filtroFechaHasta = '';
+  filtroSucursalId: number | null = null;
 
+  ngOnInit(): void {
+    this.rol = (localStorage.getItem('role') || '').toLowerCase();
+    this.sucursalService.getAll().subscribe({
+      next: (data) => this.sucursales = data,
+      error: (err) => console.error('Error al cargar sucursales', err)
+    });
+    this.cargarTransacciones();
+  }
+
+  cargarTransacciones(): void {
+    const filtros: any = {};
+    if (this.filtroTipo) filtros.tipo = this.filtroTipo;
+    if (this.filtroFechaDesde) filtros.fechaDesde = this.filtroFechaDesde;
+    if (this.filtroFechaHasta) filtros.fechaHasta = this.filtroFechaHasta;
+    if (this.filtroSucursalId) filtros.sucursalId = this.filtroSucursalId;
+
+    this.transaccionService.getAll(filtros).subscribe({
+      next: (data) => this.transacciones = data,
+      error: (err) => console.error('Error al cargar transacciones', err)
+    });
+  }
+
+  limpiarFiltros(): void {
+    this.filtroTipo = '';
+    this.filtroFechaDesde = '';
+    this.filtroFechaHasta = '';
+    this.filtroSucursalId = null;
+    this.cargarTransacciones();
+  }
+
+  get esDueno() { return this.rol === 'dueno'; }
+  get esAdmin() { return this.rol === 'admin'; }
+  get esGerente() { return this.rol === 'gerente'; }
+  get esEmpleado() { return this.rol === 'empleado'; }
+  get puedeVerRegistradoPor() { return this.esDueno || this.esAdmin; }
+  get puedeEditar() { return this.esGerente; }
+  get puedeEliminar() { return this.esGerente; }
+
+  eliminarTransaccion(id: number): void {
+    if(confirm('¿Estás seguro de anular esta transacción?')) {
+      this.transaccionService.delete(id).subscribe({
+        next: () => this.cargarTransacciones(),
+        error: (err) => console.error('Error al anular transacción', err)
+      });
+    }
+  }
+  
   esDuenoOAdmin(): boolean {
     const rol = (localStorage.getItem('role') || '').toLowerCase();
     return rol === 'dueno' || rol === 'administrador';
@@ -35,11 +89,4 @@ export class TransaccionListComponent implements OnInit {
     // Cuando el backend esté listo: window.open('/api/export/transacciones/pdf', '_blank');
     alert('Conexión maquetada: Llamando a GET /api/export/transacciones/pdf en el backend.');
   }
-
-  eliminarTransaccion(id: number) {
-    if(confirm('¿Estás seguro de anular esta transacción?')) {
-      console.log('Anular transacción ID:', id);
-    }
-  }
-
 }

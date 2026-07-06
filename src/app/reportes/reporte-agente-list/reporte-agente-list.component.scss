@@ -1,0 +1,45 @@
+@use '../../../styles/variables' as *;
+
+.reporte-card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  }
+}
+
+.icon-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  i {
+    color: white;
+    font-size: 1.2rem;
+  }
+}
+
+.datos-relevantes {
+  background: #F8FAFC;
+  border-radius: 8px;
+  border-left: 3px solid $primary;
+}
+
+.recomendacion {
+  background: #FFF7ED;
+  border-radius: 8px;
+  border-left: 3px solid $secondary;
+}
+
+.bg-stock { background-color: #10B981; }
+.bg-ventas { background-color: #3B82F6; }
+.bg-finanzas { background-color: #F59E0B; }
+.bg-anomalias { background-color: #EF4444; }
