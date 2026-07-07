@@ -20,8 +20,9 @@ export class MpRetornoComponent implements OnInit {
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
       const status = params['status'];
+      const preapprovalId = params['preapproval_id'];
 
-      if (status === 'authorized') {
+      if (preapprovalId || status === 'authorized') {
         const saved = sessionStorage.getItem('mp_plan');
         if (saved) {
           try {
