@@ -7,13 +7,13 @@ import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideToastr } from 'ngx-toastr';
 import { errorInterceptor } from './core/interceptors/error.interceptor';
-
+import { csrfInterceptor } from './core/interceptors/csrf.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideHttpClient(withInterceptors([jwtInterceptor, errorInterceptor])),
+    provideHttpClient(withInterceptors([jwtInterceptor, csrfInterceptor, errorInterceptor])),
     provideCharts(withDefaultRegisterables()), 
     provideAnimations(),
     provideToastr({
