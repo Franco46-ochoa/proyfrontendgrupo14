@@ -94,7 +94,7 @@ export const routes: Routes = [
   {
     path: 'productos/nuevo',
     canActivate: [authGuard, roleGuard],
-    data: { roles: ['GERENTE'] },
+    data: { roles: ['GERENTE', 'ADMINISTRADOR'] },
     loadComponent: () =>
       import('./inventario/producto-form/producto-form.component')
         .then(m => m.ProductoFormComponent)
@@ -102,7 +102,7 @@ export const routes: Routes = [
   {
     path: 'productos/editar/:id',
     canActivate: [authGuard, roleGuard],
-    data: { roles: ['GERENTE'] },
+    data: { roles: ['GERENTE', 'ADMINISTRADOR'] },
     loadComponent: () =>
       import('./inventario/producto-form/producto-form.component')
         .then(m => m.ProductoFormComponent)
@@ -153,7 +153,7 @@ export const routes: Routes = [
   {
     path: 'gastos/nuevo',
     canActivate: [authGuard, roleGuard],
-    data: { roles: ['GERENTE'] },
+    data: { roles: ['GERENTE', 'ADMINISTRADOR'] },
     loadComponent: () =>
       import('./gastos/gasto-form/gasto-form.component')
         .then(m => m.GastoFormComponent)
@@ -161,7 +161,7 @@ export const routes: Routes = [
   {
     path: 'gastos/editar/:id',
     canActivate: [authGuard, roleGuard],
-    data: { roles: ['GERENTE'] },
+    data: { roles: ['GERENTE', 'ADMINISTRADOR'] },
     loadComponent: () =>
       import('./gastos/gasto-form/gasto-form.component')
         .then(m => m.GastoFormComponent)
