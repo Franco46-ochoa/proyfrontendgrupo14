@@ -36,52 +36,44 @@ export class LoginComponent {
     this.authService.login(this.loginForm.value)
       .subscribe({
         next: (resp: any) => {
+          const token = resp.token;
+          const rol = resp.data?.rol?.toUpperCase();
+          const depto = resp.data?.departamento?.toUpperCase();
 
-          localStorage.setItem(
-            'token',
-            resp.token
-          );
+          const roleKey = (rol === 'EMPLEADO' && depto) ? `EMP_${depto}` : rol;
 
-          localStorage.setItem(
-            'role',
-            resp.data.rol.toUpperCase()
-          );
-
-          //
-        const rol = resp.data.rol?.toUpperCase();
-        const subRol = resp.data.subRol?.toUpperCase(); 
-        const isFirstLogin = resp.data.firstLogin; // <- backend futuro
+          this.authService.saveSession(token, roleKey);
 
           this.toastr.success('Inicio de sesion exitoso', 'Login');
 
-          // REDIRECCIÓN PLAN V3: discriminación por rol y estado de suscripción
-          if (rol === 'DUENO') {
-            if (this.authService.tieneSuscripcionActiva()) {
-              this.router.navigate(['/dashboard']); // Dueño pagó → estadísticas V3
-            } else {
-              this.router.navigate(['/suscripcion']); // Dueño no pagó → pasarela aislada
-            }
-            return;
-          }
+          switch (roleKey) {
+            case 'DUENO':
+              if (this.authService.tieneSuscripcionActiva()) {
+                this.router.navigate(['/dashboard']);
+              } else {
+                this.router.navigate(['/suscripcion']);
+              }
+              break;
 
-          if (rol === 'ADMINISTRADOR') {
-            this.router.navigate(['/dashboard']); // Admin entra directo a gestionar
-            return;
-          }
+            case 'ADMINISTRADOR':
+              this.router.navigate(['/dashboard']);
+              break;
 
-          if(rol == 'GERENTE'){
-            this.router.navigate(['/dashboard-gerente']);
-            return;
-          }
+            case 'GERENTE':
+              this.router.navigate(['/dashboard']);
+              break;
 
-          if(rol == 'EMPLEADO'){
-            if (subRol == 'COMERCIAL' || subRol == 'OPERATIVO'){
+            case 'EMP_COMERCIAL':
+              this.router.navigate(['/transacciones']);
+              break;
+
+            case 'EMP_OPERATIVO':
               this.router.navigate(['/inventario']);
-              return;
-            }
+              break;
 
-            this.router.navigate(['/empleado']);
-            return;
+            default:
+              this.router.navigate(['/home']);
+              break;
           }
         },
 

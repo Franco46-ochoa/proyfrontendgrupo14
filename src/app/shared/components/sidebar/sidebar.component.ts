@@ -20,4 +20,6 @@ export class SidebarComponent implements OnInit {
   esAdministrador() { return this.rol === 'administrador'; }
   esGerente() { return this.rol === 'gerente'; }
   esEmpleado() { return this.rol === 'empleado'; }
+  esComercial() { return this.rol === 'emp_comercial'; }
+  esOperativo() { return this.rol === 'emp_operativo'; }
 }

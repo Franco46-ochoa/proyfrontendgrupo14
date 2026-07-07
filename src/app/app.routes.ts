@@ -35,7 +35,7 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     canActivate: [authGuard, roleGuard],
-    data: {roles: ['DUENO', 'ADMINISTRADOR']},
+    data: {roles: ['DUENO', 'ADMINISTRADOR', 'GERENTE']},
     loadComponent: () =>
       import('./dashboard/dashboard-dueno/dashboard-dueno.component')
         .then(m => m.DashboardDuenoComponent)
