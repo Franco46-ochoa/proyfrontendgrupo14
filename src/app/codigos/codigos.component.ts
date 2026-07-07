@@ -36,8 +36,11 @@ export class CodigosComponent implements OnInit {
   ngOnInit() { this.cargar(); }
 
   cargar() {
-    this.http.get<any>(this.api).subscribe({ next: r => this.codigos = r.data || [], error: () => this.error = 'Error al cargar' });
-  }
+  this.http.get<any>(this.api).subscribe({
+    next: r => this.codigos = r.data || [],
+    error: e => this.error = e.error?.message || 'Error al cargar'
+  });
+}
 
   generar() {
     this.error = ''; this.exito = '';
