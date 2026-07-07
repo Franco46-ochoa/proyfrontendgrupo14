@@ -1,0 +1,1 @@
+import{b as p}from"./chunk-CYP3SLDI.js";import{R as i,X as n}from"./chunk-563RS2EC.js";var a=class e{http=n(p);get(t,r){return this.http.get(t,r)}post(t,r){return this.http.post(t,r)}put(t,r){return this.http.put(t,r)}delete(t){return this.http.delete(t)}static \u0275fac=function(r){return new(r||e)};static \u0275prov=i({token:e,factory:e.\u0275fac,providedIn:"root"})};export{a};
