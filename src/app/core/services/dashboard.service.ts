@@ -1,35 +1,35 @@
 import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Observable, of, forkJoin } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
-import { ApiService } from './api.service';
+import { SucursalService } from './sucursal.service';
+import { TransaccionService } from './transaccion.service';
+import { GastoService } from './gasto.service';
+import { InventarioService } from './inventario.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DashboardService {
-  private api = inject(ApiService);
+  private http = inject(HttpClient);
   private apiUrl = environment.apiUrl;
+  private sucursalService = inject(SucursalService);
+  private transaccionService = inject(TransaccionService);
+  private gastoService = inject(GastoService);
+  private inventarioService = inject(InventarioService);
 
   getSucursales(): Observable<any[]> {
-    const mockSucursales = [
-      { id: 1, nombre: 'SmartMargin Norte (Mock)', direccion: 'Av. San Martin 1234', lat: -24.183, lng: -65.331, telefono: '388-4123456', zonaId: 1 },
-      { id: 2, nombre: 'SmartMargin Sur (Mock)', direccion: 'Calle Belgrano 567', lat: -24.195, lng: -65.3, telefono: '388-4234567', zonaId: 2 },
-      { id: 3, nombre: 'SmartMargin Centro (Mock)', direccion: 'Peatonal Lavalle 890', lat: -24.185, lng: -65.31, telefono: '388-4345678', zonaId: 3 }
-    ];
-
-    return this.api.get<any>(`${this.apiUrl}/sucursales`).pipe(
-      map(json => json.success ? json.data : []),
+    return this.sucursalService.getAll().pipe(
       catchError(err => {
-        console.warn('Usando sucursales de prueba local debido a:', err.message);
-        return of(mockSucursales);
+        console.warn('Error al cargar sucursales:', err.message);
+        return of([]);
       })
     );
   }
 
   getInventarioCritico(): Observable<any[]> {
-    return this.api.get<any>(`${this.apiUrl}/inventario?stockCritico=true`).pipe(
-      map(json => json.success ? json.data : []),
+    return this.inventarioService.getAll(true).pipe(
       catchError(err => {
         console.warn('Error al obtener inventario crítico:', err.message);
         return of([]);
@@ -38,20 +38,18 @@ export class DashboardService {
   }
 
   getTransaccionesReales(): Observable<any[]> {
-    return this.api.get<any>(`${this.apiUrl}/transacciones`).pipe(
-      map(json => json.success ? json.data : []),
+    return this.transaccionService.getAll().pipe(
       catchError(err => {
-        console.warn('Error al obtener transacciones reales:', err.message);
+        console.warn('Error al obtener transacciones:', err.message);
         return of([]);
       })
     );
   }
 
   getGastosReales(): Observable<any[]> {
-    return this.api.get<any>(`${this.apiUrl}/gastos`).pipe(
-      map(json => json.success ? json.data : []),
+    return this.gastoService.getAll().pipe(
       catchError(err => {
-        console.warn('Error al obtener gastos reales:', err.message);
+        console.warn('Error al obtener gastos:', err.message);
         return of([]);
       })
     );
@@ -325,7 +323,7 @@ export class DashboardService {
 
   // 3. Cotización del Dolar (backend/API real)
   getCotizacionDolar(): Observable<any> {
-    return this.api.get<any>(`${this.apiUrl}/dolar`).pipe(
+    return this.http.get<any>(`${this.apiUrl}/dolar`).pipe(
       map(json => json.success ? json.data : { compra: '1220.00', venta: '1250.00', fecha: new Date() }),
       catchError(err => {
         console.warn('Usando cotización de dólar mock (API backend pendiente):', err.message);
