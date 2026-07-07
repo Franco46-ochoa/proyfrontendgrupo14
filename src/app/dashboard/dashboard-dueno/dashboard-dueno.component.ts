@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 import { KpiCardComponent } from '../../shared/components/kpi-card/kpi-card.component';
 import { ChartCardComponent } from '../../shared/components/chart-card/chart-card.component';
 import { SucursalMapaComponent } from '../../sucursales/sucursal-mapa/sucursal-mapa.component';
-import { DashboardService } from '../../core/services/dashboard.service'; // <-- Importar servicio
+import { DashboardService } from '../../core/services/dashboard.service';
+import { AdminService } from '../../core/services/admin.service';
 import { ChartConfiguration, ChartData } from 'chart.js';
 import { ExportExcelService } from '../../core/services/export-excel.service';
 import { forkJoin } from 'rxjs';
@@ -23,9 +24,11 @@ import { DolarCardComponent } from '../../shared/components/dolar-card/dolar-car
   styleUrl: './dashboard-dueno.component.scss'
 })
 export class DashboardDuenoComponent implements OnInit {
-  private dashboardService = inject(DashboardService); // <-- Inyectar servicio
+  private dashboardService = inject(DashboardService);
   private exportExcelService = inject(ExportExcelService);
+  private adminService = inject(AdminService);
   fechaActual: string = '';
+  cargandoSeed = false;
 
   kpis: any[] = [];
   sucursales: any[] = []; // <-- Arreglo para almacenar sucursales reales del backend
@@ -111,9 +114,38 @@ export class DashboardDuenoComponent implements OnInit {
     });
   }
 
+  get tituloDashboard(): string {
+    const rol = (localStorage.getItem('role') || '').toUpperCase();
+    switch (rol) {
+      case 'ADMINISTRADOR': return 'Dashboard Administrador';
+      case 'GERENTE': return 'Dashboard Gerente';
+      default: return 'Dashboard de Dueño';
+    }
+  }
+
+  esAdministrador(): boolean {
+    return (localStorage.getItem('role') || '').toUpperCase() === 'ADMINISTRADOR';
+  }
+
   esDuenoOAdmin(): boolean {
     const rol = (localStorage.getItem('role') || '').toLowerCase();
     return rol === 'dueno' || rol === 'administrador';
+  }
+
+  ejecutarCargaMasiva(): void {
+    if (this.cargandoSeed) return;
+    this.cargandoSeed = true;
+    this.adminService.cargarDatosHistoricos().subscribe({
+      next: (res) => {
+        this.cargandoSeed = false;
+        alert(res.message);
+      },
+      error: (err) => {
+        this.cargandoSeed = false;
+        const msg = err.error?.message || err.message || 'Error desconocido';
+        alert('Error al cargar datos: ' + msg);
+      }
+    });
   }
 
   abrirModal(tipo: 'excel' | 'pdf'): void {

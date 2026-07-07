@@ -3,13 +3,25 @@
   <div class="d-flex align-items-center justify-content-between mb-4">
     <div>
       <h4 class="fw-bold font-inter text-primary-custom mb-1">
-        Dashboard de Dueño
+        {{ tituloDashboard }}
       </h4>
       <p class="text-secondary small mb-0">
         Vista de control comercial y métricas clave
       </p>
     </div>
     <div class="d-flex align-items-center gap-3">
+    <button *ngIf="esAdministrador()"
+      class="btn btn-outline-warning d-flex align-items-center gap-2 px-3 rounded-3 shadow-sm"
+      (click)="ejecutarCargaMasiva()"
+      [disabled]="cargandoSeed"
+      style="height: 38px"
+    >
+      <i class="bi bi-database-fill-up"></i>
+      <span class="small fw-bold">{{ cargandoSeed ? 'Cargando...' : 'Carga Masiva' }}</span>
+      <div *ngIf="cargandoSeed" class="spinner-border spinner-border-sm ms-1" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+    </button>
     <button
       class="btn btn-outline-success d-flex align-items-center gap-2 px-3 rounded-3 shadow-sm"
       (click)="abrirModal('excel')"
