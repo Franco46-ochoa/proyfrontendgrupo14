@@ -97,23 +97,8 @@
         <hr class="flex-grow-1">
       </div>
 
-      <div class="google-auth-container mt-3 text-center">
-        <div id="g_id_onload"
-             [attr.data-client_id]="environment.googleClientId"
-             data-context="signup"
-             data-ux_mode="popup"
-             data-callback="handleRegisterResponse"
-             data-auto_prompt="false">
-        </div>
-
-        <div class="g_id_signin d-flex justify-content-center"
-             data-type="standard"
-             data-shape="rectangular"
-             data-theme="outline"
-             data-text="signup_with"
-             data-size="large"
-             data-logo_alignment="left">
-        </div>
+      <div class="google-auth-container mt-3 d-flex justify-content-center">
+        <div id="google-register-btn-container"></div>
       </div>
 
     </form>

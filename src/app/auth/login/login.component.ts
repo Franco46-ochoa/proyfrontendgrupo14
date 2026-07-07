@@ -34,17 +34,43 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadGoogleScript();
-    (window as any).handleCredentialResponse = this.handleCredentialResponse.bind(this);
   }
 
   private loadGoogleScript(): void {
-    if (document.getElementById('google-gsi-script')) return;
+    if (document.getElementById('google-gsi-script')) {
+      this.initializeGoogleButton();
+      return;
+    }
+
     const script = document.createElement('script');
     script.id = 'google-gsi-script';
     script.src = 'https://accounts.google.com/gsi/client';
     script.async = true;
     script.defer = true;
+    script.onload = () => this.initializeGoogleButton();
     document.head.appendChild(script);
+  }
+
+  private initializeGoogleButton(): void {
+    if (typeof google !== 'undefined') {
+      google.accounts.id.initialize({
+        client_id: this.environment.googleClientId,
+        callback: this.handleCredentialResponse.bind(this),
+        context: 'signin',
+      });
+
+      const buttonDiv = document.getElementById('google-btn-container');
+      if (buttonDiv) {
+        google.accounts.id.renderButton(buttonDiv, {
+          type: 'standard',
+          shape: 'rectangular',
+          theme: 'outline',
+          text: 'signin_with',
+          size: 'large',
+          logo_alignment: 'left',
+        });
+      }
+    }
   }
 
   handleCredentialResponse(response: any): void {
