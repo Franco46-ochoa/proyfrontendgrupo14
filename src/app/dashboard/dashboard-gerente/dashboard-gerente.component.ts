@@ -43,7 +43,7 @@ export class DashboardGerenteComponent implements OnInit {
 
   ngOnInit(): void {
     // Cargar sucursales de la zona desde el backend
-    this.dashboardService.getSucursales('gerente').subscribe(data => {
+    this.dashboardService.getSucursales().subscribe(data => {
       this.sucursales = data;
     });
 

@@ -1,91 +1,35 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, of, from, forkJoin } from 'rxjs';
-import { delay, map, catchError } from 'rxjs/operators';
+import { Observable, of, forkJoin } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
+import { ApiService } from './api.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DashboardService {
-  private http = inject(HttpClient, { optional: true }); // Listo para usar cuando se conecte al backend
+  private api = inject(ApiService);
   private apiUrl = environment.apiUrl;
 
-  // Método auxiliar para autenticarse automáticamente con las credenciales de seeders para desarrollo local
-  private async getAuthHeaders(rol: 'dueno' | 'gerente' = 'dueno'): Promise<HeadersInit> {
-    const key = `auth_token_${rol}`;
-    const isBrowser = typeof window !== 'undefined';
-    let token = isBrowser ? localStorage.getItem(key) : null;
-
-    if (!token) {
-      const email = rol === 'dueno' ? 'dueno@smartmargin.com' : 'gerente@smartmargin.com';
-      try {
-        const response = await fetch('/api/auth/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password: 'password123' })
-        });
-        const result = await response.json();
-        if (result.success && result.token) {
-          token = result.token;
-          if (isBrowser) {
-            localStorage.setItem(key, result.token); // Enviamos result.token que está garantizado como string
-          }
-        }
-      } catch (e) {
-        console.error('Error al iniciar sesión automáticamente:', e);
-      }
-    }
-
-    return {
-      'Authorization': `Bearer ${token || ''}`,
-      'Content-Type': 'application/json'
-    };
-  }
-
-  // Obtener sucursales reales desde el backend 
-  getSucursales(rol: 'dueno' | 'gerente' = 'dueno'): Observable<any[]> {
-    // Definimos datos mockeados en caso de falla de la base de datos
+  getSucursales(): Observable<any[]> {
     const mockSucursales = [
       { id: 1, nombre: 'SmartMargin Norte (Mock)', direccion: 'Av. San Martin 1234', lat: -24.183, lng: -65.331, telefono: '388-4123456', zonaId: 1 },
       { id: 2, nombre: 'SmartMargin Sur (Mock)', direccion: 'Calle Belgrano 567', lat: -24.195, lng: -65.3, telefono: '388-4234567', zonaId: 2 },
       { id: 3, nombre: 'SmartMargin Centro (Mock)', direccion: 'Peatonal Lavalle 890', lat: -24.185, lng: -65.31, telefono: '388-4345678', zonaId: 3 }
     ];
 
-    // Convertimos la promesa de fetch en un Observable
-    return from(
-      this.getAuthHeaders(rol).then(headers =>
-        fetch('/api/sucursales', { headers })
-          .then(res => {
-            if (!res.ok) throw new Error('Error al consultar el backend');
-            return res.json();
-          })
-          .then(json => json.success ? json.data : [])
-      )
-    ).pipe(
+    return this.api.get<any>(`${this.apiUrl}/sucursales`).pipe(
+      map(json => json.success ? json.data : []),
       catchError(err => {
         console.warn('Usando sucursales de prueba local debido a:', err.message);
-        // Si es gerente, filtramos localmente para cumplir con la regla de negocio
-        if (rol === 'gerente') {
-          return of(mockSucursales.filter(s => s.zonaId === 1));
-        }
         return of(mockSucursales);
       })
     );
   }
 
-  // Obtener artículos con stock crítico desde el backend
-  getInventarioCritico(rol: 'dueno' | 'gerente' = 'dueno'): Observable<any[]> {
-    return from(
-      this.getAuthHeaders(rol).then(headers =>
-        fetch('/api/inventario?stockCritico=true', { headers })
-          .then(res => {
-            if (!res.ok) throw new Error('Error al consultar el backend');
-            return res.json();
-          })
-          .then(json => json.success ? json.data : [])
-      )
-    ).pipe(
+  getInventarioCritico(): Observable<any[]> {
+    return this.api.get<any>(`${this.apiUrl}/inventario?stockCritico=true`).pipe(
+      map(json => json.success ? json.data : []),
       catchError(err => {
         console.warn('Error al obtener inventario crítico:', err.message);
         return of([]);
@@ -93,18 +37,9 @@ export class DashboardService {
     );
   }
 
-  // Obtener transacciones reales desde el backend (Día 11)
-  getTransaccionesReales(rol: 'dueno' | 'gerente' = 'dueno'): Observable<any[]> {
-    return from(
-      this.getAuthHeaders(rol).then(headers =>
-        fetch('/api/transacciones', { headers })
-          .then(res => {
-            if (!res.ok) throw new Error('Error al consultar transacciones');
-            return res.json();
-          })
-          .then(json => json.success ? json.data : [])
-      )
-    ).pipe(
+  getTransaccionesReales(): Observable<any[]> {
+    return this.api.get<any>(`${this.apiUrl}/transacciones`).pipe(
+      map(json => json.success ? json.data : []),
       catchError(err => {
         console.warn('Error al obtener transacciones reales:', err.message);
         return of([]);
@@ -112,18 +47,9 @@ export class DashboardService {
     );
   }
 
-  // Obtener gastos reales desde el backend (Día 11)
-  getGastosReales(rol: 'dueno' | 'gerente' = 'dueno'): Observable<any[]> {
-    return from(
-      this.getAuthHeaders(rol).then(headers =>
-        fetch('/api/gastos', { headers })
-          .then(res => {
-            if (!res.ok) throw new Error('Error al consultar gastos');
-            return res.json();
-          })
-          .then(json => json.success ? json.data : [])
-      )
-    ).pipe(
+  getGastosReales(): Observable<any[]> {
+    return this.api.get<any>(`${this.apiUrl}/gastos`).pipe(
+      map(json => json.success ? json.data : []),
       catchError(err => {
         console.warn('Error al obtener gastos reales:', err.message);
         return of([]);
@@ -151,12 +77,11 @@ export class DashboardService {
     };
 
     return forkJoin({
-      sucursales: this.getSucursales('dueno'),
-      transacciones: this.getTransaccionesReales('dueno'),
-      gastos: this.getGastosReales('dueno')
+      sucursales: this.getSucursales(),
+      transacciones: this.getTransaccionesReales(),
+      gastos: this.getGastosReales()
     }).pipe(
       map(({ sucursales, transacciones, gastos }) => {
-        // Fallback si no hay registros reales en la BD (dueño nuevo sin datos)
         if (!transacciones.length && !gastos.length) {
           return {
             kpis: [
@@ -176,7 +101,6 @@ export class DashboardService {
           };
         }
 
-        // 1. KPI Cálculos
         const ventasVal = transacciones.filter(t => t.tipo === 'venta');
         const ventaTotalNum = ventasVal.reduce((sum, t) => sum + parseFloat(t.total), 0);
         const gastosTotalNum = gastos.reduce((sum, g) => sum + parseFloat(g.monto), 0);
@@ -192,7 +116,6 @@ export class DashboardService {
           { title: 'Margen de Ganancia', value: `${margenVal}%`, badgeText: parseFloat(margenVal) > 30 ? 'Saludable' : 'Atención', badgeColor: parseFloat(margenVal) > 30 ? 'success' : 'warning', icon: 'bi-graph-up-arrow' }
         ];
 
-        // 2. Gráfico de Barras: Rentabilidad por Sucursal (Ventas - Gastos)
         const barLabels: string[] = [];
         const barData: number[] = [];
 
@@ -203,10 +126,9 @@ export class DashboardService {
             .reduce((sum, g) => sum + parseFloat(g.monto), 0);
           
           barLabels.push(suc.nombre);
-          barData.push(vSuc - gSuc); // Rentabilidad
+          barData.push(vSuc - gSuc);
         });
 
-        // 3. Gráfico de Líneas: Evolución de Ingresos por mes (últimos 6 meses)
         const meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
         const ultimosMesesIndices: number[] = [];
         const hoy = new Date();
@@ -275,14 +197,13 @@ export class DashboardService {
     };
 
     return forkJoin({
-      sucursales: this.getSucursales('gerente'),
-      transacciones: this.getTransaccionesReales('gerente'),
-      gastos: this.getGastosReales('gerente')
+      sucursales: this.getSucursales(),
+      transacciones: this.getTransaccionesReales(),
+      gastos: this.getGastosReales()
     }).pipe(
       map(({ sucursales, transacciones, gastos }) => {
         const sucIds = sucursales.map(s => s.id);
 
-        // Fallback si no hay registros en la BD (gerente nuevo sin datos)
         if (!transacciones.length && !gastos.length) {
           return {
             zona: sucursales.length > 0 && sucursales[0].zona ? sucursales[0].zona.nombre : 'Sin Zona',
@@ -315,7 +236,6 @@ export class DashboardService {
           };
         }
 
-        // 1. Gráfico de Torta/Dona: Gastos por Categoría
         const gastosZona = gastos.filter(g => sucIds.includes(g.sucursalId));
         const porCategoria: { [key: string]: number } = {};
         gastosZona.forEach(g => {
@@ -326,7 +246,6 @@ export class DashboardService {
         const pieLabels = Object.keys(porCategoria);
         const pieData = Object.values(porCategoria);
 
-        // 2. Gráfico de Radar: Comparativa de Sucursales de la Zona
         const radarLabels = ['Ventas ($)', 'Gastos ($)', 'Margen (%)', 'Cant. Ventas', 'Volumen'];
         
         const statsSuc = sucursales.map(suc => {
@@ -374,7 +293,6 @@ export class DashboardService {
           };
         });
 
-        // 3. NLP Text
         const ranking = [...statsSuc].sort((a, b) => b.ventasVal - a.ventasVal);
         const totalVentasZona = statsSuc.reduce((sum, s) => sum + s.ventasVal, 0);
         const totalGastosZona = statsSuc.reduce((sum, s) => sum + s.gastosVal, 0);
@@ -407,16 +325,8 @@ export class DashboardService {
 
   // 3. Cotización del Dolar (backend/API real)
   getCotizacionDolar(): Observable<any> {
-    return from(
-      this.getAuthHeaders('dueno').then(headers =>
-        fetch('/api/dolar', { headers })
-          .then(res => {
-            if (!res.ok) throw new Error('Endpoint /api/dolar no disponible aún');
-            return res.json();
-          })
-          .then(json => json.success ? json.data : { compra: '1220.00', venta: '1250.00', fecha: new Date() })
-      )
-    ).pipe(
+    return this.api.get<any>(`${this.apiUrl}/dolar`).pipe(
+      map(json => json.success ? json.data : { compra: '1220.00', venta: '1250.00', fecha: new Date() }),
       catchError(err => {
         console.warn('Usando cotización de dólar mock (API backend pendiente):', err.message);
         return of({ compra: '1220.00', venta: '1250.00', fecha: new Date() });

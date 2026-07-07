@@ -65,8 +65,8 @@ export class DashboardDuenoComponent implements OnInit {
 
     // Cargar sucursales reales del backend y el inventario crítico combinados
     forkJoin({
-      sucursales: this.dashboardService.getSucursales('dueno'),
-      criticos: this.dashboardService.getInventarioCritico('dueno')
+      sucursales: this.dashboardService.getSucursales(),
+      criticos: this.dashboardService.getInventarioCritico()
     }).subscribe({
       next: ({ sucursales, criticos }) => {
         this.sucursales = sucursales.map(suc => {
