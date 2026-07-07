@@ -17,8 +17,14 @@ import { environment } from '../../environments/environment';
           <div class="col-md-3">
             <label class="form-label">Rol</label>
             <select class="form-select" [(ngModel)]="nuevo.rol">
-              <option value="gerente">Gerente</option>
-              <option value="empleado">Empleado</option>
+              <option *ngFor="let r of rolesDisponibles" [value]="r.value">{{ r.label }}</option>
+            </select>
+          </div>
+          <div class="col-md-3" *ngIf="nuevo.rol === 'empleado'">
+            <label class="form-label">Departamento</label>
+            <select class="form-select" [(ngModel)]="nuevo.departamento">
+              <option value="comercial">Comercial</option>
+              <option value="operativo">Operativo</option>
             </select>
           </div>
           <div class="col-md-3">
@@ -46,6 +52,7 @@ import { environment } from '../../environments/environment';
               <tr>
                 <th>Código</th>
                 <th>Rol</th>
+                <th>Departamento</th>
                 <th>Usos</th>
                 <th>Estado</th>
                 <th>Sucursal</th>
@@ -56,6 +63,7 @@ import { environment } from '../../environments/environment';
               <tr *ngFor="let c of codigos">
                 <td><code>{{ c.codigo }}</code></td>
                 <td><span class="badge bg-secondary">{{ c.rol }}</span></td>
+                <td>{{ c.departamento || '—' }}</td>
                 <td>{{ c.usosRealizados }} / {{ c.usosMaximos }}</td>
                 <td>
                   <span [class]="'badge ' + (c.activo ? (c.usosRealizados >= c.usosMaximos ? 'bg-warning' : 'bg-success') : 'bg-danger')">
@@ -70,7 +78,7 @@ import { environment } from '../../environments/environment';
                 </td>
               </tr>
               <tr *ngIf="codigos.length === 0">
-                <td colspan="6" class="text-center text-muted py-3">No hay códigos generados aún</td>
+                <td colspan="7" class="text-center text-muted py-3">No hay códigos generados aún</td>
               </tr>
             </tbody>
           </table>
@@ -84,7 +92,21 @@ export class CodigosComponent implements OnInit {
   private api = `${environment.apiUrl}/codigos`;
 
   codigos: any[] = [];
-  nuevo = { rol: 'empleado', usosMaximos: 10, sucursalId: null as any };
+
+  rolUsuario = (() => {
+    const token = localStorage.getItem('token');
+    if (!token) return '';
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload.rol || '';
+    } catch { return ''; }
+  })();
+
+  rolesDisponibles = this.rolUsuario === 'DUENO'
+    ? [{ value: 'administrador', label: 'Administrador' }]
+    : [{ value: 'gerente', label: 'Gerente' }, { value: 'empleado', label: 'Empleado' }];
+
+  nuevo = { rol: this.rolesDisponibles[0]?.value, usosMaximos: 10, sucursalId: null as any, departamento: 'comercial' };
   error = '';
   exito = '';
 
@@ -98,10 +120,11 @@ export class CodigosComponent implements OnInit {
     this.error = ''; this.exito = '';
     const body: any = { rol: this.nuevo.rol, usosMaximos: this.nuevo.usosMaximos };
     if (this.nuevo.sucursalId) body.sucursalId = this.nuevo.sucursalId;
+    if (this.nuevo.rol === 'empleado') body.departamento = this.nuevo.departamento;
 
     this.http.post<any>(`${this.api}/generar`, body)
       .subscribe({
-        next: r => { this.exito = r.message; this.cargar(); this.nuevo = { rol: 'empleado', usosMaximos: 10, sucursalId: null }; },
+        next: r => { this.exito = r.message; this.cargar(); this.nuevo = { rol: this.rolesDisponibles[0]?.value, usosMaximos: 10, sucursalId: null, departamento: 'comercial' }; },
         error: e => { this.error = e.error?.message || 'Error al generar'; this.exito = ''; }
       });
   }
