@@ -20,10 +20,6 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/register`, data);
   }
 
-  googleAuth(data: { token: string; codigoInvitacion?: string }) {
-    return this.http.post(`${this.apiUrl}/google`, data);
-  }
-
   saveSession(token: string, role: string): void {
     localStorage.setItem('token', token);
     localStorage.setItem('role', role.toUpperCase());
