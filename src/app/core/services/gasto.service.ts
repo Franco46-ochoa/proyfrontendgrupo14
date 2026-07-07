@@ -3,6 +3,7 @@ import { map, switchMap } from 'rxjs/operators';
 import { of, throwError } from 'rxjs';
 import { ApiService } from './api.service';
 import { Gasto } from '../../gastos/gasto';
+import { environment } from '../../environments/environment';
 
 interface ApiResponse<T> {
   success: boolean;
@@ -15,7 +16,7 @@ interface ApiResponse<T> {
 })
 export class GastoService {
   private api = inject(ApiService);
-  private baseUrl = 'http://localhost:3000/api/gastos';
+  private baseUrl = `${environment.apiUrl}/gastos`;
 
   getAll() {
     return this.api.get<ApiResponse<Gasto[]>>(this.baseUrl).pipe(

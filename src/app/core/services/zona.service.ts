@@ -1,8 +1,15 @@
 import { Injectable, inject } from '@angular/core';
-import { map, switchMap } from 'rxjs/operators';
-import { of, throwError } from 'rxjs';
-import { Zona } from '../../shared/models/zona.model';
-import { ApiService } from './api.service';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
+
+export interface Zona {
+  id: number;
+  nombre: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
 
 interface ApiResponse<T> {
   success: boolean;
@@ -12,8 +19,8 @@ interface ApiResponse<T> {
 
 @Injectable({ providedIn: 'root' })
 export class ZonaService {
-  private api = inject(ApiService);
-  private baseUrl = 'http://localhost:3000/api/zonas';
+  private api = inject(HttpClient);
+  private baseUrl = `${environment.apiUrl}/zonas`;
 
   getAll() {
     return this.api.get<ApiResponse<Zona[]>>(this.baseUrl).pipe(

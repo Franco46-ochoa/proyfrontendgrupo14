@@ -3,6 +3,7 @@ import { map, switchMap } from 'rxjs/operators';
 import { of, throwError } from 'rxjs';
 import { Sucursal } from '../../sucursales/sucursal.model';
 import { ApiService } from './api.service';
+import { environment } from '../../environments/environment';
 
 interface ApiResponse<T> {
   success: boolean;
@@ -15,7 +16,7 @@ interface ApiResponse<T> {
 })
 export class SucursalService {
   private api = inject(ApiService);
-  private baseUrl = 'http://localhost:3000/api/sucursales';
+  private baseUrl = `${environment.apiUrl}/sucursales`;
 
   getAll() {
     return this.api.get<ApiResponse<Sucursal[]>>(this.baseUrl).pipe(

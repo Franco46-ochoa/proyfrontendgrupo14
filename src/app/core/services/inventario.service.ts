@@ -1,8 +1,20 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ApiService } from './api.service';
-import { Inventario } from '../../inventario/inventario';
+import { environment } from '../../environments/environment';
+
+export interface Inventario {
+  id?: number;
+  productoId: number;
+  sucursalId: number;
+  stockActual: number;
+  stockMinimo: number;
+  stockMaximo?: number;
+  precioVenta: number;
+  createdAt?: string;
+  updatedAt?: string;
+}
 
 interface ApiResponse<T> {
   success: boolean;
@@ -12,8 +24,8 @@ interface ApiResponse<T> {
 
 @Injectable({ providedIn: 'root' })
 export class InventarioService {
-  private api = inject(ApiService);
-  private baseUrl = 'http://localhost:3000/api/inventario';
+  private api = inject(HttpClient);
+  private baseUrl = `${environment.apiUrl}/inventario`;
 
   getAll(stockCritico?: boolean) {
     let params = new HttpParams();

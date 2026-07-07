@@ -2,13 +2,14 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of, from, forkJoin } from 'rxjs';
 import { delay, map, catchError } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DashboardService {
   private http = inject(HttpClient, { optional: true }); // Listo para usar cuando se conecte al backend
-  private apiUrl = '/api'; // URL base de tu backend Express
+  private apiUrl = environment.apiUrl;
 
   // Método auxiliar para autenticarse automáticamente con las credenciales de seeders para desarrollo local
   private async getAuthHeaders(rol: 'dueno' | 'gerente' = 'dueno'): Promise<HeadersInit> {

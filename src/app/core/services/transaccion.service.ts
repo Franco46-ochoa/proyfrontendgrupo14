@@ -1,9 +1,21 @@
 import { Injectable, inject } from '@angular/core';
-import { map, switchMap } from 'rxjs/operators';
-import { of, throwError } from 'rxjs';
-import { Transaccion } from '../../transacciones/transaccion';
-import { ApiService } from './api.service';
-import { HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
+
+export interface Transaccion {
+  id: number;
+  tipo: 'venta' | 'compra';
+  cantidad: number;
+  precioUnitario: number;
+  productoId: number;
+  sucursalId: number;
+  fecha?: string;
+  observaciones?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
 
 interface ApiResponse<T> {
   success: boolean;
@@ -13,8 +25,8 @@ interface ApiResponse<T> {
 
 @Injectable({ providedIn: 'root' })
 export class TransaccionService {
-  private api = inject(ApiService);
-  private baseUrl = 'http://localhost:3000/api/transacciones';
+  private api = inject(HttpClient);
+  private baseUrl = `${environment.apiUrl}/transacciones`;
 
   getAll(filtros?: { tipo?: string; fechaDesde?: string; fechaHasta?: string; sucursalId?: number }) {
     let params = new HttpParams();

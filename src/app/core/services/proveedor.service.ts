@@ -1,8 +1,17 @@
 import { Injectable, inject } from '@angular/core';
-import { map, switchMap } from 'rxjs/operators';
-import { of, throwError } from 'rxjs';
-import { Proveedor } from '../../shared/models/proveedor.model';
-import { ApiService } from './api.service';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
+
+export interface Proveedor {
+  id: number;
+  nombre: string;
+  cuit: string;
+  contacto?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
 
 interface ApiResponse<T> {
   success: boolean;
@@ -12,8 +21,8 @@ interface ApiResponse<T> {
 
 @Injectable({ providedIn: 'root' })
 export class ProveedorService {
-  private api = inject(ApiService);
-  private baseUrl = 'http://localhost:3000/api/proveedores';
+  private api = inject(HttpClient);
+  private baseUrl = `${environment.apiUrl}/proveedores`;
 
   getAll() {
     return this.api.get<ApiResponse<Proveedor[]>>(this.baseUrl).pipe(

@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 
 interface ApiResponse<T> {
   success: boolean;
@@ -23,8 +24,8 @@ export interface MpSubscriptionData {
 @Injectable({ providedIn: 'root' })
 export class SuscripcionService {
   private http = inject(HttpClient);
-  private baseUrl = '/api/suscripciones';
-  private mpBaseUrl = '/api/mp';
+  private baseUrl = `${environment.apiUrl}/suscripciones`;
+  private mpBaseUrl = `${environment.apiUrl}/mp`;
 
   crear(datos: SuscripcionData) {
     return this.http.post<ApiResponse<any>>(this.baseUrl, datos).pipe(

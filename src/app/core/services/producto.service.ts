@@ -3,6 +3,7 @@ import { map, switchMap } from 'rxjs/operators';
 import { of, throwError } from 'rxjs';
 import { Producto } from '../../inventario/producto.model';
 import { ApiService } from './api.service';
+import { environment } from '../../environments/environment';
 
 interface ApiResponse<T> {
   success: boolean;
@@ -15,7 +16,7 @@ interface ApiResponse<T> {
 })
 export class ProductoService {
   private api = inject(ApiService);
-  private baseUrl = 'http://localhost:3000/api/productos';
+  private baseUrl = `${environment.apiUrl}/productos`;
 
   getAll() {
     return this.api.get<ApiResponse<Producto[]>>(this.baseUrl).pipe(

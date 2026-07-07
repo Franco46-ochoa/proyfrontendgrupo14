@@ -2,6 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-codigos',
@@ -80,7 +81,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class CodigosComponent implements OnInit {
   private http = inject(HttpClient);
-  private api = 'http://localhost:3000/api/codigos';
+  private api = `${environment.apiUrl}/codigos`;
 
   codigos: any[] = [];
   nuevo = { rol: 'empleado', usosMaximos: 10, sucursalId: null as any };
