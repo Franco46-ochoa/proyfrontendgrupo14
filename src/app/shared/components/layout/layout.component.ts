@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 import {
@@ -8,21 +8,25 @@ import {
   RouterLink,
 } from '@angular/router';
 import { filter } from 'rxjs';
+// Salimos 3 niveles (layout -> components -> shared -> app) para entrar correctamente a core
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-layout',
+  standalone: true,
   imports: [NavbarComponent, SidebarComponent, RouterOutlet, RouterLink],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',
-  standalone: true,
 })
 export class LayoutComponent {
   sidebarVisible = true;
-
   currentUrl = '';
-  authService: any;
 
-  constructor(private router: Router) {
+  // Inyectamos correctamente los servicios usando la función inject de Angular
+  private authService = inject(AuthService);
+  private router = inject(Router);
+
+  constructor() {
     this.currentUrl = this.router.url;
 
     this.router.events
@@ -39,24 +43,24 @@ export class LayoutComponent {
   isAuthPage(): boolean {
     return (
       this.currentUrl === '/login' ||
-      this.currentUrl === '/register' ||
-      this.currentUrl === '/home' ||
-      this.currentUrl === '/'
+      this.currentUrl === '/register'
     );
   }
 
   isPublicLanding(): boolean {
-    return this.currentUrl === '/home' || this.currentUrl === '/';
+    return this.currentUrl === '/home' || this.currentUrl === '/' || this.currentUrl === '';
   }
 
-  //funcion para determinar si se debe mostrar la pantalla bloqueada de suscripción
-  isSubscriptionPage(): boolean {
-    const estaEnRutaSuscripcion = this.currentUrl.includes('/suscripcion');
+  // Controla qué vistas se renderizan a pantalla completa (sin Navbar ni Sidebar)
+  debeOcultarLayoutCompleto(): boolean {
+    // Si el usuario está en el Home o Landing pública, se oculta el menú privado
+    if (this.isPublicLanding()) {
+      return true;
+    }
 
-    // Asegúrate de tener un método en tu servicio que te devuelva este boolean
+    // Si NO tiene una suscripción activa en el sistema, ocultamos el layout principal.
+    // Esto mantendrá la pantalla limpia tanto en /suscripcion como en /mp/retorno
     const tieneSuscripcionActiva = this.authService.tieneSuscripcionActiva();
-
-    //Slo mostramos la pantalla bloqueada SI está en /suscripcion Y NO tiene plan activo
-    return estaEnRutaSuscripcion && !tieneSuscripcionActiva;
+    return !tieneSuscripcionActiva;
   }
 }

@@ -1,4 +1,5 @@
-@if(isPublicLanding() || isSuscripcionPage()){
+@if(debeOcultarLayoutCompleto()){
+  <!-- Se renderiza limpio / Pantalla completa para: Home, Suscripción y MP Retorno -->
   <router-outlet></router-outlet>
 }
 @else if(isAuthPage()){
@@ -7,41 +8,21 @@
     <span class="navbar-brand fw-bold">
       SmartMargin AI
     </span>
-
     <div>
-
       @if(currentUrl === '/login'){
-
-        <a
-          routerLink="/register"
-          class="btn btn-outline-light">
-
-          Registrarse
-
-        </a>
-
+        <a routerLink="/register" class="btn btn-outline-light">Registrarse</a>
       }
-
       @if(currentUrl === '/register'){
-
-        <a
-          routerLink="/login"
-          class="btn btn-outline-light">
-
-          Iniciar Sesión
-
-        </a>
-
+        <a routerLink="/login" class="btn btn-outline-light">Iniciar Sesión</a>
       }
-
     </div>
-
   </nav>
 
   <router-outlet></router-outlet>
 
 }
 @else {
+  <!-- El Layout completo de la App (Solo accesible para usuarios LOGUEADOS y SUSCRITOS) -->
   <app-navbar
     (menuClick)="toggleSidebar()">
   </app-navbar>
@@ -57,5 +38,4 @@
     </div>
 
   </div>
-
 }

@@ -42,4 +42,9 @@ export class AuthService {
   isLoggedIn(): boolean {
     return !!this.getToken();
   }
+
+  tieneSuscripcionActiva(): boolean {
+    const role = this.getRole();
+    return role === 'DUENO';
+  }
 }
