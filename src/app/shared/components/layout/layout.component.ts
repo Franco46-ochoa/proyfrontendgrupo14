@@ -45,6 +45,10 @@ export class LayoutComponent {
     return this.currentUrl === '/home' || this.currentUrl === '/';
   }
 
+  isSuscripcionPage(): boolean {
+    return this.currentUrl === '/suscripcion';
+  }
+
   //funcion para determinar si se debe mostrar la pantalla bloqueada de suscripción
   //isSubscriptionPage(): boolean {
    // const estaEnRutaSuscripcion = this.currentUrl.includes('/suscripcion');

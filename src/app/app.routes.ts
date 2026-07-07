@@ -210,6 +210,13 @@ export const routes: Routes = [
   },
 
   {
+    path: 'mp/retorno',
+    loadComponent: () =>
+      import('./mp/mp-retorno.component')
+        .then(m => m.MpRetornoComponent)
+  },
+
+  {
     path: 'reportes',
     canActivate: [authGuard],
     loadComponent: () =>

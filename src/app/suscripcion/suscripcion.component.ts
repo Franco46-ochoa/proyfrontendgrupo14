@@ -1,7 +1,9 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { SuscripcionService } from '../core/services/suscripcion.service';
 
 @Component({
   selector: 'app-suscripcion',
@@ -11,26 +13,22 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class SuscripcionComponent {
 
+  private router = inject(Router);
+  private suscripcionService = inject(SuscripcionService);
+
 constructor(private toastr: ToastrService) {}
 
 estado: 'planes' | 'formulario' | 'activa' = 'planes';
 planSeleccionado: any = null;
 planActual: any = null;
 
- datos = {
+  datos = {
     nombre: '',
     apellido: '',
     email: '',
     dni: '',
     telefono: '',
     direccion: ''
-  };
-
-  tarjeta = {
-    numero: '',
-    titular: '',
-    vencimiento: '',
-    cvv: ''
   };
 
   // Listado de planes disponibles
@@ -83,15 +81,13 @@ seleccionarPlan(plan: any): void {
   );
 }
 
-simularPago(): void {
+  simularPago(): void {
 
     if (
       !this.datos.nombre ||
       !this.datos.apellido ||
       !this.datos.email ||
-      !this.datos.dni ||
-      !this.tarjeta.numero ||
-      !this.tarjeta.cvv
+      !this.datos.dni
     ) {
 
       this.toastr.warning(
@@ -102,29 +98,37 @@ simularPago(): void {
       return;
     }
 
-    this.toastr.info(
-      'Procesando pago...',
-      'Mercado Pago'
-    );
+    this.toastr.info('Redirigiendo a Mercado Pago...', 'Mercado Pago');
 
-    setTimeout(() => {
+    const token = localStorage.getItem('token');
+    let payer_email = this.datos.email;
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        payer_email = payload.email || this.datos.email;
+      } catch (_e) {}
+    }
 
-      this.planActual = {
-      ...this.planSeleccionado,
-      estado: 'ACTIVA',
-      fechaInicio: '05/07/2026',
-      proximoPago: '05/08/2026',
-      fechaVencimiento: '05/08/2026'
-      };
-
-      this.estado = 'activa';
-
-      this.toastr.success(
-        'La suscripción fue activada correctamente',
-        'Pago aprobado'
-      );
-
-    }, 2500);
+    this.suscripcionService.crearPreferenciaMP({
+      plan: this.planSeleccionado.id,
+      monto: this.planSeleccionado.precio,
+      payer_email
+    }).subscribe({
+      next: (res: any) => {
+        sessionStorage.setItem('mp_plan', JSON.stringify({
+          plan: this.planSeleccionado.id,
+          monto: this.planSeleccionado.precio
+        }));
+        window.location.href = res.init_point;
+      },
+      error: (err) => {
+        console.error('Error al crear preferencia MP', err);
+        this.toastr.error(
+          'Error al conectar con Mercado Pago. Intentá de nuevo.',
+          'Error'
+        );
+      }
+    });
   }
 
   volverAPlanes(): void {

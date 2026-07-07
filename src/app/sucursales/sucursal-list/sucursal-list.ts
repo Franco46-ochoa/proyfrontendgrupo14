@@ -26,11 +26,19 @@ export class SucursalList implements OnInit {
   zonas: Zona[] = [];
   filtroZonaId: number | null = null;
   rol = '';
+  cargando = true;
 
   ngOnInit(): void {
     this.rol = (localStorage.getItem('role') || '').toLowerCase();
     this.cargarZonas();
     this.cargarSucursales();
+  }
+
+  get estadoVacio(): 'sin_sucursales' | 'sin_resultados_filtro' | 'con_datos' | 'cargando' {
+    if (this.cargando) return 'cargando';
+    if (this.sucursales.length > 0 && this.sucursalesFiltradas.length === 0) return 'sin_resultados_filtro';
+    if (this.sucursales.length === 0) return 'sin_sucursales';
+    return 'con_datos';
   }
 
   cargarZonas(): void {
@@ -46,9 +54,16 @@ export class SucursalList implements OnInit {
   }
 
   cargarSucursales(): void {
+    this.cargando = true;
     this.sucursalService.getAll().subscribe({
-      next: (data) => this.sucursales = data,
-      error: (err) => console.error('Error al cargar sucursales', err)
+      next: (data) => {
+        this.sucursales = data;
+        this.cargando = false;
+      },
+      error: (err) => {
+        console.error('Error al cargar sucursales', err);
+        this.cargando = false;
+      }
     });
   }
 

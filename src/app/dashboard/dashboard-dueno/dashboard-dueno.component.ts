@@ -5,13 +5,10 @@ import { ChartCardComponent } from '../../shared/components/chart-card/chart-car
 import { SucursalMapaComponent } from '../../sucursales/sucursal-mapa/sucursal-mapa.component';
 import { DashboardService } from '../../core/services/dashboard.service'; // <-- Importar servicio
 import { ChartConfiguration, ChartData } from 'chart.js';
-<<<<<<< HEAD
 import { ExportExcelService } from '../../core/services/export-excel.service';
-=======
 import { forkJoin } from 'rxjs';
 import { DolarCardComponent } from '../../shared/components/dolar-card/dolar-card.component';
 
->>>>>>> feature/dashboards
 
 @Component({
   selector: 'app-dashboard-dueno',
@@ -27,11 +24,8 @@ import { DolarCardComponent } from '../../shared/components/dolar-card/dolar-car
 })
 export class DashboardDuenoComponent implements OnInit {
   private dashboardService = inject(DashboardService); // <-- Inyectar servicio
-<<<<<<< HEAD
   private exportExcelService = inject(ExportExcelService);
-=======
   fechaActual: string = '';
->>>>>>> feature/dashboards
 
   kpis: any[] = [];
   sucursales: any[] = []; // <-- Arreglo para almacenar sucursales reales del backend
@@ -117,7 +111,6 @@ export class DashboardDuenoComponent implements OnInit {
     });
   }
 
-<<<<<<< HEAD
   esDuenoOAdmin(): boolean {
     const rol = (localStorage.getItem('role') || '').toLowerCase();
     return rol === 'dueno' || rol === 'administrador';
@@ -165,6 +158,4 @@ export class DashboardDuenoComponent implements OnInit {
     // Cuando el backend esté listo se usará: window.open(`/api/export/${modulo}/pdf`, '_blank');
     alert(`Conexión maquetada para PDF: Solicitando al backend la generación de PDF para el módulo: ${modulo.toUpperCase()}`);
   }
-=======
->>>>>>> feature/dashboards
 }

@@ -29,6 +29,7 @@ export class StockSucursalComponent implements OnInit {
   nuevoForm = false;
   nuevo = { productoId: 0, sucursalId: 0, stockActual: 0, stockMinimo: 0, stockMaximo: 0, precioVenta: 0 };
   rol = '';
+  exportExcelService: any;
 
   get esDueno() { return this.rol === 'dueno'; }
   get esEmpleado() { return this.rol === 'empleado'; }

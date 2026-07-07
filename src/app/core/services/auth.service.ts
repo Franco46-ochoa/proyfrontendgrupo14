@@ -9,7 +9,6 @@ export class AuthService {
 
   private http = inject(HttpClient);
   private router = inject(Router);
-
   private apiUrl = 'http://localhost:3000/api/auth';
 
   login(data: any) {

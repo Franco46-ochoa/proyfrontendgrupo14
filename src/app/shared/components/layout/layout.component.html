@@ -1,4 +1,4 @@
-@if(isPublicLanding()){
+@if(isPublicLanding() || isSuscripcionPage()){
   <router-outlet></router-outlet>
 }
 @else if(isAuthPage()){

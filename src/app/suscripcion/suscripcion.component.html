@@ -219,95 +219,9 @@
 
         <hr>
 
-        <h5 class="mb-3">Datos de la Tarjeta</h5>
-
-        <div class="card bg-dark text-white mb-4">
-
-          <div class="card-body">
-
-            <div class="d-flex justify-content-between">
-              <h5>Mercado Pago</h5>
-              <i class="bi bi-credit-card fs-3"></i>
-            </div>
-
-            <h3 class="mt-4">
-              {{ tarjeta.numero || '**** **** **** ****' }}
-            </h3>
-
-            <div class="d-flex justify-content-between mt-4">
-              <span>{{ tarjeta.titular || 'NOMBRE TITULAR' }}</span>
-              <span>{{ tarjeta.vencimiento || 'MM/AA' }}</span>
-            </div>
-
-          </div>
-        </div>
-
-        <div class="row">
-
-          <div class="col-12 mb-3">
-            <label class="form-label">Número de Tarjeta</label>
-            <input
-              class="form-control"
-              placeholder="5031 7557 3453 0604"
-              [(ngModel)]="tarjeta.numero"
-              name="numeroTarjeta"
-              required
-              pattern="^[0-9]{16}$"
-              #numeroTarjeta="ngModel">
-
-            <div *ngIf="numeroTarjeta.invalid && numeroTarjeta.touched" class="text-danger">
-              Número inválido (16 dígitos)
-            </div>
-          </div>
-
-          <div class="col-md-6 mb-3">
-            <label class="form-label">Titular</label>
-            <input
-              class="form-control"
-              [(ngModel)]="tarjeta.titular"
-              name="titular"
-              required
-              minlength="3"
-              #titular="ngModel">
-
-            <div *ngIf="titular.invalid && titular.touched" class="text-danger">
-              Titular obligatorio
-            </div>
-          </div>
-
-          <div class="col-md-3 mb-3">
-            <label class="form-label">Vencimiento</label>
-            <input
-              class="form-control"
-              placeholder="MM/AA"
-              [(ngModel)]="tarjeta.vencimiento"
-              name="vencimiento"
-              required
-              pattern="^(0[1-9]|1[0-2])\/([0-9]{2})$"
-              #vencimiento="ngModel">
-
-            <div *ngIf="vencimiento.invalid && vencimiento.touched" class="text-danger">
-              Formato MM/AA inválido
-            </div>
-          </div>
-
-          <div class="col-md-3 mb-3">
-            <label class="form-label">CVV</label>
-            <input
-              type="password"
-              class="form-control"
-              placeholder="123"
-              [(ngModel)]="tarjeta.cvv"
-              name="cvv"
-              required
-              pattern="^[0-9]{3,4}$"
-              #cvv="ngModel">
-
-            <div *ngIf="cvv.invalid && cvv.touched" class="text-danger">
-              CVV inválido
-            </div>
-          </div>
-
+        <div class="alert alert-info">
+          <i class="bi bi-info-circle me-2"></i>
+          Serás redirigido a Mercado Pago para completar el pago de forma segura.
         </div>
 
         <div class="d-grid gap-2 mt-4">

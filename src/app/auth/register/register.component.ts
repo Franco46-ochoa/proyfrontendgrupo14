@@ -43,9 +43,11 @@ export class RegisterComponent {
 
     const body: any = {
       nombre: this.registerForm.value.nombre,
+      apellido: this.registerForm.value.apellido,
       email: this.registerForm.value.email,
       password: this.registerForm.value.password,
-      rol: this.registerForm.value.rol,
+      rol: this.registerForm.value.rol, 
+      departamento: this.registerForm.value.departamento,
     };
 
     if (this.registerForm.value.rol !== 'dueno') {

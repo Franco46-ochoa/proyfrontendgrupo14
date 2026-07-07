@@ -56,9 +56,55 @@
                         </button>
                     </td>
                 </tr>
-                <tr *ngIf="sucursalesFiltradas.length === 0">
-                    <td colspan="7" class="text-center text-secondary py-4">No hay sucursales registradas</td>
-                </tr>
+
+                <ng-container [ngSwitch]="estadoVacio">
+                    <tr *ngSwitchCase="'cargando'">
+                        <td colspan="7" class="text-center py-4">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Cargando...</span>
+                            </div>
+                            <p class="text-secondary mt-2 mb-0">Cargando sucursales...</p>
+                        </td>
+                    </tr>
+
+                    <tr *ngSwitchCase="'sin_resultados_filtro'">
+                        <td colspan="7" class="text-center text-secondary py-4">
+                            <i class="bi bi-funnel d-block fs-1 mb-2"></i>
+                            No hay sucursales para la zona seleccionada
+                        </td>
+                    </tr>
+
+                    <tr *ngSwitchCase="'sin_sucursales'">
+                        <td colspan="7">
+                            <ng-container *ngIf="esDueno; else adminVacio">
+                                <div class="text-center py-5">
+                                    <i class="bi bi-building display-3 text-muted d-block mb-3"></i>
+                                    <h4 class="text-muted">Tu empresa aún no tiene sucursales</h4>
+                                    <p class="text-secondary mb-3">
+                                        Compartí el código de Administrador para que configure 
+                                        las sucursales y el inventario.
+                                    </p>
+                                    <a routerLink="/codigos" class="btn btn-outline-primary">
+                                        <i class="bi bi-key me-2"></i>Gestionar Códigos
+                                    </a>
+                                </div>
+                            </ng-container>
+                            <ng-template #adminVacio>
+                                <div class="text-center py-5">
+                                    <i class="bi bi-plus-circle display-3 text-info d-block mb-3"></i>
+                                    <h4 class="text-info">Comienza creando tu primera sucursal</h4>
+                                    <p class="text-secondary mb-3">
+                                        Registrá las sucursales para empezar a operar.
+                                    </p>
+                                    <a routerLink="/sucursales/nueva" class="btn btn-info text-white">
+                                        <i class="bi bi-plus-circle me-2"></i>Crear Primera Sucursal
+                                    </a>
+                                </div>
+                            </ng-template>
+                        </td>
+                    </tr>
+                </ng-container>
+
             </tbody>
         </table>
     </div>

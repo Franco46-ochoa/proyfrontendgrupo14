@@ -160,7 +160,7 @@ export class DashboardService {
           return {
             kpis: [
               { title: 'Venta Total', value: '$0', badgeText: '0%', badgeColor: 'secondary', icon: 'bi-cart-fill' },
-              { title: 'Nuevos Clientes', value: `${sucursales.length}`, badgeText: '0%', badgeColor: 'secondary', icon: 'bi-people-fill' },
+              { title: 'Nuevos Clientes', value: '0', badgeText: '0%', badgeColor: 'secondary', icon: 'bi-people-fill' },
               { title: 'Gastos Operativos', value: '$0', badgeText: '0%', badgeColor: 'secondary', icon: 'bi-cash-coin' },
               { title: 'Margen de Ganancia', value: '0%', badgeText: 'Sin datos', badgeColor: 'secondary', icon: 'bi-graph-up-arrow' }
             ],
