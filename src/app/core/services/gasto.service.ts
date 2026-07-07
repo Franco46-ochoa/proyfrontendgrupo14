@@ -3,7 +3,7 @@ import { map, switchMap } from 'rxjs/operators';
 import { of, throwError } from 'rxjs';
 import { ApiService } from './api.service';
 import { Gasto } from '../../gastos/gasto';
-import { environment } from '../../environments/environment';
+import { environment } from '../../../environments/environment';
 
 interface ApiResponse<T> {
   success: boolean;

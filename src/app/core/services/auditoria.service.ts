@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Auditoria } from '../../auditoria/auditoria';
 import { ApiService } from './api.service';
-import { environment } from '../../environments/environment';
+import { environment } from '../../../environments/environment';
 
 interface ApiResponse<T> {
   success: boolean;
