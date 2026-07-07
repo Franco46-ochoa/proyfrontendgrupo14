@@ -1,21 +1,9 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { of, throwError } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
-
-export interface Transaccion {
-  id: number;
-  tipo: 'venta' | 'compra';
-  cantidad: number;
-  precioUnitario: number;
-  productoId: number;
-  sucursalId: number;
-  fecha?: string;
-  observaciones?: string;
-  createdAt?: string;
-  updatedAt?: string;
-}
+import { Transaccion } from '../../transacciones/transaccion';
 
 interface ApiResponse<T> {
   success: boolean;

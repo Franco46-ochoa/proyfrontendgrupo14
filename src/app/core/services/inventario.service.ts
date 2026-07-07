@@ -3,18 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
-
-export interface Inventario {
-  id?: number;
-  productoId: number;
-  sucursalId: number;
-  stockActual: number;
-  stockMinimo: number;
-  stockMaximo?: number;
-  precioVenta: number;
-  createdAt?: string;
-  updatedAt?: string;
-}
+import { Inventario } from '../../inventario/inventario';
 
 interface ApiResponse<T> {
   success: boolean;
