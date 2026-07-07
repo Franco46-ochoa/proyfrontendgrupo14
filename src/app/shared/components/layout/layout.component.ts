@@ -52,33 +52,39 @@ export class LayoutComponent {
   }
 
   debeOcultarLayoutCompleto(): boolean {
-    // 1. Si es la página de login o register, NO ocultamos el layout completo.
-    // Esto permite que el HTML pase al '@else if(isAuthPage())' y muestre el navbar simple de auth.
+    // 1. Si está en Login o Register, NO se oculta el layout general (usa su navbar simple de auth)
     if (this.isAuthPage()) {
       return false;
     }
 
-    // 2. Si es el Home o la Landing pública, se limpia la pantalla.
+    // 2. Si es la landing o página de inicio pública, pantalla limpia
     if (this.isPublicLanding()) {
       return true;
     }
 
-    // 3. Si es una URL de pasarela o retorno de MercadoPago, pantalla limpia obligatoria.
+    // 3. OBTENER VARIABLES DEL USUARIO (Alineación Plan V3)
+    const rolUsuario = this.authService.getRole(); // Viene en MAYÚSCULAS ('ADMINISTRADOR', 'DUENO')
+    const tieneSuscripcionActiva = this.authService.tieneSuscripcionActiva();
+
+    // 4. CONTROL PARA ROLES OPERATIVOS (Admin, Gerente, Empleado)
+    // Ellos nunca pagan suscripción corporativa, entran directo con Navbar y Sidebar
+    if (rolUsuario && rolUsuario !== 'DUENO') {
+      return false; // Retorna false para NO ocultar el layout
+    }
+
+    // 5. CONTROL PARA EL DUEÑO SUSCRITO
+    // Si el dueño YA PAGÓ, no se le oculta el layout bajo ningún concepto. Ve su panel operativo.
+    if (rolUsuario === 'DUENO' && tieneSuscripcionActiva) {
+      return false; 
+    }
+
+    // 6. CONTROL PARA EL DUEÑO NO SUSCRITO (Pasarela aislada)
+    // Si está pagando o volviendo de MercadoPago, pantalla limpia obligatoria
     if (this.currentUrl.includes('/suscripcion') || this.currentUrl.includes('/mp/retorno')) {
       return true;
     }
 
-    // 4. ALINEACIÓN PLAN V3: Control de roles jerárquicos de la empresa
-    const rolUsuario = this.authService.getRole(); // Viene en MAYÚSCULAS desde el localStorage
-    
-    // Si el usuario es ADMINISTRADOR, GERENTE o EMPLEADO, operan directamente la estructura interna.
-    // SIEMPRE tienen que ver el navbar y sidebar en cualquier ruta privada.
-    if (rolUsuario && rolUsuario !== 'DUENO') {
-      return false; // Retorna false para NO ocultar el layout y pintar Navbar + Sidebar
-    }
-
-    // 5. Si es el DUEÑO, se oculta el layout operativo SOLO si no tiene la suscripción activa.
-    const tieneSuscripcionActiva = this.authService.tieneSuscripcionActiva();
+    // Por defecto para dueños que caigan en rutas sin pagar: ocultar layout
     return !tieneSuscripcionActiva;
   }
 }

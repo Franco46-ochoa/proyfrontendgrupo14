@@ -1,6 +1,6 @@
 <div class="sidebar">
   <ul class="nav flex-column">
-    @if (esDueno()) {
+    @if (esDueno() || esAdministrador()) {
     <li class="nav-item">
       <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">
         <i class="bi bi-speedometer2 me-2"></i> Dashboard
@@ -57,13 +57,15 @@
       </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" routerLink="/codigos" routerLinkActive="active">
-        <i class="bi bi-key me-2"></i> Códigos
-      </a>
-    </li>
-    <li class="nav-item">
       <a class="nav-link" routerLink="/auditoria" routerLinkActive="active">
         <i class="bi bi-clipboard-check me-2"></i> Auditoría
+      </a>
+    </li>
+    }
+    @if (esDueno() || esAdministrador()) {
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/codigos" routerLinkActive="active">
+        <i class="bi bi-key me-2"></i> Códigos
       </a>
     </li>
     }

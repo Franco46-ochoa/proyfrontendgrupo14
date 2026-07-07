@@ -54,16 +54,18 @@ export class LoginComponent {
 
           this.toastr.success('Inicio de sesion exitoso', 'Login');
 
-          //para primer login y redireccionar a suscripcion si es dueño
-          //corregir esto cuando el backend tenga la propiedad 
-          if (rol == 'DUENO' && isFirstLogin){
-            this.router.navigate(['/suscripcion']);
+          // REDIRECCIÓN PLAN V3: discriminación por rol y estado de suscripción
+          if (rol === 'DUENO') {
+            if (this.authService.tieneSuscripcionActiva()) {
+              this.router.navigate(['/dashboard']); // Dueño pagó → estadísticas V3
+            } else {
+              this.router.navigate(['/suscripcion']); // Dueño no pagó → pasarela aislada
+            }
             return;
           }
 
-          //corregir esto cuando el backend tenga la propiedad administrador, comercial y operativo
-          if (rol == 'DUENO' || rol == 'ADMINISTRADOR'){
-            this.router.navigate(['/dashboard']);
+          if (rol === 'ADMINISTRADOR') {
+            this.router.navigate(['/dashboard']); // Admin entra directo a gestionar
             return;
           }
 
