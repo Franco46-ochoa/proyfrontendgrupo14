@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -11,7 +11,7 @@ import { SuscripcionService } from '../core/services/suscripcion.service';
   templateUrl: './suscripcion.component.html',
   styleUrl: './suscripcion.component.scss'
 })
-export class SuscripcionComponent {
+export class SuscripcionComponent implements OnInit {
 
   private router = inject(Router);
   private suscripcionService = inject(SuscripcionService);
@@ -30,6 +30,29 @@ planActual: any = null;
     telefono: '',
     direccion: ''
   };
+
+  ngOnInit() {
+    this.suscripcionService.obtener().subscribe({
+      next: (data: any) => {
+        if (data && data.estado === 'activo') {
+          this.planActual = {
+            ...data,
+            proximoPago: data.fechaPago
+              ? new Date(new Date(data.fechaPago).setMonth(new Date(data.fechaPago).getMonth() + 1)).toLocaleDateString()
+              : '—',
+            fechaVencimiento: data.fechaPago
+              ? new Date(new Date(data.fechaPago).setMonth(new Date(data.fechaPago).getMonth() + 1)).toLocaleDateString()
+              : '—'
+          };
+          this.planSeleccionado = {
+            ...this.planes.find(p => p.id === data.plan),
+            precio: data.monto
+          };
+          this.estado = 'activa';
+        }
+      }
+    });
+  }
 
   // Listado de planes disponibles
   planes = [
